@@ -47,7 +47,7 @@ class Register extends Component {
       .then(
         (res) => {
           Cookies.set("auth-cookie", res.data.access_token);
-          this.props.history.push("/Home");
+          this.props.history.push("/Dashboard");
         },
         (error) => {
           this.setState({ registrationMessage: error.response.data.msg, RegistrationSuccessful: false });

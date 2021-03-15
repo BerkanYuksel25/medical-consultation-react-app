@@ -30,6 +30,13 @@ class Login extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  emptyFields() {
+    return (
+      this.state.email === "" ||
+      this.state.password === ""
+    );
+  }
+
   handleLogin() {
     axios
       .post("/login", {
@@ -39,7 +46,7 @@ class Login extends Component {
       .then(
         (res) => {
           Cookies.set("auth-cookie", res.data.access_token);
-          this.props.history.push("/Home");
+          this.props.history.push("/Dashboard");
         },
         (error) => {
           this.setState({ loginMessage: error.response.data.msg ,loginSuccessful: false });
@@ -50,7 +57,7 @@ class Login extends Component {
   render() {
     return (
         <div align="center">
-        <form onSubmit={this.handleSubmit}>
+        <form>
           <label>
               Email: 
               <input type="text" placeholder="email" name="email" value={this.state.email} onChange={this.handleChange} ></input>
@@ -59,8 +66,18 @@ class Login extends Component {
               Password:
               <input type="password" placeholder="password" name="password" value={this.state.password} onChange={this.handleChange} ></input>
           </label>
-          <input type="submit" value="login" />
         </form>
+        <button
+            style={this.submitButton}
+            onClick={this.handleLogin}
+            disabled={this.emptyFields()}
+            class="button is-primary"
+          >
+            Login
+          </button>
+          {this.state.loginSuccessful === false && (
+            <h1>Login failed</h1>
+          )}
     </div>
     );
   }
