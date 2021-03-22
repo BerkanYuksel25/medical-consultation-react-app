@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import Cookies from "js-cookie";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { getToken } from "./JwtConfig";
-// import { Button, Header, Grid, Form } from "semantic-ui-react";
+import { auth } from '../service/firebase';
 
 class Register extends Component {
   constructor(props) {
@@ -23,13 +20,6 @@ class Register extends Component {
     this.onRadioChange = this.onRadioChange.bind(this);
   }
 
-  componentDidMount() {
-    const jwt = getToken();
-    if (jwt) {
-      this.props.history.push("/Home");
-    }
-  }
-
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
@@ -37,22 +27,15 @@ class Register extends Component {
   }
 
   handleRegister() {
-    axios
-      .post("/registration", {
-        name: this.state.name,
-        email: this.state.email,
-        password: this.state.password,
-        userType: this.state.userType,
-      })
-      .then(
-        (res) => {
-          Cookies.set("auth-cookie", res.data.access_token);
-          this.props.history.push("/Dashboard");
-        },
-        (error) => {
-          this.setState({ registrationMessage: error.response.data.msg, RegistrationSuccessful: false });
-        }
-      );
+    auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((userCredential) => {
+      // Signed in
+      var user = userCredential.user;
+      this.props.history.push("/Dashboard");
+    })
+      .catch((error) => {
+        var errorCode = error.code;
+        this.setState({ registrationMessage: error.message, loginSuccessful: false });
+      });
   }
 
   emptyFields() {
@@ -72,7 +55,7 @@ class Register extends Component {
 
   render() {
     return (
-        <div>
+      <div align="center">
         <div style={this.formContainer}>
           <div style={this.form}>
             <div class="field">
@@ -133,6 +116,7 @@ class Register extends Component {
           >
             Register
           </button>
+          <a href="/" ><button>Home</button></a>
           {this.state.RegistrationSuccessful === false && (
             <h1>Registration failed</h1>
           )}

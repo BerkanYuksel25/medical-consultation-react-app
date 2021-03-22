@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-import Cookies from "js-cookie";
 import { withRouter } from "react-router-dom";
-// import { Button, Header, Grid, Form, Dropdown } from "semantic-ui-react";
-import axios from "axios";
-
-// import "./login.scss";
-
+import { auth } from '../service/firebase';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -38,47 +33,43 @@ class Login extends Component {
   }
 
   handleLogin() {
-    axios
-      .post("/login", {
-        email: this.state.email,
-        password: this.state.password
-      })
-      .then(
-        (res) => {
-          Cookies.set("auth-cookie", res.data.access_token);
-          this.props.history.push("/Dashboard");
-        },
-        (error) => {
-          this.setState({ loginMessage: error.response.data.msg ,loginSuccessful: false });
-        }
-      );
+    auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((userCredential) => {
+      // Signed in
+      var user = userCredential.user;
+      this.props.history.push("/Dashboard");
+    })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        this.setState({ loginMessage: errorMessage ,loginSuccessful: false });
+      });
   }
 
   render() {
     return (
-        <div align="center">
+      <div align="center">
         <form>
           <label>
-              Email: 
+            Email:
               <input type="text" placeholder="email" name="email" value={this.state.email} onChange={this.handleChange} ></input>
           </label>
           <label>
-              Password:
+            Password:
               <input type="password" placeholder="password" name="password" value={this.state.password} onChange={this.handleChange} ></input>
           </label>
         </form>
         <button
-            style={this.submitButton}
-            onClick={this.handleLogin}
-            disabled={this.emptyFields()}
-            class="button is-primary"
-          >
-            Login
+          style={this.submitButton}
+          onClick={this.handleLogin}
+          disabled={this.emptyFields()}
+        >
+          Login
           </button>
-          {this.state.loginSuccessful === false && (
-            <h1>Login failed</h1>
-          )}
-    </div>
+          <a href="/" ><button>Home</button></a>
+        {this.state.loginSuccessful === false && (
+          <h1>Login failed</h1>
+        )}
+      </div>
     );
   }
 }

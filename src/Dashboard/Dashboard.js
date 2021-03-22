@@ -1,20 +1,30 @@
 import React, { Component } from "react";
-import Cookies from "js-cookie";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-
+import { auth } from "../service/firebase";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.handleSignout = this.handleSignout.bind(this);
+  }
+
+  handleSignout() {
+    console.log("Sign out")
+    auth().signOut().then((data) => {
+      this.props.history.push("/");
+    });
   }
 
   render() {
     return (
-        <div align="center">
-            Dashboard
-        </div>
+      <div align="center">
+        Dashboard
+        <button style={this.submitButton} onClick={this.handleSignout}>
+          Log out
+            </button>
+      </div>
     );
   }
 }
+
 export default withRouter(Dashboard);
