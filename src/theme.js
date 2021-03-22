@@ -7,10 +7,10 @@ const theme = createMuiTheme({
       default: "hsla(0,0%,100%,.8)",
     },
     primary: {
-      main: "#00A2AE",
+      main: "#73303d",
     },
     secondary: {
-      main: "#263BCD",
+      main: "#a6302e",
     },
     text: {
       primary: "#0D0D0D",
@@ -39,16 +39,16 @@ const theme = createMuiTheme({
       textTransform: "none",
     },
     fontSize: 16,
-    fontFamily: "Gibson W01 Regular, Arial",
+    fontFamily: "Segoe UI, sans-serif",
     h1: {
-      fontWeight: 600,
-      fontSize: 30,
+      fontWeight: 400,
+      fontSize: 64,
       letterSpacing: "-0.24px",
       lineHeight: 1.1,
     },
     h2: {
-      fontWeight: 600,
-      fontSize: 24,
+      fontWeight: 400,
+      fontSize: 32,
       letterSpacing: "-0.24px",
       lineHeight: 1.1,
     },

@@ -14,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   buttonContainer: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(2),
+    margin: theme.spacing(8, 0),
   },
 }));
 
@@ -33,13 +32,13 @@ export default function Home() {
 
   return (
     <GlobalLayout title="Home Page">
-      <Typography color="textPrimary" variant="h2">
+      <Typography color="textPrimary" variant="h1">
         Home Page
       </Typography>
       <Typography
         className={classes.subHeading}
         color="textSecondary"
-        variant="h4"
+        variant="h2"
         component="p"
       >
         This page is used for testing purposes only.
