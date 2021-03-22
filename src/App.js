@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import './App.css';
 import { Switch, Route, BrowserRouter } from "react-router-dom";
-import ReactDOM from "react-dom";
-import AuthenticationGuard from "./Authentication/AuthenticationGuard";
+import { auth } from './service/firebase';
+import { PrivateRoute, PublicRoute } from './Authentication/AuthGuard';
+
+// pages
 import Login from "./Authentication/Login";
 import Register from "./Authentication/Register";
 import Home from "./Home/Home";
@@ -10,16 +12,39 @@ import Dashboard from "./Dashboard/Dashboard";
 
 
 export default class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      currentUser: Boolean
+    }
+  }
+
+  componentDidMount() {
+    this.authlistener = auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({
+          currentUser: true,
+        });
+      } else {
+        this.setState({
+          authenticated: false,
+        });
+      }
+    });
+  }
+
+  componentWillUnmount () {
+    this.authlistener();
+  }
+
   render() {
     return (
       <BrowserRouter>
         <Switch>
           <Route exact path={"/"} component={Home} />
-          <Route path={"/login"} component={Login} />
-          <Route path={"/Register"} component={Register} />
-          <AuthenticationGuard>
-            <Route path={"/Dashboard"} component={Dashboard} />
-          </AuthenticationGuard>
+          <PublicRoute currentUser={this.state.currentUser} path={"/login"} component={Login} />
+          <PublicRoute currentUser={this.state.currentUser} path={"/Register"} component={Register} />
+          <PrivateRoute currentUser={this.state.currentUser} path='/dashboard' component={Dashboard} />
         </Switch>
       </BrowserRouter>
     );

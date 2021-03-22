@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import Cookies from "js-cookie";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-
+import firebase from "firebase";
 
 class Home extends Component {
   constructor(props) {
@@ -10,15 +8,19 @@ class Home extends Component {
   }
 
   render() {
+    const firebaseApp = firebase.apps[0];
     return (
-        <div align="center">
-            Home
-            <br>
-            </br>
-            <a href="/login" ><button>Login</button></a>
-            <a href="/register" ><button>Register</button></a>
+      <div align="center">
+        Home
+        <code>
+          <pre>{JSON.stringify(firebaseApp.options, null, 2)}</pre>
+        </code>
+        <br>
+        </br>
+        <a href="/login" ><button>Login</button></a>
+        <a href="/register" ><button>Register</button></a>
 
-        </div>
+      </div>
     );
   }
 }
