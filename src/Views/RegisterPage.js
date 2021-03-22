@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import { auth } from '../service/firebase';
+import { auth } from "../Services/firebase";
 
-class Register extends Component {
+class RegisterPage extends Component {
   constructor(props) {
     super(props);
 
@@ -12,7 +11,7 @@ class Register extends Component {
       password: "",
       userType: 0,
       RegistrationSuccessful: Boolean,
-      registrationMessage: ""
+      registrationMessage: "",
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -27,14 +26,18 @@ class Register extends Component {
   }
 
   handleRegister() {
-    auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((userCredential) => {
-      // Signed in
-      var user = userCredential.user;
-      this.props.history.push("/Dashboard");
-    })
+    auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then((userCredential) => {
+        // Signed in
+        var user = userCredential.user;
+        this.props.history.push("/Dashboard");
+      })
       .catch((error) => {
-        var errorCode = error.code;
-        this.setState({ registrationMessage: error.message, loginSuccessful: false });
+        this.setState({
+          registrationMessage: `${error.code} - ${error.message}`,
+          loginSuccessful: false,
+        });
       });
   }
 
@@ -116,7 +119,9 @@ class Register extends Component {
           >
             Register
           </button>
-          <a href="/" ><button>Home</button></a>
+          <a href="/">
+            <button>Home</button>
+          </a>
           {this.state.RegistrationSuccessful === false && (
             <h1>Registration failed</h1>
           )}
@@ -126,4 +131,4 @@ class Register extends Component {
   }
 }
 
-export default withRouter(Register);
+export default RegisterPage;

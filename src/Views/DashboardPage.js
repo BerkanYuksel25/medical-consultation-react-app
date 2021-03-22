@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { auth } from "../service/firebase";
+import { auth } from "../Services/firebase";
 
-class Dashboard extends Component {
+class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.handleSignout = this.handleSignout.bind(this);
   }
 
   handleSignout() {
-    console.log("Sign out")
-    auth().signOut().then((data) => {
-      this.props.history.push("/");
-    });
+    console.log("Sign out");
+    auth()
+      .signOut()
+      .then((data) => {
+        this.props.history.push("/");
+      });
   }
 
   render() {
@@ -21,10 +23,10 @@ class Dashboard extends Component {
         Dashboard
         <button style={this.submitButton} onClick={this.handleSignout}>
           Log out
-            </button>
+        </button>
       </div>
     );
   }
 }
 
-export default withRouter(Dashboard);
+export default DashboardPage;
