@@ -5,6 +5,9 @@ export default class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.handleSignout = this.handleSignout.bind(this);
+    this.state = {
+      user: auth().currentUser
+    }
   }
 
   handleSignout() {
@@ -19,6 +22,10 @@ export default class DashboardPage extends Component {
     return (
       <div align="center">
         Dashboard
+        <div>
+        <p>Email: {this.state.user ? this.state.user.email : null}</p>
+        <p>Name: {this.state.user ? this.state.user.displayName : null}</p>
+        </div>
         <button style={this.submitButton} onClick={this.handleSignout}>
           Log out
         </button>

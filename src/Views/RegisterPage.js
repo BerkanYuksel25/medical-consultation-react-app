@@ -14,7 +14,7 @@ import { Alert } from "@material-ui/lab";
 import SideLayout from "../Components/SideLayout";
 import SubmitButton from "../Components/SubmitButton";
 import { validateEmail, validateNewPassword } from "../Common/Utils";
-import { auth } from "../Services/firebase";
+import { auth, database } from "../Services/firebase";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -112,11 +112,14 @@ export default function RegisterPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { email, password } = getValues();
+    const { email, password, name } = getValues();
 
     try {
       await auth().createUserWithEmailAndPassword(email, password);
-
+      // add users name to database
+      await auth().currentUser.updateProfile({
+        displayName: name
+      });
       history.replace("/dashboard");
     } catch (error) {
       setRegisterError(error.message);
