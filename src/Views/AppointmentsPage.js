@@ -34,7 +34,8 @@ export default class AppointmentsPage extends Component {
           defaultDate={new Date()}
           defaultView="month"
           events={this.state.events}
-          style={{ height: "100vh" }}
+          style={{ height: "1000px" , width: "1000px"}}
+          
         />
       </div>
     );
