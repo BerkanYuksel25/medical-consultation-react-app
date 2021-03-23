@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# SES 3B Team 4 App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
