@@ -10,6 +10,7 @@ import HomePage from "./Views/HomePage";
 import DashboardPage from "./Views/DashboardPage";
 import RegisterPageNew from "./Views/RegisterPage";
 import LoginPageNew from "./Views/LoginPage";
+import AppointmentsPage from "./Views/AppointmentsPage";
 
 export default class RouteConfig extends Component {
   constructor() {
@@ -55,6 +56,11 @@ export default class RouteConfig extends Component {
           currentUser={this.state.currentUser}
           path="/dashboard"
           component={DashboardPage}
+        />
+        <PrivateRoute
+          currentUser={this.state.currentUser}
+          path="/appointments"
+          component={AppointmentsPage}
         />
       </Switch>
     );
