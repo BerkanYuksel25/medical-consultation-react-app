@@ -120,7 +120,7 @@ export default function RegisterPage() {
       await auth().currentUser.updateProfile({
         displayName: name
       });
-      history.replace("/dashboard");
+      history.replace("/");
     } catch (error) {
       setRegisterError(error.message);
     }

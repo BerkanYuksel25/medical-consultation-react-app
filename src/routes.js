@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Router } from "react-router-dom";
 import { auth } from "./Services/firebase";
 import { PrivateRoute, PublicRoute } from "./Common/AuthGuard";
 
@@ -7,6 +7,7 @@ import { PrivateRoute, PublicRoute } from "./Common/AuthGuard";
 import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
+import Navbar from "./Views/Navbar";
 import DashboardPage from "./Views/DashboardPage";
 import RegisterPageNew from "./Views/RegisterPage";
 import LoginPageNew from "./Views/LoginPage";
@@ -40,7 +41,7 @@ export default class RouteConfig extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path={"/"} component={HomePage} />
+        <Route exact path={"/home"} component={HomePage} />
         <PublicRoute
           currentUser={this.state.currentUser}
           path={"/login"}
@@ -53,8 +54,8 @@ export default class RouteConfig extends Component {
         />
         <PrivateRoute
           currentUser={this.state.currentUser}
-          path="/dashboard"
-          component={DashboardPage}
+          path="/"
+          component={Navbar}
         />
       </Switch>
     );
