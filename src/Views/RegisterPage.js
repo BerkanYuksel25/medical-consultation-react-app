@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from './footer'
 import { useHistory } from "react-router-dom";
 import {
   Link,
@@ -231,6 +232,7 @@ export default function RegisterPage() {
           </Grid>
         </Grid>
       </form>
+      <Footer />
     </SideLayout>
   );
 }
