@@ -1,19 +1,17 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import { auth } from "../Services/firebase";
 
-class DashboardPage extends Component {
+export default class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.handleSignout = this.handleSignout.bind(this);
   }
 
   handleSignout() {
-    console.log("Sign out");
     auth()
       .signOut()
       .then((data) => {
-        this.props.history.push("/");
+        window.location.replace("/");
       });
   }
 
@@ -28,5 +26,3 @@ class DashboardPage extends Component {
     );
   }
 }
-
-export default DashboardPage;

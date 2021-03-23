@@ -8,8 +8,8 @@ import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
 import DashboardPage from "./Views/DashboardPage";
-import RegisterPageNew from "./Views/RegisterPageNew";
-import LoginPageNew from "./Views/LoginPageNew";
+import RegisterPageNew from "./Views/RegisterPage";
+import LoginPageNew from "./Views/LoginPage";
 
 export default class RouteConfig extends Component {
   constructor() {
@@ -50,16 +50,6 @@ export default class RouteConfig extends Component {
           currentUser={this.state.currentUser}
           path={"/register"}
           component={RegisterPage}
-        />
-        <PublicRoute
-          currentUser={this.state.currentUser}
-          path={"/register-test"}
-          component={RegisterPageNew}
-        />
-        <PublicRoute
-          currentUser={this.state.currentUser}
-          path={"/login-test"}
-          component={LoginPageNew}
         />
         <PrivateRoute
           currentUser={this.state.currentUser}

@@ -16,13 +16,15 @@ export default function SubmitButton(props) {
   return (
     <Button
       className={classes.submit}
+      onClick={props.onClick}
       size="large"
       type="submit"
       fullWidth
+      disabled={props.disabled}
       variant="contained"
       color="primary"
     >
-      {props.label}
+      {props.text}
     </Button>
   );
 }

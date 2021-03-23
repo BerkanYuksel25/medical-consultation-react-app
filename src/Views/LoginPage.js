@@ -1,88 +1,175 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import {
+  Link,
+  Grid,
+  makeStyles,
+  TextField,
+  Typography,
+  Collapse,
+  IconButton,
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import { Alert } from "@material-ui/lab";
+import SideLayout from "../Components/SideLayout";
+import SubmitButton from "../Components/SubmitButton";
+import { validateEmail, validatePassword } from "../Common/Utils";
 import { auth } from "../Services/firebase";
 
-class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      loginSuccessful: Boolean,
-      loginMessage: "",
-    };
+const useStyles = makeStyles((theme) => ({
+  heading: {
+    alignSelf: "flex-start",
+    marginBottom: theme.spacing(4),
+  },
+  form: {
+    width: "100%",
+  },
+  submit: {
+    margin: theme.spacing(4, 0),
+  },
+  link: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
+}));
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.RedirectToRegister = this.RedirectToRegister.bind(this);
-  }
+export default function LoginPage() {
+  const classes = useStyles();
+  const history = useHistory();
+  const backgroundImageUrl = "/static/login.jpg";
 
-  RedirectToRegister() {
-    this.props.history.push("/Register");
-  }
+  const [errors, setErrors] = React.useState({});
 
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
+  const [loginError, setLoginError] = React.useState(null);
 
-  emptyFields() {
-    return this.state.email === "" || this.state.password === "";
-  }
+  const emailRef = React.useRef("");
+  const passwordRef = React.useRef("");
 
-  handleLogin() {
-    auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((userCredential) => {
-        // Signed in
-        var user = userCredential.user;
-        this.props.history.push("/Dashboard");
-      })
-      .catch((error) => {
-        this.setState({
-          loginMessage: `${error.code} - ${error.message}`,
-          loginSuccessful: false,
-        });
-      });
-  }
+  const handleSignUpClick = (event) => {
+    event.preventDefault();
 
-  render() {
-    return (
-      <div align="center">
-        <form>
-          <label>
-            Email:
-            <input
-              type="text"
-              placeholder="email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-          <label>
-            Password:
-            <input
-              type="password"
-              placeholder="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            ></input>
-          </label>
-        </form>
-        <button
-          style={this.submitButton}
-          onClick={this.handleLogin}
-          disabled={this.emptyFields()}
-        >
-          Login
-        </button>
-        <a href="/">
-          <button>Home</button>
-        </a>
-        {this.state.loginSuccessful === false && <h1>Login failed</h1>}
-      </div>
-    );
-  }
+    history.push("/register");
+  };
+
+  const validateFields = () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    const newErrors = {};
+
+    if (!validateEmail(email)) {
+      newErrors.email = "Invalid email address.";
+    }
+
+    if (!email || !email.length) {
+      newErrors.email = "Empty email address.";
+    }
+
+    if (!validatePassword(password)) {
+      newErrors.password = "Empty password.";
+    }
+
+    setErrors(newErrors);
+  };
+
+  const getValues = () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    return { email, password };
+  };
+
+  const isValid = () => {
+    const { email, password } = getValues();
+    return Boolean(!errors.email && !errors.password && email && password);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { email, password } = getValues();
+
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+
+      history.replace("/dashboard");
+    } catch (error) {
+      setLoginError(error.message);
+    }
+  };
+
+  return (
+    <SideLayout title="Sign In" imageUrl={backgroundImageUrl}>
+      <Typography className={classes.heading} color="textPrimary" variant="h1">
+        Sign In
+      </Typography>
+      <form className={classes.form} noValidate>
+        <Collapse in={Boolean(loginError)}>
+          <Alert
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => setLoginError(null)}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            severity="error"
+          >
+            {loginError}
+          </Alert>
+        </Collapse>
+        <TextField
+          inputRef={emailRef}
+          error={Boolean(errors.email)}
+          helperText={errors.email}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email"
+          name="email"
+          autoComplete="email"
+          onBlur={validateFields}
+          onChange={validateFields}
+          autoFocus
+        />
+        <TextField
+          inputRef={passwordRef}
+          error={Boolean(errors.password)}
+          helperText={errors.password}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="password"
+          label="Password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          onBlur={validateFields}
+          onChange={validateFields}
+        />
+        <SubmitButton
+          onClick={handleSubmit}
+          disabled={!isValid()}
+          text="Continue"
+        />
+        <Grid container>
+          <Grid item>
+            <Typography variant="body1">
+              Don't have an account?{" "}
+              <Link
+                className={classes.link}
+                href="#"
+                onClick={handleSignUpClick}
+              >
+                Sign Up
+              </Link>
+            </Typography>
+          </Grid>
+        </Grid>
+      </form>
+    </SideLayout>
+  );
 }
-export default LoginPage;
