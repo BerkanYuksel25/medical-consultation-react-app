@@ -1,29 +1,30 @@
-import React, { Component } from "react";
-import { auth } from "../Services/firebase";
-import HealthAssistant from "../Components/Chatbot/HealthAssistant";
+import React from "react";
+import GlobalLayout from "../Components/GlobalLayout";
+import { Typography, makeStyles } from "@material-ui/core";
 
-export default class DashboardPage extends Component {
-  constructor(props) {
-    super(props);
-    this.handleSignout = this.handleSignout.bind(this);
-    this.state = {
-      user: auth().currentUser
-    }
-  }
+const useStyles = makeStyles((theme) => ({
+  subHeading: {
+    marginTop: theme.spacing(4),
+  },
+}));
 
-  handleSignout() {
-    auth()
-      .signOut()
-      .then((data) => {
-        window.location.replace("/");
-      });
-  }
+export default function LocationPage() {
+  const classes = useStyles();
 
-  render() {
-    return (
-      <div align="center">
-        Maps go here
-      </div>
-    );
-  }
+  return (
+    <GlobalLayout title="Location">
+      <Typography color="textPrimary" variant="h1">
+        Maps go here.
+      </Typography>
+      <Typography
+        className={classes.subHeading}
+        color="textSecondary"
+        variant="h2"
+        component="p"
+      >
+        Will implement Google API here.
+      </Typography>
+      ;
+    </GlobalLayout>
+  );
 }
