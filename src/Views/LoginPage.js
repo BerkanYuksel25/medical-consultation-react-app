@@ -89,7 +89,7 @@ export default function LoginPage() {
     try {
       await auth().signInWithEmailAndPassword(email, password);
 
-      history.replace("/");
+      history.replace("/dashboard");
     } catch (error) {
       setLoginError(error.message);
     }
