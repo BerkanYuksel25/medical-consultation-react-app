@@ -8,6 +8,7 @@ import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
 import DashboardPage from "./Views/DashboardPage";
+import LocationPage from "./Views/LocationPage";
 import RegisterPageNew from "./Views/RegisterPage";
 import LoginPageNew from "./Views/LoginPage";
 
@@ -55,6 +56,11 @@ export default class RouteConfig extends Component {
           currentUser={this.state.currentUser}
           path="/dashboard"
           component={DashboardPage}
+        />
+        <PrivateRoute
+          currentUser={this.state.currentUser}
+          path="/location"
+          component={LocationPage}
         />
       </Switch>
     );
