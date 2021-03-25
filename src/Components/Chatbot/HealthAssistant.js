@@ -61,8 +61,7 @@ class HealthAssistant extends Component {
             },
             {
               id: "symptoms-question-1",
-              message:
-                "Do you currently have headaches?",
+              message: "Do you currently have headaches?",
               trigger: "symptoms-answer-1",
             },
             {
@@ -74,8 +73,7 @@ class HealthAssistant extends Component {
             },
             {
               id: "symptoms-question-2",
-              message:
-                "Do you have also have a fever?",
+              message: "Do you have also have a fever?",
               trigger: "symptoms-answer-2",
             },
             {
@@ -100,8 +98,7 @@ class HealthAssistant extends Component {
             },
             {
               id: "symptoms-question-4",
-              message:
-                "Congratulations! You are 100% likely to have COVID! :)",
+              message: "Congratulations! You are 100% likely to have COVID! :)",
               end: true,
             },
             {

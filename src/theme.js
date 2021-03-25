@@ -32,7 +32,7 @@ const theme = createMuiTheme({
       "300": "#CCCCCC",
       "500": "#666666",
       "900": "#0D0D0D",
-    },
+    }
   },
   typography: {
     button: {
