@@ -8,6 +8,11 @@ import {
   Typography,
   Collapse,
   IconButton,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { Alert } from "@material-ui/lab";
@@ -41,26 +46,43 @@ export default function RegisterPage() {
 
   const [registerError, setRegisterError] = React.useState(null);
 
-  const nameRef = React.useRef("");
+  const firstNameRef = React.useRef("");
+  const lastNameRef = React.useRef("");
+  const birthdayRef = React.useRef("");
+  const genderRef = React.useRef("");
   const emailRef = React.useRef("");
   const passwordRef = React.useRef("");
   const confirmPasswordRef = React.useRef("");
 
-  const handleSignUpClick = (event) => {
+  const handleLoginClick = (event) => {
     event.preventDefault();
-
     history.push("/login");
   };
 
   const validateFields = () => {
-    const name = nameRef.current.value;
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const birthday = birthdayRef.current.value;
+    const gender = genderRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
     const newErrors = {};
 
-    if (!name || !name.length) {
-      newErrors.name = "Empty name.";
+    if (!firstName || !firstName.length) {
+      newErrors.firstName = "Empty first name.";
+    }
+
+    if (!lastName || !lastName.length) {
+      newErrors.lastName = "Empty last name.";
+    }
+
+    if (!birthday || !birthday.length) {
+      newErrors.birthday = "Empty birthday.";
+    }
+
+    if (!gender || !birthday.gender) {
+      newErrors.gender = "Empty gender.";
     }
 
     if (!validateEmail(email)) {
@@ -83,44 +105,64 @@ export default function RegisterPage() {
     ) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
-
     setErrors(newErrors);
   };
 
   const getValues = () => {
-    const name = nameRef.current.value;
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const birthday = birthdayRef.current.value;
+    const gender = genderRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
 
-    return { name, email, password, confirmPassword };
+    return { firstName, lastName, email, password, confirmPassword, birthday, gender };
   };
 
   const isValid = () => {
-    const { name, email, password, confirmPassword } = getValues();
+    const { firstName, lastName, email, password, confirmPassword, birthday, gender } = getValues();
     return Boolean(
-      !errors.name &&
-        !errors.email &&
-        !errors.password &&
-        !errors.confirmPassword &&
-        name &&
-        email &&
-        password &&
-        confirmPassword
+      !errors.firstName &&
+      !errors.lastName &&
+      !errors.email &&
+      !errors.password &&
+      !errors.confirmPassword &&
+      !errors.birthday &&
+      !errors.gender &&
+      firstName &&
+      lastName &&
+      email &&
+      password &&
+      confirmPassword &&
+      birthday &&
+      gender
     );
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { email, password, name } = getValues();
+    const { email, password, firstName, lastName, birthday, gender } = getValues();
 
     try {
       await auth().createUserWithEmailAndPassword(email, password);
-      // add users name to database
+      // add users displayname
       await auth().currentUser.updateProfile({
-        displayName: name
+        displayName: firstName
       });
-      history.replace("/dashboard");
+
+      // store other user data in database
+      const userId = auth().currentUser.uid;
+      console.log(userId)
+      await database().ref('users/' + userId).set({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        birthday: birthday,
+        gender: ""
+      });
+
+      history.push("/dashboard");
     } catch (error) {
       setRegisterError(error.message);
     }
@@ -150,22 +192,6 @@ export default function RegisterPage() {
           </Alert>
         </Collapse>
         <TextField
-          inputRef={nameRef}
-          error={Boolean(errors.name)}
-          helperText={errors.name}
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Full Name"
-          name="name"
-          autoComplete="name"
-          onBlur={validateFields}
-          onChange={validateFields}
-          autoFocus
-        />
-        <TextField
           inputRef={emailRef}
           error={Boolean(errors.email)}
           helperText={errors.email}
@@ -180,6 +206,66 @@ export default function RegisterPage() {
           onBlur={validateFields}
           onChange={validateFields}
         />
+        <TextField
+          inputRef={firstNameRef}
+          error={Boolean(errors.firstName)}
+          helperText={errors.firstName}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="firstName"
+          label="First name"
+          name="firstName"
+          autoComplete="firstName"
+          onBlur={validateFields}
+          onChange={validateFields}
+          autoFocus
+        />
+        <TextField
+          inputRef={lastNameRef}
+          error={Boolean(errors.lastName)}
+          helperText={errors.lastName}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="lastName"
+          label="Last name"
+          name="lastName"
+          autoComplete="lastName"
+          onBlur={validateFields}
+          onChange={validateFields}
+          autoFocus
+        />
+        <TextField
+          inputRef={birthdayRef}
+          error={Boolean(errors.birthday)}
+          helperText={errors.birthday}
+          variant="outlined"
+          margin="normal"
+          required
+          id="date"
+          label="Birthday"
+          type="date"
+          name="birthday"
+          onBlur={validateFields}
+          onChange={validateFields}
+          format="dd/MM/yyyy"
+          className={classes.textField}
+          defaultValue="1970-01-01"
+          fullWidth
+          autofocus
+        />
+        {/* I need help here to get the radio button working*/}
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Gender</FormLabel>
+          <RadioGroup aria-label="gender" name="gender" row required>
+            <FormControlLabel value="female" control={<Radio />} label="Female" />
+            <FormControlLabel value="male" control={<Radio />} label="Male" />
+            <FormControlLabel value="other" control={<Radio />} label="Other" />
+          </RadioGroup>
+        </FormControl>
         <TextField
           inputRef={passwordRef}
           error={Boolean(errors.password)}
@@ -223,7 +309,7 @@ export default function RegisterPage() {
               <Link
                 className={classes.link}
                 href="#"
-                onClick={handleSignUpClick}
+                onClick={handleLoginClick}
               >
                 Sign In
               </Link>
@@ -231,6 +317,6 @@ export default function RegisterPage() {
           </Grid>
         </Grid>
       </form>
-    </SideLayout>
+    </SideLayout >
   );
 }
