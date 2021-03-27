@@ -129,14 +129,12 @@ export default function RegisterPage() {
       !errors.password &&
       !errors.confirmPassword &&
       !errors.birthday &&
-      !errors.gender &&
       firstName &&
       lastName &&
       email &&
       password &&
       confirmPassword &&
-      birthday &&
-      gender
+      birthday
     );
   };
 
