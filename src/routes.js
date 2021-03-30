@@ -8,8 +8,7 @@ import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
 import DashboardPage from "./Views/DashboardPage";
-import RegisterPageNew from "./Views/RegisterPage";
-import LoginPageNew from "./Views/LoginPage";
+import LocationPage from "./Views/LocationPage";
 
 export default class RouteConfig extends Component {
   constructor() {
@@ -50,6 +49,11 @@ export default class RouteConfig extends Component {
           currentUser={this.state.currentUser}
           path={"/register"}
           component={RegisterPage}
+        />
+        <PublicRoute
+          currentUser={this.state.currentUser}
+          path="/location"
+          component={LocationPage}
         />
         <PrivateRoute
           currentUser={this.state.currentUser}
