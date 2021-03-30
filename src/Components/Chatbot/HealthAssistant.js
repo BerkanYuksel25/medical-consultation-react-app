@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
 import Review from "./Review";
+import axios from "axios";
 
 const theme = {
   background: "#f5f8fb",
@@ -31,6 +32,11 @@ class HealthAssistant extends Component {
     console.log(steps);
     console.log(values);
     alert(`COVID prediction will take place here!`);
+    axios.post("URL GOES HERE", values).then((response)=> {
+      console.log(response.data);
+    }).catch((error)=>{
+      console.log(error);
+    });
   }
 
   render() {
@@ -89,12 +95,12 @@ class HealthAssistant extends Component {
               id: "sex",
               options: [
                 {
-                  value: "Male",
+                  value: 1,
                   label: "Male",
                   trigger: "symptom-qualifier-question",
                 },
                 {
-                  value: "Female",
+                  value: 0,
                   label: "Female",
                   trigger: "symptom-qualifier-question",
                 },
@@ -120,8 +126,8 @@ class HealthAssistant extends Component {
             {
               id: "headaches",
               options: [
-                { value: "Yes", label: "Yes", trigger: "symptoms-question-2" },
-                { value: "No", label: "No", trigger: "symptoms-question-2" },
+                { value: 1, label: "Yes", trigger: "symptoms-question-2" },
+                { value: 0, label: "No", trigger: "symptoms-question-2" },
               ],
             },
             {
@@ -132,8 +138,8 @@ class HealthAssistant extends Component {
             {
               id: "fever",
               options: [
-                { value: "Yes", label: "Yes", trigger: "symptoms-question-3" },
-                { value: "No", label: "No", trigger: "symptoms-question-3" },
+                { value: 1, label: "Yes", trigger: "symptoms-question-3" },
+                { value: 0, label: "No", trigger: "symptoms-question-3" },
               ],
             },
             {
@@ -144,8 +150,8 @@ class HealthAssistant extends Component {
             {
               id: "soreThroat",
               options: [
-                { value: "Yes", label: "Yes", trigger: "symptoms-question-4" },
-                { value: "No", label: "No", trigger: "symptoms-question-4" },
+                { value: 1, label: "Yes", trigger: "symptoms-question-4" },
+                { value: 0, label: "No", trigger: "symptoms-question-4" },
               ],
             },
             {
@@ -156,8 +162,8 @@ class HealthAssistant extends Component {
             {
               id: "cough",
               options: [
-                { value: "Yes", label: "Yes", trigger: "symptoms-question-5" },
-                { value: "No", label: "No", trigger: "symptoms-question-5" },
+                { value: 1, label: "Yes", trigger: "symptoms-question-5" },
+                { value: 0, label: "No", trigger: "symptoms-question-5" },
               ],
             },
             {
@@ -168,8 +174,8 @@ class HealthAssistant extends Component {
             {
               id: "shortnessOfBreath",
               options: [
-                { value: "Yes", label: "Yes", trigger: "symptoms-question-6" },
-                { value: "No", label: "No", trigger: "symptoms-question-6" },
+                { value: 1, label: "Yes", trigger: "symptoms-question-6" },
+                { value: 0, label: "No", trigger: "symptoms-question-6" },
               ],
             },
             {
@@ -182,12 +188,12 @@ class HealthAssistant extends Component {
               id: "covidContact",
               options: [
                 {
-                  value: "Yes",
+                  value: 1,
                   label: "Yes",
                   trigger: "symptoms-summary-prompt",
                 },
                 {
-                  value: "No",
+                  value: 0,
                   label: "No",
                   trigger: "symptoms-summary-prompt",
                 },
