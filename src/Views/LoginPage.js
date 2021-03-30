@@ -1,5 +1,5 @@
 import React from "react";
-import Footer from './footer'
+import FooterLogin from './footer'
 import { useHistory } from "react-router-dom";
 import {
   Link,
@@ -171,7 +171,7 @@ export default function LoginPage() {
           </Grid>
         </Grid>
       </form>
-      <Footer />
+      <FooterLogin />
     </SideLayout>
   );
 }

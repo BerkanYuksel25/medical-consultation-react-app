@@ -11,14 +11,18 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     width: "100%",
   },
+  footerp: {
+    color: "#FFFFFF",
+    textAlign: "center",
+  },
 }));
 
-export default function Footer() {
+export default function FooterLogin() {
   const classes = useStyles();
 
   return (
     <div className={classes.footer}>
-    <p>This is some content in sticky footer</p>
+    <p className={classes.footerp}>Welcome to the App</p>
   </div>
   );
 }

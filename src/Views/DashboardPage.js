@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Footer from './footerAll';
 import { auth } from "../Services/firebase";
 import HealthAssistant from "../Components/Chatbot/HealthAssistant";
 
@@ -31,6 +32,7 @@ export default class DashboardPage extends Component {
           Log out
         </button>
         <HealthAssistant />
+        <Footer />
       </div>
     );
   }
