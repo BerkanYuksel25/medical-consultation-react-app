@@ -40,11 +40,74 @@ class HealthAssistant extends Component {
             {
               id: "intro-user",
               user: true,
-              trigger: "no-response",
+              trigger: "intro-response",
             },
             {
-              id: "no-response",
+              id: "intro-response",
               message: "Hi {previousValue}! Nice to meet you :)",
+              trigger: "symptom-qualifier-question",
+            },
+            {
+              id: "symptom-qualifier-question",
+              message: "Would you like to assess your COVID likelihood?",
+              trigger: "symptom-qualifier-answer",
+            },
+            {
+              id: "symptom-qualifier-answer",
+              options: [
+                { value: 1, label: "Yes", trigger: "symptoms-question-1" },
+                { value: 2, label: "No", trigger: "end-chat-response" },
+              ],
+            },
+            {
+              id: "symptoms-question-1",
+              message:
+                "Do you currently have headaches?",
+              trigger: "symptoms-answer-1",
+            },
+            {
+              id: "symptoms-answer-1",
+              options: [
+                { value: 1, label: "Yes", trigger: "symptoms-question-2" },
+                { value: 2, label: "No", trigger: "symptoms-question-2" },
+              ],
+            },
+            {
+              id: "symptoms-question-2",
+              message:
+                "Do you have also have a fever?",
+              trigger: "symptoms-answer-2",
+            },
+            {
+              id: "symptoms-answer-2",
+              options: [
+                { value: 1, label: "Yes", trigger: "symptoms-question-3" },
+                { value: 2, label: "No", trigger: "symptoms-question-3" },
+              ],
+            },
+            {
+              id: "symptoms-question-3",
+              message:
+                "Have you been in contact with someone infected with COVID?",
+              trigger: "symptoms-answer-3",
+            },
+            {
+              id: "symptoms-answer-3",
+              options: [
+                { value: 1, label: "Yes", trigger: "symptoms-question-4" },
+                { value: 2, label: "No", trigger: "end-chat-response" },
+              ],
+            },
+            {
+              id: "symptoms-question-4",
+              message:
+                "Congratulations! You are 100% likely to have COVID! :)",
+              end: true,
+            },
+            {
+              id: "end-chat-response",
+              message:
+                "No worries, plenty of other cool things you can check out on this app! :)",
               end: true,
             },
           ]}
