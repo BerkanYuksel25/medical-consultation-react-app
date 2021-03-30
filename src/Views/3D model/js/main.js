@@ -26,6 +26,9 @@ function init() {
   // remember lighting later
   cameraLight = new THREE.PointLight(new THREE.Color(1, 1, 1), 0.5);
   camera.add(cameraLight);
+  // camera.position.set(0, 20,100);
+  // controls.update(); 
+  
   scene.add(camera);
   ambientLight = new THREE.AmbientLight(new THREE.Color(1, 1, 1), 0.2);
   scene.add(ambientLight);
@@ -36,13 +39,13 @@ function init() {
   //   fillLight = new THREE.DirectionalLight(new THREE.)
 
   //loading the 3D model object will need node command here on in.
-  objLoader = new THREE.OBJLoader();
-  objLoader.setPath("/models/");
-  objLoader.load("skeleton.obj", function (object) {
-    // Setting object back 60 from camera
-    object.position.y -= 10;
-    scene.add(object);
-  });
+  // objLoader = new THREE.OBJLoader();
+  // objLoader.setPath("/models/");
+  // objLoader.load("skeleton.obj", function (object) {
+  //   // Setting object back 60 from camera
+  //   object.position.y -= 100;
+  //   scene.add(object);
+  // });
 }
 
 function animate() {
