@@ -8,8 +8,6 @@ import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
 import DashboardPage from "./Views/DashboardPage";
-import RegisterPageNew from "./Views/RegisterPage";
-import LoginPageNew from "./Views/LoginPage";
 import AppointmentsPage from "./Views/AppointmentsPage";
 import LocationPage from "./Views/LocationPage";
 
@@ -18,18 +16,21 @@ export default class RouteConfig extends Component {
     super();
     this.state = {
       currentUser: Boolean,
+
     };
   }
 
   componentDidMount() {
     this.authlistener = auth().onAuthStateChanged((user) => {
       if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
         this.setState({
           currentUser: true,
         });
       } else {
+        localStorage.removeItem("user");
         this.setState({
-          authenticated: false,
+          currentUser: false,
         });
       }
     });
@@ -53,7 +54,7 @@ export default class RouteConfig extends Component {
           path={"/register"}
           component={RegisterPage}
         />
-        <PublicRoute
+        <Route
           currentUser={this.state.currentUser}
           path="/location"
           component={LocationPage}
@@ -65,7 +66,7 @@ export default class RouteConfig extends Component {
         />
         <PrivateRoute
           currentUser={this.state.currentUser}
-          path="/appointments"
+          path={"/appointments"}
           component={AppointmentsPage}
         />
       </Switch>

@@ -7,8 +7,9 @@ export default class DashboardPage extends Component {
     super(props);
     this.handleSignout = this.handleSignout.bind(this);
     this.state = {
-      user: auth().currentUser
+      user: JSON.parse(localStorage.getItem("user"))
     }
+    // console.log(this.state.user);
   }
 
   handleSignout() {
@@ -18,6 +19,7 @@ export default class DashboardPage extends Component {
         window.location.replace("/");
       });
   }
+
 
   render() {
     return (
