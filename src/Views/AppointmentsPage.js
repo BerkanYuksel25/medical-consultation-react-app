@@ -16,6 +16,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import SubmitButton from "../Components/SubmitButton";
+import { auth } from "../Services/firebase";
 
 const styles = (theme) => ({
   root: {
@@ -33,6 +34,7 @@ class AppointmentsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: auth().currentUser,
       events: [
         {
           start: moment().toDate(),
