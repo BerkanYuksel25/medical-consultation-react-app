@@ -8,9 +8,10 @@ import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
 import Navbar from "./Views/Navbar";
+import AppointmentsPage from "./Views/AppointmentsPage";
 import LocationPage from "./Views/LocationPage";
 
- class RouteConfig extends Component {
+class RouteConfig extends Component {
   constructor() {
     super();
     this.state = {
@@ -21,10 +22,12 @@ import LocationPage from "./Views/LocationPage";
   componentDidMount() {
     this.authlistener = auth().onAuthStateChanged((user) => {
       if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
         this.setState({
           currentUser: true,
         });
       } else {
+        localStorage.removeItem("user");
         this.setState({
           currentUser: false,
         });
@@ -50,7 +53,7 @@ import LocationPage from "./Views/LocationPage";
           path={"/register"}
           component={RegisterPage}
         />
-        <PublicRoute
+        <Route
           currentUser={this.state.currentUser}
           path="/location"
           component={LocationPage}
@@ -59,6 +62,11 @@ import LocationPage from "./Views/LocationPage";
           currentUser={this.state.currentUser}
           path="/"
           component={Navbar}
+        />
+        <PrivateRoute
+          currentUser={this.state.currentUser}
+          path={"/appointments"}
+          component={AppointmentsPage}
         />
       </Switch>
     );
