@@ -30,6 +30,15 @@ const styles = {
   },
 };
 
+var logoutImgStyle = {
+  width: "20px",
+  filter: "brightness(0) invert(1) opacity(70%)",
+  cursor: "pointer",
+  height: "20px",
+  marginRight: "1em",
+  marginTop: "1px"
+};
+
 class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +69,7 @@ class Navbar extends Component {
   };
 
   render() {
+    const logoutImg = "/static/logout.svg";
     return (
       <div>
         <div className={styles.root}>
@@ -68,7 +78,7 @@ class Navbar extends Component {
               <div style={{ width: "50%" }}>
                 <Typography
                   name="DashboardPage"
-                  variant="h6"
+                  variant="h4"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -81,7 +91,7 @@ class Navbar extends Component {
                 </Typography>
                 <Typography
                   name="LocationPage"
-                  variant="h6"
+                  variant="h4"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -94,7 +104,7 @@ class Navbar extends Component {
                 </Typography>
                 <Typography
                   name="AppointmentsPage"
-                  variant="h6"
+                  variant="h4"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -107,7 +117,7 @@ class Navbar extends Component {
                 </Typography>
                 <Typography
                   name="About"
-                  variant="h6"
+                  variant="h4"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -128,13 +138,18 @@ class Navbar extends Component {
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="h4"
                   color="inherit"
-                  style={{ cursor: "pointer", marginRight: "2em" }}
-                  onClick={this.handleSignout}
+                  style={{ marginRight: "10px" }}
                 >
                   Signout
                 </Typography>
+                <img
+                  src={logoutImg}
+                  alt="Logout"
+                  style={logoutImgStyle}
+                  onClick={this.handleSignout}
+                />
               </div>
             </Toolbar>
           </AppBar>
