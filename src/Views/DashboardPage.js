@@ -19,9 +19,17 @@ class DashboardPage extends Component {
 
   render() {
     return (
-      <div>
-        <div>Dashboard Page</div>
-        <HealthAssistant></HealthAssistant>
+      <div align="center">
+        Dashboard
+        <div>
+        <p>id: {this.state.user ? this.state.user.uid : null}</p>
+        <p>Email: {this.state.user ? this.state.user.email : null}</p>
+        <p>Name: {this.state.user ? this.state.user.displayName : null}</p>
+        </div>
+        <button style={this.submitButton} onClick={this.handleSignout}>
+          Log out
+        </button>
+        <HealthAssistant />
       </div>
     );
   }
