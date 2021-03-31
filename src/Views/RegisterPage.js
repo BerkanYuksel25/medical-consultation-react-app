@@ -12,7 +12,7 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel
+  FormLabel,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { Alert } from "@material-ui/lab";
@@ -43,13 +43,13 @@ export default function RegisterPage() {
   const backgroundImageUrl = "/static/login.jpg";
 
   const [errors, setErrors] = React.useState({});
+  const [gender, setGender] = React.useState(null);
 
   const [registerError, setRegisterError] = React.useState(null);
 
   const firstNameRef = React.useRef("");
   const lastNameRef = React.useRef("");
   const birthdayRef = React.useRef("");
-  const genderRef = React.useRef("");
   const emailRef = React.useRef("");
   const passwordRef = React.useRef("");
   const confirmPasswordRef = React.useRef("");
@@ -63,7 +63,6 @@ export default function RegisterPage() {
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
     const birthday = birthdayRef.current.value;
-    const gender = genderRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
@@ -79,10 +78,6 @@ export default function RegisterPage() {
 
     if (!birthday || !birthday.length) {
       newErrors.birthday = "Empty birthday.";
-    }
-
-    if (!gender || !birthday.gender) {
-      newErrors.gender = "Empty gender.";
     }
 
     if (!validateEmail(email)) {
@@ -112,53 +107,68 @@ export default function RegisterPage() {
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
     const birthday = birthdayRef.current.value;
-    const gender = genderRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
 
-    return { firstName, lastName, email, password, confirmPassword, birthday, gender };
+    return {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      birthday,
+    };
   };
 
   const isValid = () => {
-    const { firstName, lastName, email, password, confirmPassword, birthday, gender } = getValues();
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      birthday,
+    } = getValues();
     return Boolean(
       !errors.firstName &&
-      !errors.lastName &&
-      !errors.email &&
-      !errors.password &&
-      !errors.confirmPassword &&
-      !errors.birthday &&
-      firstName &&
-      lastName &&
-      email &&
-      password &&
-      confirmPassword &&
-      birthday
+        !errors.lastName &&
+        !errors.email &&
+        !errors.password &&
+        !errors.confirmPassword &&
+        !errors.birthday &&
+        firstName &&
+        lastName &&
+        email &&
+        password &&
+        confirmPassword &&
+        birthday
     );
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { email, password, firstName, lastName, birthday, gender } = getValues();
+    const { email, password, firstName, lastName, birthday } = getValues();
 
     try {
       await auth().createUserWithEmailAndPassword(email, password);
       // add users displayname
       await auth().currentUser.updateProfile({
-        displayName: firstName
+        displayName: firstName,
       });
 
       // store other user data in database
       const userId = auth().currentUser.uid;
-      console.log(userId)
-      await database().ref('users/' + userId).set({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        birthday: birthday,
-        gender: ""
-      });
+      console.log(userId);
+      await database()
+        .ref("users/" + userId)
+        .set({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          birthday: birthday,
+          gender: gender,
+        });
 
       history.push("/dashboard");
     } catch (error) {
@@ -167,7 +177,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <SideLayout title="Sign In" imageUrl={backgroundImageUrl}>
+    <SideLayout title="Sign Up" imageUrl={backgroundImageUrl}>
       <Typography className={classes.heading} color="textPrimary" variant="h1">
         Sign Up
       </Typography>
@@ -203,6 +213,7 @@ export default function RegisterPage() {
           autoComplete="email"
           onBlur={validateFields}
           onChange={validateFields}
+          autoFocus
         />
         <TextField
           inputRef={firstNameRef}
@@ -218,7 +229,6 @@ export default function RegisterPage() {
           autoComplete="firstName"
           onBlur={validateFields}
           onChange={validateFields}
-          autoFocus
         />
         <TextField
           inputRef={lastNameRef}
@@ -234,7 +244,6 @@ export default function RegisterPage() {
           autoComplete="lastName"
           onBlur={validateFields}
           onChange={validateFields}
-          autoFocus
         />
         <TextField
           inputRef={birthdayRef}
@@ -253,13 +262,22 @@ export default function RegisterPage() {
           className={classes.textField}
           defaultValue="1970-01-01"
           fullWidth
-          autofocus
         />
         {/* I need help here to get the radio button working*/}
         <FormControl component="fieldset">
           <FormLabel component="legend">Gender</FormLabel>
-          <RadioGroup aria-label="gender" name="gender" row required>
-            <FormControlLabel value="female" control={<Radio />} label="Female" />
+          <RadioGroup
+            aria-label="gender"
+            name="gender"
+            onChange={(event) => setGender(event.target.value)}
+            row
+            required
+          >
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label="Female"
+            />
             <FormControlLabel value="male" control={<Radio />} label="Male" />
             <FormControlLabel value="other" control={<Radio />} label="Other" />
           </RadioGroup>
@@ -315,6 +333,6 @@ export default function RegisterPage() {
           </Grid>
         </Grid>
       </form>
-    </SideLayout >
+    </SideLayout>
   );
 }
