@@ -95,12 +95,12 @@ class HealthAssistant extends Component {
               id: "sex",
               options: [
                 {
-                  value: 1,
+                  value: "Male",
                   label: "Male",
                   trigger: "symptom-qualifier-question",
                 },
                 {
-                  value: 0,
+                  value: "Female",
                   label: "Female",
                   trigger: "symptom-qualifier-question",
                 },
@@ -126,8 +126,8 @@ class HealthAssistant extends Component {
             {
               id: "headaches",
               options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-2" },
-                { value: 0, label: "No", trigger: "symptoms-question-2" },
+                { value: "Yes", label: "Yes", trigger: "symptoms-question-2" },
+                { value: "No", label: "No", trigger: "symptoms-question-2" },
               ],
             },
             {
@@ -138,8 +138,8 @@ class HealthAssistant extends Component {
             {
               id: "fever",
               options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-3" },
-                { value: 0, label: "No", trigger: "symptoms-question-3" },
+                { value: "Yes", label: "Yes", trigger: "symptoms-question-3" },
+                { value: "No", label: "No", trigger: "symptoms-question-3" },
               ],
             },
             {
@@ -150,8 +150,8 @@ class HealthAssistant extends Component {
             {
               id: "soreThroat",
               options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-4" },
-                { value: 0, label: "No", trigger: "symptoms-question-4" },
+                { value: "Yes", label: "Yes", trigger: "symptoms-question-4" },
+                { value: "No", label: "No", trigger: "symptoms-question-4" },
               ],
             },
             {
@@ -162,8 +162,8 @@ class HealthAssistant extends Component {
             {
               id: "cough",
               options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-5" },
-                { value: 0, label: "No", trigger: "symptoms-question-5" },
+                { value: "Yes", label: "Yes", trigger: "symptoms-question-5" },
+                { value: "No", label: "No", trigger: "symptoms-question-5" },
               ],
             },
             {
@@ -174,8 +174,8 @@ class HealthAssistant extends Component {
             {
               id: "shortnessOfBreath",
               options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-6" },
-                { value: 0, label: "No", trigger: "symptoms-question-6" },
+                { value: "Yes", label: "Yes", trigger: "symptoms-question-6" },
+                { value: "No", label: "No", trigger: "symptoms-question-6" },
               ],
             },
             {
@@ -188,12 +188,12 @@ class HealthAssistant extends Component {
               id: "covidContact",
               options: [
                 {
-                  value: 1,
+                  value: "Yes",
                   label: "Yes",
                   trigger: "symptoms-summary-prompt",
                 },
                 {
-                  value: 0,
+                  value: "No",
                   label: "No",
                   trigger: "symptoms-summary-prompt",
                 },
