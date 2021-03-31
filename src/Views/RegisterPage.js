@@ -170,7 +170,7 @@ export default function RegisterPage() {
           gender: gender,
         });
 
-      history.push("/dashboard");
+      history.push("/");
     } catch (error) {
       setRegisterError(error.message);
     }
