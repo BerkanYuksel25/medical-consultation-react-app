@@ -7,10 +7,10 @@ import axios from "axios";
 const theme = {
   background: "#f5f8fb",
   fontFamily: "Arial",
-  headerBgColor: "#A5302E",
+  headerBgColor: "#73303D",
   headerFontColor: "#fff",
   headerFontSize: "20px",
-  botBubbleColor: "#A5302E",
+  botBubbleColor: "#73303D",
   botFontColor: "#fff",
   userBubbleColor: "#fff",
   userFontColor: "#4a4a4a",

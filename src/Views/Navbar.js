@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { auth } from "../Services/firebase";
-import HealthAssistant from "../Components/Chatbot/HealthAssistant";
 
 import {
   BrowserRouter as Router,
@@ -12,13 +11,11 @@ import {
 import LocationPage from "./LocationPage";
 import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
-import { PrivateRoute } from "../Common/AuthGuard";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 const styles = {
   root: {
@@ -81,19 +78,6 @@ class Navbar extends Component {
                   Dashboard
                 </Typography>
                 <Typography
-                  name="About"
-                  variant="h6"
-                  color="inherit"
-                  style={{
-                    cursor: "pointer",
-                    marginRight: "2em",
-                    display: "inline",
-                  }}
-                  onClick={this.onChangeTab}
-                >
-                  About
-                </Typography>
-                <Typography
                   name="LocationPage"
                   variant="h6"
                   color="inherit"
@@ -105,6 +89,32 @@ class Navbar extends Component {
                   onClick={this.onChangeTab}
                 >
                   Location
+                </Typography>
+                <Typography
+                  name="AppointmentsPage"
+                  variant="h6"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  Appointments
+                </Typography>
+                <Typography
+                  name="About"
+                  variant="h6"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  About
                 </Typography>
               </div>
 
