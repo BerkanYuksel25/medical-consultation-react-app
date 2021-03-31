@@ -3,6 +3,8 @@ import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
 import Review from "./Review";
 import axios from "axios";
+import { database } from "../../Services/firebase";
+import { getAge, convertToONEZERO } from "../../Common/Utils";
 
 const theme = {
   background: "#f5f8fb",
@@ -28,20 +30,44 @@ class HealthAssistant extends Component {
     this.handleEnd = this.handleEnd.bind(this);
   }
 
-  handleEnd({ steps, values }) {
+  async handleEnd({ steps, values }) {
     console.log(steps);
     console.log(values);
-    alert(`COVID prediction will take place here!`);
-    axios.post("URL GOES HERE", values).then((response)=> {
-      console.log(response.data);
-    }).catch((error)=>{
-      console.log(error);
-    });
+    // alert(`COVID prediction will take place here!`);
+    if (values[3] == 1) {
+      var userdata = {};
+      var userid = JSON.parse(localStorage.getItem("user"))['uid'];
+      await database().ref("users/" + userid).once("value", (snap) => {
+        console.log(snap.val());
+        userdata = snap.val();
+      });
+
+      var data = {
+        sex: convertToONEZERO(userdata["gender"]),
+        age: getAge(userdata["birthday"]),
+        headaches: convertToONEZERO(values[4]),
+        fever: convertToONEZERO(values[5]),
+        soreThroat: convertToONEZERO(values[6]),
+        cough: convertToONEZERO(values[7]),
+        shortnessOfBreath: convertToONEZERO(values[8]),
+        covidContact: convertToONEZERO(values[9])
+      }
+      console.log(data);
+      axios.post("http://54.221.119.164:5000/prediction", data).then((response) => {
+        // do something with this data 
+        console.log(response.data);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
   }
 
   render() {
     return (
       <ThemeProvider theme={theme}>
+        <button onClick={this.handleEnd}>
+          test
+        </button>
         <ChatBot
           handleEnd={this.handleEnd}
           steps={[

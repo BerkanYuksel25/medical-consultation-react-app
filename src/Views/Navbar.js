@@ -11,6 +11,8 @@ import {
 import LocationPage from "./LocationPage";
 import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
+import AppointmentsPage from "./AppointmentsPage";
+
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -143,6 +145,7 @@ class Navbar extends Component {
             <Route exact path="/DashboardPage" component={DashboardPage} />
             <Route exact path="/About" component={About} />
             <Route exact path="/LocationPage" component={LocationPage} />
+            <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
           </Switch>
         </div>
       </div>
