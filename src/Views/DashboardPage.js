@@ -26,6 +26,7 @@ export default class DashboardPage extends Component {
       <div align="center">
         Dashboard
         <div>
+        <p>id: {this.state.user ? this.state.user.uid : null}</p>
         <p>Email: {this.state.user ? this.state.user.email : null}</p>
         <p>Name: {this.state.user ? this.state.user.displayName : null}</p>
         </div>

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
+import Review from "./Review";
+import axios from "axios";
 
 const theme = {
   background: "#f5f8fb",
@@ -22,30 +24,87 @@ const config = {
 
 // For component documentation, please refer: https://lucasbassetti.com.br/react-simple-chatbot/
 class HealthAssistant extends Component {
+  componentDidMount() {
+    this.handleEnd = this.handleEnd.bind(this);
+  }
+
+  handleEnd({ steps, values }) {
+    console.log(steps);
+    console.log(values);
+    alert(`COVID prediction will take place here!`);
+    axios.post("URL GOES HERE", values).then((response)=> {
+      console.log(response.data);
+    }).catch((error)=>{
+      console.log(error);
+    });
+  }
+
   render() {
     return (
       <ThemeProvider theme={theme}>
         <ChatBot
+          handleEnd={this.handleEnd}
           steps={[
             {
               id: "intro",
               message: "Hi there! I am your digital health assistant.",
-              trigger: "follow-up",
+              trigger: "name-question",
             },
             {
-              id: "follow-up",
+              id: "name-question",
               message: "What's your name?",
-              trigger: "intro-user",
+              trigger: "name",
             },
             {
-              id: "intro-user",
+              id: "name",
               user: true,
               trigger: "intro-response",
             },
             {
               id: "intro-response",
               message: "Hi {previousValue}! Nice to meet you :)",
-              trigger: "symptom-qualifier-question",
+              trigger: "age-question",
+            },
+            {
+              id: "age-question",
+              message: "What's your age?",
+              trigger: "age",
+            },
+            {
+              id: "age",
+              user: true,
+              trigger: "sex-question",
+              validator: (value) => {
+                if (isNaN(value)) {
+                  return "value must be a number";
+                } else if (value < 1) {
+                  return "value must be positive";
+                } else if (value > 120) {
+                  return `${value}? Come on!`;
+                }
+
+                return true;
+              },
+            },
+            {
+              id: "sex-question",
+              message: "What's your sex?",
+              trigger: "sex",
+            },
+            {
+              id: "sex",
+              options: [
+                {
+                  value: 1,
+                  label: "Male",
+                  trigger: "symptom-qualifier-question",
+                },
+                {
+                  value: 0,
+                  label: "Female",
+                  trigger: "symptom-qualifier-question",
+                },
+              ],
             },
             {
               id: "symptom-qualifier-question",
@@ -61,47 +120,99 @@ class HealthAssistant extends Component {
             },
             {
               id: "symptoms-question-1",
-              message:
-                "Do you currently have headaches?",
-              trigger: "symptoms-answer-1",
+              message: "Do you currently have headaches?",
+              trigger: "headaches",
             },
             {
-              id: "symptoms-answer-1",
+              id: "headaches",
               options: [
                 { value: 1, label: "Yes", trigger: "symptoms-question-2" },
-                { value: 2, label: "No", trigger: "symptoms-question-2" },
+                { value: 0, label: "No", trigger: "symptoms-question-2" },
               ],
             },
             {
               id: "symptoms-question-2",
-              message:
-                "Do you have also have a fever?",
-              trigger: "symptoms-answer-2",
+              message: "Do you have also have a fever?",
+              trigger: "fever",
             },
             {
-              id: "symptoms-answer-2",
+              id: "fever",
               options: [
                 { value: 1, label: "Yes", trigger: "symptoms-question-3" },
-                { value: 2, label: "No", trigger: "symptoms-question-3" },
+                { value: 0, label: "No", trigger: "symptoms-question-3" },
               ],
             },
             {
               id: "symptoms-question-3",
-              message:
-                "Have you been in contact with someone infected with COVID?",
-              trigger: "symptoms-answer-3",
+              message: "How about a sore throat?",
+              trigger: "soreThroat",
             },
             {
-              id: "symptoms-answer-3",
+              id: "soreThroat",
               options: [
                 { value: 1, label: "Yes", trigger: "symptoms-question-4" },
-                { value: 2, label: "No", trigger: "end-chat-response" },
+                { value: 0, label: "No", trigger: "symptoms-question-4" },
               ],
             },
             {
               id: "symptoms-question-4",
+              message: "How about cough?",
+              trigger: "cough",
+            },
+            {
+              id: "cough",
+              options: [
+                { value: 1, label: "Yes", trigger: "symptoms-question-5" },
+                { value: 0, label: "No", trigger: "symptoms-question-5" },
+              ],
+            },
+            {
+              id: "symptoms-question-5",
+              message: "Are you also experiencing shortness of breath?",
+              trigger: "shortnessOfBreath",
+            },
+            {
+              id: "shortnessOfBreath",
+              options: [
+                { value: 1, label: "Yes", trigger: "symptoms-question-6" },
+                { value: 0, label: "No", trigger: "symptoms-question-6" },
+              ],
+            },
+            {
+              id: "symptoms-question-6",
               message:
-                "Congratulations! You are 100% likely to have COVID! :)",
+                "Have you been in contact with someone infected with COVID?",
+              trigger: "covidContact",
+            },
+            {
+              id: "covidContact",
+              options: [
+                {
+                  value: 1,
+                  label: "Yes",
+                  trigger: "symptoms-summary-prompt",
+                },
+                {
+                  value: 0,
+                  label: "No",
+                  trigger: "symptoms-summary-prompt",
+                },
+              ],
+            },
+            {
+              id: "symptoms-summary-prompt",
+              message: "Great! Check out your summary",
+              trigger: "review",
+            },
+            {
+              id: "review",
+              component: <Review />,
+              asMessage: true,
+              trigger: "congrats",
+            },
+            {
+              id: "congrats",
+              message: "Congratulations! You are 100% likely to have COVID! :)",
               end: true,
             },
             {
