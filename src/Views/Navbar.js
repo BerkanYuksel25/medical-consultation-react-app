@@ -11,6 +11,8 @@ import {
 
 import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
+import LocationPage from "./LocationPage";
+
 import { PrivateRoute } from "../Common/AuthGuard";
 
 class Navbar extends Component {
@@ -112,11 +114,28 @@ class Navbar extends Component {
                   About
                 </a>
               </li>
+              <li class="nav-item" style={{ marginRight: "3em" }}>
+                <a
+                  id="3"
+                  name="LocationPage"
+                  class="nav-link"
+                  style={{
+                    color: "white",
+                    fontFamily: "Atten Round New",
+                    borderBottom:
+                      this.state.activeTab == 3 ? "4px solid #00BAFF" : null,
+                    padding: "0.5em 0 0 0",
+                    fontSize: "25px",
+                    cursor: "pointer",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  Location
+                </a>
+              </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
               <a
-                id="3"
-                name="About"
                 class="nav-link"
                 style={{
                   color: "white",
@@ -139,6 +158,7 @@ class Navbar extends Component {
           <Switch>
             <Route path="/DashboardPage" component={DashboardPage} />
             <Route path="/About" component={About} />
+            <Route path="/LocationPage" component={LocationPage} />
           </Switch>
         </div>
       </div>
