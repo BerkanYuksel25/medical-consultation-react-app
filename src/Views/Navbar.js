@@ -1,24 +1,22 @@
 import React, { Component } from "react";
 import { auth } from "../Services/firebase";
-import HealthAssistant from "../Components/Chatbot/HealthAssistant";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  withRouter,
-} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import LocationPage from "./LocationPage";
 import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
-import { PrivateRoute } from "../Common/AuthGuard";
+import AppointmentsPage from "./AppointmentsPage";
 
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import {
+  Button,
+  withStyles,
+  AppBar,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
+
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const styles = {
   root: {
@@ -56,7 +54,6 @@ class Navbar extends Component {
   };
 
   onChangeTab = (event) => {
-    console.log("TAB", event.target.getAttribute("name"));
     this.props.history.push(`/${event.target.getAttribute("name")}`);
   };
 
@@ -69,7 +66,8 @@ class Navbar extends Component {
               <div style={{ width: "50%" }}>
                 <Typography
                   name="DashboardPage"
-                  variant="h6"
+                  component="p"
+                  variant="h4"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -81,21 +79,9 @@ class Navbar extends Component {
                   Dashboard
                 </Typography>
                 <Typography
-                  name="About"
-                  variant="h6"
-                  color="inherit"
-                  style={{
-                    cursor: "pointer",
-                    marginRight: "2em",
-                    display: "inline",
-                  }}
-                  onClick={this.onChangeTab}
-                >
-                  About
-                </Typography>
-                <Typography
                   name="LocationPage"
-                  variant="h6"
+                  variant="h4"
+                  component="p"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -106,6 +92,34 @@ class Navbar extends Component {
                 >
                   Location
                 </Typography>
+                <Typography
+                  name="AppointmentsPage"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  Appointments
+                </Typography>
+                <Typography
+                  name="About"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  About
+                </Typography>
               </div>
 
               <div
@@ -115,14 +129,17 @@ class Navbar extends Component {
                   justifyContent: "flex-end",
                 }}
               >
-                <Typography
-                  variant="h6"
+                <Button
+                  size="large"
                   color="inherit"
-                  style={{ cursor: "pointer", marginRight: "2em" }}
+                  component="p"
+                  startIcon={<ExitToAppIcon />}
+                  disableElevation
+                  disableRipple
                   onClick={this.handleSignout}
                 >
-                  Signout
-                </Typography>
+                  Sign Out
+                </Button>
               </div>
             </Toolbar>
           </AppBar>
@@ -133,6 +150,11 @@ class Navbar extends Component {
             <Route exact path="/DashboardPage" component={DashboardPage} />
             <Route exact path="/About" component={About} />
             <Route exact path="/LocationPage" component={LocationPage} />
+            <Route
+              exact
+              path="/AppointmentsPage"
+              component={AppointmentsPage}
+            />
           </Switch>
         </div>
       </div>
@@ -140,4 +162,4 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Navbar));
+export default withStyles(styles)(Navbar);

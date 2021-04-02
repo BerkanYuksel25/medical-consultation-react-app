@@ -30,9 +30,6 @@ class DashboardPage extends Component {
           <p>Email: {this.state.user ? this.state.user.email : null}</p>
           <p>Name: {this.state.user ? this.state.user.displayName : null}</p>
         </div>
-        <button style={this.submitButton} onClick={this.handleSignout}>
-          Log out
-        </button>
         <HealthAssistant />
       </div>
     );

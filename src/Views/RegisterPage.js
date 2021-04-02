@@ -35,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
   link: {
     fontWeight: theme.typography.fontWeightBold,
   },
+  genderBox: {
+    width: "100%",
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export default function RegisterPage() {
@@ -43,7 +48,7 @@ export default function RegisterPage() {
   const backgroundImageUrl = "/static/login.jpg";
 
   const [errors, setErrors] = React.useState({});
-  const [gender, setGender] = React.useState(null);
+  const [gender, setGender] = React.useState("other");
 
   const [registerError, setRegisterError] = React.useState(null);
 
@@ -264,21 +269,22 @@ export default function RegisterPage() {
           fullWidth
         />
         {/* I need help here to get the radio button working*/}
-        <FormControl component="fieldset">
+        <FormControl className={classes.genderBox} component="fieldset">
           <FormLabel component="legend">Gender</FormLabel>
           <RadioGroup
             aria-label="gender"
             name="gender"
+            defaultValue="other"
             onChange={(event) => setGender(event.target.value)}
             row
             required
           >
+            <FormControlLabel value="male" control={<Radio />} label="Male" />
             <FormControlLabel
               value="female"
               control={<Radio />}
               label="Female"
             />
-            <FormControlLabel value="male" control={<Radio />} label="Male" />
             <FormControlLabel value="other" control={<Radio />} label="Other" />
           </RadioGroup>
         </FormControl>

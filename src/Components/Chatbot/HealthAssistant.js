@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import ChatBot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
-import Review from "./Review";
-import axios from "axios";
+import { database } from "../../Services/firebase";
+import { getAge, convertToONEZERO } from "../../Common/Utils";
+import ChatbotStepsModel from "Models/ChatbotStepsModel";
+import { getPredictions } from "Services/api";
 
 const theme = {
   background: "#f5f8fb",
   fontFamily: "Arial",
-  headerBgColor: "#A5302E",
+  headerBgColor: "#73303D",
   headerFontColor: "#fff",
   headerFontSize: "20px",
-  botBubbleColor: "#A5302E",
+  botBubbleColor: "#73303D",
   botFontColor: "#fff",
   userBubbleColor: "#fff",
   userFontColor: "#4a4a4a",
@@ -22,21 +24,35 @@ const config = {
   floating: true,
 };
 
-// For component documentation, please refer: https://lucasbassetti.com.br/react-simple-chatbot/
 class HealthAssistant extends Component {
   componentDidMount() {
     this.handleEnd = this.handleEnd.bind(this);
   }
 
-  handleEnd({ steps, values }) {
-    console.log(steps);
-    console.log(values);
-    alert(`COVID prediction will take place here!`);
-    axios.post("URL GOES HERE", values).then((response)=> {
-      console.log(response.data);
-    }).catch((error)=>{
-      console.log(error);
-    });
+  async handleEnd({ steps, values }) {
+    if (values[3] === 1) {
+      var userdata = {};
+      var userid = JSON.parse(localStorage.getItem("user"))["uid"];
+
+      await database()
+        .ref("users/" + userid)
+        .once("value", (snap) => {
+          userdata = snap.val();
+        });
+
+      const data = {
+        sex: convertToONEZERO(userdata["gender"]),
+        age: getAge(userdata["birthday"]),
+        headaches: convertToONEZERO(values[4]),
+        fever: convertToONEZERO(values[5]),
+        soreThroat: convertToONEZERO(values[6]),
+        cough: convertToONEZERO(values[7]),
+        shortnessOfBreath: convertToONEZERO(values[8]),
+        covidContact: convertToONEZERO(values[9]),
+      };
+
+      await getPredictions(data);
+    }
   }
 
   render() {
@@ -44,184 +60,7 @@ class HealthAssistant extends Component {
       <ThemeProvider theme={theme}>
         <ChatBot
           handleEnd={this.handleEnd}
-          steps={[
-            {
-              id: "intro",
-              message: "Hi there! I am your digital health assistant.",
-              trigger: "name-question",
-            },
-            {
-              id: "name-question",
-              message: "What's your name?",
-              trigger: "name",
-            },
-            {
-              id: "name",
-              user: true,
-              trigger: "intro-response",
-            },
-            {
-              id: "intro-response",
-              message: "Hi {previousValue}! Nice to meet you :)",
-              trigger: "age-question",
-            },
-            {
-              id: "age-question",
-              message: "What's your age?",
-              trigger: "age",
-            },
-            {
-              id: "age",
-              user: true,
-              trigger: "sex-question",
-              validator: (value) => {
-                if (isNaN(value)) {
-                  return "value must be a number";
-                } else if (value < 1) {
-                  return "value must be positive";
-                } else if (value > 120) {
-                  return `${value}? Come on!`;
-                }
-
-                return true;
-              },
-            },
-            {
-              id: "sex-question",
-              message: "What's your sex?",
-              trigger: "sex",
-            },
-            {
-              id: "sex",
-              options: [
-                {
-                  value: 1,
-                  label: "Male",
-                  trigger: "symptom-qualifier-question",
-                },
-                {
-                  value: 0,
-                  label: "Female",
-                  trigger: "symptom-qualifier-question",
-                },
-              ],
-            },
-            {
-              id: "symptom-qualifier-question",
-              message: "Would you like to assess your COVID likelihood?",
-              trigger: "symptom-qualifier-answer",
-            },
-            {
-              id: "symptom-qualifier-answer",
-              options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-1" },
-                { value: 2, label: "No", trigger: "end-chat-response" },
-              ],
-            },
-            {
-              id: "symptoms-question-1",
-              message: "Do you currently have headaches?",
-              trigger: "headaches",
-            },
-            {
-              id: "headaches",
-              options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-2" },
-                { value: 0, label: "No", trigger: "symptoms-question-2" },
-              ],
-            },
-            {
-              id: "symptoms-question-2",
-              message: "Do you have also have a fever?",
-              trigger: "fever",
-            },
-            {
-              id: "fever",
-              options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-3" },
-                { value: 0, label: "No", trigger: "symptoms-question-3" },
-              ],
-            },
-            {
-              id: "symptoms-question-3",
-              message: "How about a sore throat?",
-              trigger: "soreThroat",
-            },
-            {
-              id: "soreThroat",
-              options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-4" },
-                { value: 0, label: "No", trigger: "symptoms-question-4" },
-              ],
-            },
-            {
-              id: "symptoms-question-4",
-              message: "How about cough?",
-              trigger: "cough",
-            },
-            {
-              id: "cough",
-              options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-5" },
-                { value: 0, label: "No", trigger: "symptoms-question-5" },
-              ],
-            },
-            {
-              id: "symptoms-question-5",
-              message: "Are you also experiencing shortness of breath?",
-              trigger: "shortnessOfBreath",
-            },
-            {
-              id: "shortnessOfBreath",
-              options: [
-                { value: 1, label: "Yes", trigger: "symptoms-question-6" },
-                { value: 0, label: "No", trigger: "symptoms-question-6" },
-              ],
-            },
-            {
-              id: "symptoms-question-6",
-              message:
-                "Have you been in contact with someone infected with COVID?",
-              trigger: "covidContact",
-            },
-            {
-              id: "covidContact",
-              options: [
-                {
-                  value: 1,
-                  label: "Yes",
-                  trigger: "symptoms-summary-prompt",
-                },
-                {
-                  value: 0,
-                  label: "No",
-                  trigger: "symptoms-summary-prompt",
-                },
-              ],
-            },
-            {
-              id: "symptoms-summary-prompt",
-              message: "Great! Check out your summary",
-              trigger: "review",
-            },
-            {
-              id: "review",
-              component: <Review />,
-              asMessage: true,
-              trigger: "congrats",
-            },
-            {
-              id: "congrats",
-              message: "Congratulations! You are 100% likely to have COVID! :)",
-              end: true,
-            },
-            {
-              id: "end-chat-response",
-              message:
-                "No worries, plenty of other cool things you can check out on this app! :)",
-              end: true,
-            },
-          ]}
+          steps={ChatbotStepsModel}
           {...config}
         />
       </ThemeProvider>

@@ -20,7 +20,7 @@ class Review extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { steps } = this.props;
     const {
       name,
