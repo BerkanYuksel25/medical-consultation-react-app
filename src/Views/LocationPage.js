@@ -1,24 +1,13 @@
 import React, { Component } from "react";
-import GlobalLayout from "../Components/GlobalLayout";
-import { Typography, makeStyles } from "@material-ui/core";
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
+import { withStyles, CircularProgress } from "@material-ui/core";
 
-import {
-  Map,
-  GoogleApiWrapper,
-  Marker,
-  InfoWindow,
-  HeatMap,
-} from "google-maps-react";
-
-import Grid from "@material-ui/core/Grid";
-import { withRouter } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-
-const mapStyles = {
-  width: "100%",
-  height: "100%",
-  position: "relative",
+const styles = {
+  map: {
+    width: "100%",
+    height: "100%",
+    position: "relative",
+  },
 };
 
 class LocationPage extends Component {
@@ -97,11 +86,9 @@ class LocationPage extends Component {
       <div>
         {this.state.readyMap ? (
           <Map
-            className="map"
-            style={{ height: "100%", position: "relative", width: "100%" }}
+            className={styles.map}
             google={this.props.google}
             zoom={this.state.zoom}
-            style={mapStyles}
             initialCenter={{
               lat: this.state.currentLatLng.lat,
               lng: this.state.currentLatLng.lng,
@@ -130,9 +117,7 @@ class LocationPage extends Component {
   }
 }
 
-export default withRouter(
-  GoogleApiWrapper({
-    apiKey: "AIzaSyB9txFFascb8Jcj8qV6ET2mtXZtwqqzMiU",
-    libraries: ["visualization"],
-  })(LocationPage)
-);
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyB9txFFascb8Jcj8qV6ET2mtXZtwqqzMiU",
+  libraries: ["visualization"],
+})(withStyles(styles)(LocationPage));

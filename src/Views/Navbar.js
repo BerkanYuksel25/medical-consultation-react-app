@@ -1,23 +1,22 @@
 import React, { Component } from "react";
 import { auth } from "../Services/firebase";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  withRouter,
-} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import LocationPage from "./LocationPage";
 import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
 
+import {
+  Button,
+  withStyles,
+  AppBar,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const styles = {
   root: {
@@ -28,15 +27,6 @@ const styles = {
     cursor: "pointer",
     marginRight: "2em",
   },
-};
-
-var logoutImgStyle = {
-  width: "20px",
-  filter: "brightness(0) invert(1) opacity(70%)",
-  cursor: "pointer",
-  height: "20px",
-  marginRight: "1em",
-  marginTop: "1px"
 };
 
 class Navbar extends Component {
@@ -69,7 +59,6 @@ class Navbar extends Component {
   };
 
   render() {
-    const logoutImg = "/static/logout.svg";
     return (
       <div>
         <div className={styles.root}>
@@ -78,6 +67,7 @@ class Navbar extends Component {
               <div style={{ width: "50%" }}>
                 <Typography
                   name="DashboardPage"
+                  component="p"
                   variant="h4"
                   color="inherit"
                   style={{
@@ -92,6 +82,7 @@ class Navbar extends Component {
                 <Typography
                   name="LocationPage"
                   variant="h4"
+                  component="p"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -105,6 +96,7 @@ class Navbar extends Component {
                 <Typography
                   name="AppointmentsPage"
                   variant="h4"
+                  component="p"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -118,6 +110,7 @@ class Navbar extends Component {
                 <Typography
                   name="About"
                   variant="h4"
+                  component="p"
                   color="inherit"
                   style={{
                     cursor: "pointer",
@@ -137,19 +130,17 @@ class Navbar extends Component {
                   justifyContent: "flex-end",
                 }}
               >
-                <Typography
-                  variant="h4"
+                <Button
+                  size="large"
                   color="inherit"
-                  style={{ marginRight: "10px" }}
-                >
-                  Signout
-                </Typography>
-                <img
-                  src={logoutImg}
-                  alt="Logout"
-                  style={logoutImgStyle}
+                  component="p"
+                  startIcon={<ExitToAppIcon />}
+                  disableElevation
+                  disableRipple
                   onClick={this.handleSignout}
-                />
+                >
+                  Sign Out
+                </Button>
               </div>
             </Toolbar>
           </AppBar>
@@ -160,7 +151,11 @@ class Navbar extends Component {
             <Route exact path="/DashboardPage" component={DashboardPage} />
             <Route exact path="/About" component={About} />
             <Route exact path="/LocationPage" component={LocationPage} />
-            <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
+            <Route
+              exact
+              path="/AppointmentsPage"
+              component={AppointmentsPage}
+            />
           </Switch>
         </div>
       </div>
@@ -168,4 +163,4 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Navbar));
+export default withStyles(styles)(Navbar);
