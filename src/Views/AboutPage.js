@@ -1,28 +1,5 @@
-import React, { Component } from "react";
-import { auth } from "../Services/firebase";
+import React from "react";
 
-
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    withRouter,
-  } from "react-router-dom";
-
-
-class AboutPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // user: auth().currentUser, 
-    }
-  }
-
-  render() {
-    return (
-      <div>About</div>
-    );
-  }
+export default function AboutPage() {
+  return <div>About</div>;
 }
-
-export default withRouter((AboutPage));
