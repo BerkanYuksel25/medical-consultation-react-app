@@ -54,7 +54,6 @@ class Navbar extends Component {
   };
 
   onChangeTab = (event) => {
-    console.log("TAB", event.target.getAttribute("name"));
     this.props.history.push(`/${event.target.getAttribute("name")}`);
   };
 

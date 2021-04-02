@@ -13,16 +13,22 @@ export function validateNewPassword(password) {
 }
 
 export function getAge(birthday) {
-  var age = Math.floor((new Date() - new Date(birthday).getTime()) / 3.15576e+10)
-  if (age > 60)
-    return 1;
-  else 
-    return 0;
+  var age = Math.floor(
+    (new Date() - new Date(birthday).getTime()) / 3.15576e10
+  );
+  if (age > 60) return 1;
+  else return 0;
 }
 
 export function convertToONEZERO(value) {
   switch (value.toLowerCase().trim()) {
-    case "yes": case "male": return 1
-    case "no": case "female": return 0
+    case "yes":
+    case "male":
+      return 1;
+    case "no":
+    case "female":
+      return 0;
+    default:
+      return -1;
   }
 }
