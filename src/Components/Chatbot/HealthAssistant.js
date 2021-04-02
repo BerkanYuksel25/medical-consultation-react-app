@@ -36,11 +36,13 @@ class HealthAssistant extends Component {
     // alert(`COVID prediction will take place here!`);
     if (values[3] == 1) {
       var userdata = {};
-      var userid = JSON.parse(localStorage.getItem("user"))['uid'];
-      await database().ref("users/" + userid).once("value", (snap) => {
-        console.log(snap.val());
-        userdata = snap.val();
-      });
+      var userid = JSON.parse(localStorage.getItem("user"))["uid"];
+      await database()
+        .ref("users/" + userid)
+        .once("value", (snap) => {
+          console.log(snap.val());
+          userdata = snap.val();
+        });
 
       var data = {
         sex: convertToONEZERO(userdata["gender"]),
@@ -50,24 +52,24 @@ class HealthAssistant extends Component {
         soreThroat: convertToONEZERO(values[6]),
         cough: convertToONEZERO(values[7]),
         shortnessOfBreath: convertToONEZERO(values[8]),
-        covidContact: convertToONEZERO(values[9])
-      }
+        covidContact: convertToONEZERO(values[9]),
+      };
       console.log(data);
-      axios.post("http://54.221.119.164:5000/prediction", data).then((response) => {
-        // do something with this data 
-        console.log(response.data);
-      }).catch((error) => {
-        console.log(error);
-      });
+      axios
+        .post("http://54.221.119.164:5000/prediction", data)
+        .then((response) => {
+          // do something with this data
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <button onClick={this.handleEnd}>
-          test
-        </button>
         <ChatBot
           handleEnd={this.handleEnd}
           steps={[
