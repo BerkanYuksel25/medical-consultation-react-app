@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import { auth } from "./Services/firebase";
 import { PrivateRoute, PublicRoute } from "./Common/AuthGuard";
 
@@ -7,10 +7,11 @@ import { PrivateRoute, PublicRoute } from "./Common/AuthGuard";
 import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
-import DashboardPage from "./Views/DashboardPage";
+import Navbar from "./Views/Navbar";
+import AppointmentsPage from "./Views/AppointmentsPage";
 import LocationPage from "./Views/LocationPage";
 
-export default class RouteConfig extends Component {
+class RouteConfig extends Component {
   constructor() {
     super();
     this.state = {
@@ -21,12 +22,14 @@ export default class RouteConfig extends Component {
   componentDidMount() {
     this.authlistener = auth().onAuthStateChanged((user) => {
       if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
         this.setState({
           currentUser: true,
         });
       } else {
+        localStorage.removeItem("user");
         this.setState({
-          authenticated: false,
+          currentUser: false,
         });
       }
     });
@@ -39,7 +42,7 @@ export default class RouteConfig extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path={"/"} component={HomePage} />
+        <Route exact path={"/home"} component={HomePage} />
         <PublicRoute
           currentUser={this.state.currentUser}
           path={"/login"}
@@ -50,17 +53,24 @@ export default class RouteConfig extends Component {
           path={"/register"}
           component={RegisterPage}
         />
-        <PublicRoute
+        <Route
           currentUser={this.state.currentUser}
           path="/location"
           component={LocationPage}
         />
         <PrivateRoute
           currentUser={this.state.currentUser}
-          path="/dashboard"
-          component={DashboardPage}
+          path="/"
+          component={Navbar}
+        />
+        <PrivateRoute
+          currentUser={this.state.currentUser}
+          path={"/appointments"}
+          component={AppointmentsPage}
         />
       </Switch>
     );
   }
 }
+
+export default withRouter(RouteConfig);

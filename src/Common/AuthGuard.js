@@ -22,11 +22,7 @@ export function PublicRoute({ component: Component, currentUser, ...rest }) {
     <Route
       {...rest}
       render={(props) =>
-        currentUser !== true ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/dashboard" />
-        )
+        !currentUser ? <Component {...props} /> : <Redirect to="/" />
       }
     />
   );

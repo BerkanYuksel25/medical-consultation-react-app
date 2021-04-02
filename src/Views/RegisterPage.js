@@ -8,13 +8,18 @@ import {
   Typography,
   Collapse,
   IconButton,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { Alert } from "@material-ui/lab";
 import SideLayout from "../Components/SideLayout";
 import SubmitButton from "../Components/SubmitButton";
 import { validateEmail, validateNewPassword } from "../Common/Utils";
-import { auth } from "../Services/firebase";
+import { auth, database } from "../Services/firebase";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -30,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
   link: {
     fontWeight: theme.typography.fontWeightBold,
   },
+  genderBox: {
+    width: "100%",
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export default function RegisterPage() {
@@ -38,29 +48,41 @@ export default function RegisterPage() {
   const backgroundImageUrl = "/static/login.jpg";
 
   const [errors, setErrors] = React.useState({});
+  const [gender, setGender] = React.useState("other");
 
   const [registerError, setRegisterError] = React.useState(null);
 
-  const nameRef = React.useRef("");
+  const firstNameRef = React.useRef("");
+  const lastNameRef = React.useRef("");
+  const birthdayRef = React.useRef("");
   const emailRef = React.useRef("");
   const passwordRef = React.useRef("");
   const confirmPasswordRef = React.useRef("");
 
-  const handleSignUpClick = (event) => {
+  const handleLoginClick = (event) => {
     event.preventDefault();
-
     history.push("/login");
   };
 
   const validateFields = () => {
-    const name = nameRef.current.value;
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const birthday = birthdayRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
     const newErrors = {};
 
-    if (!name || !name.length) {
-      newErrors.name = "Empty name.";
+    if (!firstName || !firstName.length) {
+      newErrors.firstName = "Empty first name.";
+    }
+
+    if (!lastName || !lastName.length) {
+      newErrors.lastName = "Empty last name.";
+    }
+
+    if (!birthday || !birthday.length) {
+      newErrors.birthday = "Empty birthday.";
     }
 
     if (!validateEmail(email)) {
@@ -83,51 +105,84 @@ export default function RegisterPage() {
     ) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
-
     setErrors(newErrors);
   };
 
   const getValues = () => {
-    const name = nameRef.current.value;
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const birthday = birthdayRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
 
-    return { name, email, password, confirmPassword };
+    return {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      birthday,
+    };
   };
 
   const isValid = () => {
-    const { name, email, password, confirmPassword } = getValues();
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      birthday,
+    } = getValues();
     return Boolean(
-      !errors.name &&
+      !errors.firstName &&
+        !errors.lastName &&
         !errors.email &&
         !errors.password &&
         !errors.confirmPassword &&
-        name &&
+        !errors.birthday &&
+        firstName &&
+        lastName &&
         email &&
         password &&
-        confirmPassword
+        confirmPassword &&
+        birthday
     );
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { email, password, name } = getValues();
+    const { email, password, firstName, lastName, birthday } = getValues();
 
     try {
       await auth().createUserWithEmailAndPassword(email, password);
-      // add users name to database
+      // add users displayname
       await auth().currentUser.updateProfile({
-        displayName: name,
+        displayName: firstName,
       });
-      history.replace("/dashboard");
+
+      // store other user data in database
+      const userId = auth().currentUser.uid;
+      console.log(userId);
+      await database()
+        .ref("users/" + userId)
+        .set({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          birthday: birthday,
+          gender: gender,
+        });
+
+      history.push("/");
     } catch (error) {
       setRegisterError(error.message);
     }
   };
 
   return (
-    <SideLayout title="Sign In" imageUrl={backgroundImageUrl}>
+    <SideLayout title="Sign Up" imageUrl={backgroundImageUrl}>
       <Typography className={classes.heading} color="textPrimary" variant="h1">
         Sign Up
       </Typography>
@@ -150,22 +205,6 @@ export default function RegisterPage() {
           </Alert>
         </Collapse>
         <TextField
-          inputRef={nameRef}
-          error={Boolean(errors.name)}
-          helperText={errors.name}
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Full Name"
-          name="name"
-          autoComplete="name"
-          onBlur={validateFields}
-          onChange={validateFields}
-          autoFocus
-        />
-        <TextField
           inputRef={emailRef}
           error={Boolean(errors.email)}
           helperText={errors.email}
@@ -179,7 +218,76 @@ export default function RegisterPage() {
           autoComplete="email"
           onBlur={validateFields}
           onChange={validateFields}
+          autoFocus
         />
+        <TextField
+          inputRef={firstNameRef}
+          error={Boolean(errors.firstName)}
+          helperText={errors.firstName}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="firstName"
+          label="First name"
+          name="firstName"
+          autoComplete="firstName"
+          onBlur={validateFields}
+          onChange={validateFields}
+        />
+        <TextField
+          inputRef={lastNameRef}
+          error={Boolean(errors.lastName)}
+          helperText={errors.lastName}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="lastName"
+          label="Last name"
+          name="lastName"
+          autoComplete="lastName"
+          onBlur={validateFields}
+          onChange={validateFields}
+        />
+        <TextField
+          inputRef={birthdayRef}
+          error={Boolean(errors.birthday)}
+          helperText={errors.birthday}
+          variant="outlined"
+          margin="normal"
+          required
+          id="date"
+          label="Birthday"
+          type="date"
+          name="birthday"
+          onBlur={validateFields}
+          onChange={validateFields}
+          format="dd/MM/yyyy"
+          className={classes.textField}
+          defaultValue="1970-01-01"
+          fullWidth
+        />
+        {/* I need help here to get the radio button working*/}
+        <FormControl className={classes.genderBox} component="fieldset">
+          <FormLabel component="legend">Gender</FormLabel>
+          <RadioGroup
+            aria-label="gender"
+            name="gender"
+            defaultValue="other"
+            onChange={(event) => setGender(event.target.value)}
+            row
+            required
+          >
+            <FormControlLabel value="male" control={<Radio />} label="Male" />
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label="Female"
+            />
+            <FormControlLabel value="other" control={<Radio />} label="Other" />
+          </RadioGroup>
+        </FormControl>
         <TextField
           inputRef={passwordRef}
           error={Boolean(errors.password)}
@@ -223,7 +331,7 @@ export default function RegisterPage() {
               <Link
                 className={classes.link}
                 href="#"
-                onClick={handleSignUpClick}
+                onClick={handleLoginClick}
               >
                 Sign In
               </Link>
