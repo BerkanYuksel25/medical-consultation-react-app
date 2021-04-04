@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { database } from "../../Services/firebase";
 import { getAge, convertToONEZERO } from "../../Common/Utils";
-import { getCovidLikelihoodPercentage as getCovidLikelihood } from "Services/api";
+import { getCovidLikelihood } from "Services/api";
 
 class Post extends Component {
   constructor(props) {
