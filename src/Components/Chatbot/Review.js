@@ -8,9 +8,6 @@ class Review extends Component {
     super(props);
 
     this.state = {
-      name: "",
-      sex: "",
-      age: "",
       headaches: "",
       fever: "",
       covidContact: "",
@@ -23,9 +20,6 @@ class Review extends Component {
   componentDidMount() {
     const { steps } = this.props;
     const {
-      name,
-      sex,
-      age,
       headaches,
       fever,
       soreThroat,
@@ -35,9 +29,6 @@ class Review extends Component {
     } = steps;
 
     this.setState({
-      name,
-      sex,
-      age,
       headaches,
       fever,
       soreThroat,
@@ -49,9 +40,6 @@ class Review extends Component {
 
   render() {
     const {
-      name,
-      sex,
-      age,
       headaches,
       fever,
       soreThroat,
@@ -64,18 +52,6 @@ class Review extends Component {
         <h3>Summary</h3>
         <table>
           <tbody>
-            <tr>
-              <td>Name</td>
-              <td>{name.value}</td>
-            </tr>
-            <tr>
-              <td>Gender</td>
-              <td>{sex.value}</td>
-            </tr>
-            <tr>
-              <td>Age</td>
-              <td>{age.value}</td>
-            </tr>
             <tr>
               <td>Headaches</td>
               <td>{headaches.value}</td>
