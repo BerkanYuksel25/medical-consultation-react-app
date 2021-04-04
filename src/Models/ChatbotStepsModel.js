@@ -1,66 +1,11 @@
 import Review from "../Components/Chatbot/Review";
+import Post from "../Components/Chatbot/Post";
 
 const ChatbotStepsModel = [
   {
     id: "intro",
     message: "Hi there! I am your digital health assistant.",
-    trigger: "name-question",
-  },
-  {
-    id: "name-question",
-    message: "What's your name?",
-    trigger: "name",
-  },
-  {
-    id: "name",
-    user: true,
-    trigger: "intro-response",
-  },
-  {
-    id: "intro-response",
-    message: "Hi {previousValue}! Nice to meet you :)",
-    trigger: "age-question",
-  },
-  {
-    id: "age-question",
-    message: "What's your age?",
-    trigger: "age",
-  },
-  {
-    id: "age",
-    user: true,
-    trigger: "sex-question",
-    validator: (value) => {
-      if (isNaN(value)) {
-        return "value must be a number";
-      } else if (value < 1) {
-        return "value must be positive";
-      } else if (value > 120) {
-        return `${value}? Come on!`;
-      }
-
-      return true;
-    },
-  },
-  {
-    id: "sex-question",
-    message: "What's your sex?",
-    trigger: "sex",
-  },
-  {
-    id: "sex",
-    options: [
-      {
-        value: "Male",
-        label: "Male",
-        trigger: "symptom-qualifier-question",
-      },
-      {
-        value: "Female",
-        label: "Female",
-        trigger: "symptom-qualifier-question",
-      },
-    ],
+    trigger: "symptom-qualifier-question",
   },
   {
     id: "symptom-qualifier-question",
@@ -163,11 +108,12 @@ const ChatbotStepsModel = [
     id: "review",
     component: <Review />,
     asMessage: true,
-    trigger: "congrats",
+    trigger: "post",
   },
   {
-    id: "congrats",
-    message: "Congratulations! You are 100% likely to have COVID! :)",
+    id: "post",
+    component: <Post />,
+    asMessage: true,
     end: true,
   },
   {
