@@ -41,7 +41,7 @@ const theme = createMuiTheme({
     fontSize: 16,
     fontFamily: "Segoe UI, sans-serif",
     h1: {
-      fontWeight: 400,
+      fontWeight: 300,
       fontSize: 64,
       letterSpacing: "-0.24px",
       lineHeight: 1.1,
@@ -54,7 +54,7 @@ const theme = createMuiTheme({
     },
     h3: {
       fontWeight: 600,
-      fontSize: 20,
+      fontSize: 24,
       letterSpacing: "-0.06px",
       lineHeight: 1.1,
     },
