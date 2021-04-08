@@ -14,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: "row wrap",
   },
   item: {
-    width: "15em",
-    flex: "1 1 25%",
+    flex: "1 1 33.34%",
     marginRight: theme.spacing(6),
     marginBottom: theme.spacing(6),
   },
@@ -39,9 +38,7 @@ export default function CardList(props) {
           <div key={`card-${index}`} className={classes.item}>
             <Card>
               <CardContent>
-                <Typography component="p" variant="h3">
-                  {card.heading}
-                </Typography>
+                <Typography variant="h3">{card.heading}</Typography>
                 <Typography component="p" color="textSecondary" variant="body2">
                   {card.subHeading}
                 </Typography>

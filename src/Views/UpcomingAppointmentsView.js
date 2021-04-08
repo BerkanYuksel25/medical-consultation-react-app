@@ -22,6 +22,11 @@ const testAppointments = [
     subHeading: "22/02/2021 9:00 AM - 10:00 AM",
     details: "You will see Dr Bob Doe for this appointment.",
   },
+  {
+    heading: "Addiction Rehabilitiation",
+    subHeading: "22/02/2021 3:00 PM - 5:00 PM",
+    details: "You will see Dr Xin Chao for this appointment.",
+  },
 ];
 
 const useStyles = makeStyles((theme) => ({

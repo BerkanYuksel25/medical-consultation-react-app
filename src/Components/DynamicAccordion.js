@@ -52,9 +52,7 @@ export default function DynamicAccordion(props) {
                 {item.heading}
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{item.details}</Typography>
-            </AccordionDetails>
+            <AccordionDetails>{item.details}</AccordionDetails>
           </Accordion>
         );
       })}
