@@ -1,5 +1,4 @@
 import React from "react";
-import Footer from './footer'
 import {
   Box,
   Typography,
@@ -57,7 +56,6 @@ export default function Home() {
           <Button onClick={handleRegisterClick}>Register</Button>
         </ButtonGroup>
       </Box>
-      <Footer/>
     </GlobalLayout>
   );
 }

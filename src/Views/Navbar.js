@@ -7,6 +7,7 @@ import LocationPage from "./LocationPage";
 import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
+import Footer from "./Footer";
 
 import {
   Button,
@@ -145,18 +146,13 @@ class Navbar extends Component {
           </AppBar>
         </div>
 
-        <div>
-          <Switch>
-            <Route exact path="/DashboardPage" component={DashboardPage} />
-            <Route exact path="/About" component={About} />
-            <Route exact path="/LocationPage" component={LocationPage} />
-            <Route
-              exact
-              path="/AppointmentsPage"
-              component={AppointmentsPage}
-            />
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/DashboardPage" component={DashboardPage} />
+          <Route exact path="/About" component={About} />
+          <Route exact path="/LocationPage" component={LocationPage} />
+          <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
+        </Switch>
+        {window.location.pathname !== "/LocationPage" && <Footer />}
       </div>
     );
   }
