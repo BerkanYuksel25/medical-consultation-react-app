@@ -17,11 +17,17 @@ export default function DashboardPage() {
 
   return (
     <GlobalLayout title={`Welcome, ${user.displayName}!`}>
-      <Typography className={classes.heading} variant="h1" color="textPrimary">
-        Welcome, {user.displayName}!
-      </Typography>
-      <DynamicAccordion items={DashboardSections} />
-      <HealthAssistant />
+      <div>
+        <Typography
+          className={classes.heading}
+          variant="h1"
+          color="textPrimary"
+        >
+          Welcome, {user.displayName}!
+        </Typography>
+        <DynamicAccordion items={DashboardSections} />
+        <HealthAssistant />
+      </div>
     </GlobalLayout>
   );
 }
