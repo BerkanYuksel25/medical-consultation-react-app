@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   footerp: {
     color: "#FFFFFF",
     textAlign: "center",
+    fontWeight: "bold",
   },
   footerLinks: {
     display: "flex",
@@ -24,10 +25,13 @@ const useStyles = makeStyles((theme) => ({
   },
   footerA: {
       color: "#FFFFFF",
+      display: "block",
+      marginTop: "5px",
+      textAlign: "center",
       textDecoration: "none",
       fontWeight: "bold",
       '&:hover': {
-        color: "rgb(116, 33, 32)",
+        color: "#73303d",
       },
   },
 }));
@@ -41,9 +45,11 @@ export default function Footer() {
     <div className={classes.footerLinks}>
         <div className={classes.footerCol}>
         <a className={classes.footerA} href="/dashboard">Home</a>
+        <a className={classes.footerA} href="/AppointmentsPage">Appointments</a>
         </div>
         <div className={classes.footerCol}>
-        <a className={classes.footerA} href="#">Footer Links Here</a>
+        <a className={classes.footerA} href="/LocationPage">Location</a>
+        <a className={classes.footerA} href="/About">About</a>
         </div>
     </div>
   </div>

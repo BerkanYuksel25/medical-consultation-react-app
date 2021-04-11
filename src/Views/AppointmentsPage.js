@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Footer from './footerAll';
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -110,6 +110,7 @@ class AppointmentsPage extends Component {
             </Dialog>
           </Grid>
         </Grid>
+        <Footer />
       </div>
     );
   }

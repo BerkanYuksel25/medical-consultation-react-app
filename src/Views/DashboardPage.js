@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import Footer from './footerAll';
 import { auth } from "../Services/firebase";
 import React from "react";
@@ -12,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     marginBottom: theme.spacing(8),
   },
+  container: {
+    marginBottom: "100px",
+  },
 }));
 
 export default function DashboardPage() {
@@ -20,11 +22,13 @@ export default function DashboardPage() {
 
   return (
     <GlobalLayout title={`Welcome, ${user.displayName}!`}>
+      <div className={classes.container}>
       <Typography className={classes.heading} variant="h1" color="textPrimary">
         Welcome, {user.displayName}!
       </Typography>
       <DynamicAccordion items={DashboardSections} />
       <HealthAssistant />
+      </div>
       <Footer/>
     </GlobalLayout>
   );
