@@ -34,83 +34,129 @@ class AppointmentsPage extends Component {
       user: auth().currentUser,
       events: [
         {
-          start: moment().toDate(),
-          end: moment()
-            .add(1, "days")
-            .toDate(),
+          start: new Date(),
+          end: new Date(),
+          //  .add(0, "days"),
           title: "Some title",
         },
       ],
       open: false,
+      apptDateTime: new Date(),
+      apptTitle: "",
     };
   }
   handleClickOpen = () => {
     this.setState({ open: true });
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
+  handleSubmit = () => {
+    var endTime = new Date(this.state.apptDateTime);
+    endTime.setMinutes(endTime.getMinutes() + 30);
+
+    this.state.events.push({
+      start: this.state.apptDateTime,
+      end: endTime,
+      title: this.state.apptTitle,
+    });
+    this.setState({ 
+      open: false,
+      apptDateTime: new Date(),
+      apptTitle: "", 
+    });
   };
+
+  handleCancel = () => {
+    this.setState({ 
+      open: false,
+      apptDateTime: new Date(),
+      apptTitle: "", 
+    });
+  }
+
+  handleChangeDateTime = (e) => {
+    this.state.apptDateTime = new Date(e.target.value);
+  }
+
+  handleChangeTitle = (e) => {
+    this.setState({apptTitle: e.target.value});
+  }
+  
+  handleSelectSlot = ({start, end}) => {
+    console.log("clicked calendar slot" + start + " " + end);
+  }
+
   render() {
     return (
-      <div className="App">
-        <Grid container spacing={3}>
-          <Grid item xs={8}>
-            <Calendar
-              localizer={localizer}
-              events={[]}
-              startAccessor="start"
-              endAccessor="end"
-              style={{ height: 500 }}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <SubmitButton
-              onClick={this.handleClickOpen}
-              text="Create Appointment"
-            />
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">Add Appointment</DialogTitle>
-              <DialogContent>
-                {/* <DialogContentText>Date of Appointment</DialogContentText> */}
+			<div className="App">
+				<Grid container spacing={3}>
+					<Grid item xs={8}>
+						<Calendar
+							localizer={localizer}
+							events={this.state.events}
+							startAccessor="start"
+							endAccessor="end"
+							style={{ height: 500 }}
+              //selectable
+              //onSelectSlot={this.handleSelectSlot}
+						/>
+					</Grid>
+					<Grid item xs={4}>
+						<SubmitButton
+							onClick={this.handleClickOpen}
+							text="Create Appointment"
+						/>
+						<Dialog
+							open={this.state.open}
+							onClose={this.handleClose}
+							aria-labelledby="form-dialog-title"
+						>
+							<DialogTitle id="form-dialog-title">Add Appointment</DialogTitle>
+							<DialogContent>
+								{/* <DialogContentText>Date of Appointment</DialogContentText> */}
+								<TextField
+									margin="dense"
+									id="date"
+									label="Appointment Date"
+									type="datetime-local"
+									defaultValue={
+										new Date().getFullYear() +
+										"-" +
+										("0" + (new Date().getMonth() + 1)).slice(-2) +
+										"-" +
+										("0" + new Date().getDate()).slice(-2)+
+                    "T"+
+                    ("0" + new Date().getHours()).slice(-2) +
+										":" +
+										("0" + new Date().getMinutes()).slice(-2)
+									}
+									InputLabelProps={{
+										shrink: true,
+									}}
+                  onChange={this.handleChangeDateTime}
+								/>
                 <TextField
-                  margin="dense"
-                  id="date"
-                  label="Appointment Date"
-                  type="datetime-local"
-                  defaultValue={
-                    new Date().getFullYear() +
-                    "-" +
-                    (new Date().getMonth() + 1) +
-                    "-" +
-                    new Date().getDate() +
-                    "T" +
-                    new Date().getHours() +
-                    ":" +
-                    new Date().getMinutes()
-                  }
+                  id="title"
+                  label="Appointment Name"
+                  value={this.state.apptTitle}
                   InputLabelProps={{
-                    shrink: true,
-                  }}
+										shrink: true,
+									}}
+                  onChange={this.handleChangeTitle}
                 />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleClose} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={this.handleClose} color="primary">
-                  Add Appointment
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Grid>
-        </Grid>
-      </div>
-    );
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={this.handleCancel} color="primary">
+									Cancel
+								</Button>
+								<Button onClick={this.handleSubmit} color="primary">
+									Add Appointment
+								</Button>
+							</DialogActions>
+						</Dialog>
+					</Grid>
+				</Grid>
+			</div>
+		);
   }
 }
 
