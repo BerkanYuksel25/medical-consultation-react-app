@@ -3,7 +3,7 @@ import { createMuiTheme } from "@material-ui/core";
 const theme = createMuiTheme({
   palette: {
     background: {
-      dark: "#EDEAE5",
+      dark: "#0D0D0D",
       default: "hsla(0,0%,100%,.8)",
     },
     primary: {
@@ -32,7 +32,7 @@ const theme = createMuiTheme({
       "300": "#CCCCCC",
       "500": "#666666",
       "900": "#0D0D0D",
-    },
+    }
   },
   typography: {
     button: {
@@ -41,7 +41,7 @@ const theme = createMuiTheme({
     fontSize: 16,
     fontFamily: "Segoe UI, sans-serif",
     h1: {
-      fontWeight: 400,
+      fontWeight: 300,
       fontSize: 64,
       letterSpacing: "-0.24px",
       lineHeight: 1.1,
@@ -54,7 +54,7 @@ const theme = createMuiTheme({
     },
     h3: {
       fontWeight: 600,
-      fontSize: 20,
+      fontSize: 24,
       letterSpacing: "-0.06px",
       lineHeight: 1.1,
     },

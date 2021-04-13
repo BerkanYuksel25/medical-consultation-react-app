@@ -1,37 +1,33 @@
-import React, { Component } from "react";
-import { auth } from "../Services/firebase";
+import React from "react";
 import HealthAssistant from "../Components/Chatbot/HealthAssistant";
+import GlobalLayout from "../Components/GlobalLayout";
+import DynamicAccordion from "../Components/DynamicAccordion";
+import { Typography, makeStyles } from "@material-ui/core";
+import DashboardSections from "../Models/DashboardSections";
 
-export default class DashboardPage extends Component {
-  constructor(props) {
-    super(props);
-    this.handleSignout = this.handleSignout.bind(this);
-    this.state = {
-      user: auth().currentUser
-    }
-  }
+const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(8),
+  },
+}));
 
-  handleSignout() {
-    auth()
-      .signOut()
-      .then((data) => {
-        window.location.replace("/");
-      });
-  }
+export default function DashboardPage() {
+  const classes = useStyles();
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  render() {
-    return (
-      <div align="center">
-        Dashboard
-        <div>
-        <p>Email: {this.state.user ? this.state.user.email : null}</p>
-        <p>Name: {this.state.user ? this.state.user.displayName : null}</p>
-        </div>
-        <button style={this.submitButton} onClick={this.handleSignout}>
-          Log out
-        </button>
+  return (
+    <GlobalLayout title={`Welcome, ${user.displayName}!`}>
+      <div>
+        <Typography
+          className={classes.heading}
+          variant="h1"
+          color="textPrimary"
+        >
+          Welcome, {user.displayName}!
+        </Typography>
+        <DynamicAccordion items={DashboardSections} />
         <HealthAssistant />
       </div>
-    );
-  }
+    </GlobalLayout>
+  );
 }

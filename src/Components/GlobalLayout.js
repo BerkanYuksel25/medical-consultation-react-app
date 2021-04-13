@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   container: {
-    margin: "9% 0",
+    margin: "4% 0",
   },
 }));
 
