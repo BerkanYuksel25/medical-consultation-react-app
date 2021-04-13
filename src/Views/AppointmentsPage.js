@@ -14,7 +14,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import SubmitButton from "../Components/SubmitButton";
-import { auth } from "../Services/firebase";
+import { auth, database } from "../Services/firebase";
 
 const styles = (theme) => ({
   root: {
@@ -33,6 +33,10 @@ class AppointmentsPage extends Component {
     super(props);
     this.state = {
       user: auth().currentUser,
+      currentDateTime: new Date(),
+      curDateTime: moment(props.date).format(new Date().toLocaleString()),
+      txt_booking_title: "",
+      txt_booking_time: "",
       events: [
         {
           start: new Date(),
@@ -50,20 +54,26 @@ class AppointmentsPage extends Component {
     this.setState({ open: true });
   };
 
-  handleSubmit = () => {
-    var endTime = new Date(this.state.apptDateTime);
-    endTime.setMinutes(endTime.getMinutes() + 30);
+  handleSubmit = async (event) => {
+    await database()
+      .ref("appointments/" + this.state.user.uid)
+      .set({
+        appointment_time: this.state.txt_booking_time,
+        appointment_name: this.state.txt_booking_title,
+      });
 
-    this.state.events.push({
-      start: this.state.apptDateTime,
-      end: endTime,
-      title: this.state.apptTitle,
-    });
-    this.setState({
-      open: false,
-      apptDateTime: new Date(),
-      apptTitle: "",
-    });
+    // var endTime = new Date(this.state.apptDateTime);
+    // endTime.setMinutes(endTime.getMinutes() + 30);
+    // this.state.events.push({
+    //   start: this.state.apptDateTime,
+    //   end: endTime,
+    //   title: this.state.apptTitle,
+    // });
+    // this.setState({
+    //   open: false,
+    //   apptDateTime: new Date(),
+    //   apptTitle: "",
+    // });
   };
 
   handleCancel = () => {
@@ -97,7 +107,7 @@ class AppointmentsPage extends Component {
               events={this.state.events}
               startAccessor="start"
               endAccessor="end"
-              style={{ height: 500 }}
+              style={{ height: 900 }}
               //selectable
               //onSelectSlot={this.handleSelectSlot}
             />
@@ -116,9 +126,9 @@ class AppointmentsPage extends Component {
               <DialogContent>
                 {/* <DialogContentText>Date of Appointment</DialogContentText> */}
                 <TextField
-                  margin="dense"
+                  // margin="dense"
                   id="date"
-                  label="Appointment Date"
+                  label="Date"
                   type="datetime-local"
                   defaultValue={
                     new Date().getFullYear() +
@@ -131,6 +141,7 @@ class AppointmentsPage extends Component {
                     ":" +
                     ("0" + new Date().getMinutes()).slice(-2)
                   }
+                  // value={this.state.txt_booking_time}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -138,11 +149,13 @@ class AppointmentsPage extends Component {
                 />
                 <TextField
                   id="title"
-                  label="Appointment Name"
-                  value={this.state.apptTitle}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  label="Name"
+                  // value={this.state.apptTitle}
+                  defaultValue={this.state.user.uid + "'s booking"}
+                  value={this.txt_bookingname}
+                  // InputLabelProps={{
+                  //   shrink: true,
+                  // }}
                   onChange={this.handleChangeTitle}
                 />
               </DialogContent>
