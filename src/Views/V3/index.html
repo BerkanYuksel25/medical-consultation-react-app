@@ -4,45 +4,15 @@
     <title>Title of the document</title>
   </head>
 
-  <body>
+  <body style="margin: 0px">
     <div class="wrapper"></div>
 
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/104/three.js"></script> -->
-    <script src="https://threejs.org/build/three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/104/three.js"></script>
+    <script src=" https://threejs.org/build/three.js"></script>
     <script src="https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://github.com/mrdoob/three.js/blob/master/examples/jsm/controls/OrbitControls.js"></script>
+    <!-- <script src="https://github.com/mrdoob/three.js/blob/master/examples/jsm/controls/OrbitControls.js"></script> -->
     <!-- <script src="js/OrbitControls.js"></script> -->
     <script src="https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/js/loaders/OBJLoader.js"></script>
-    <script src="js/three.js"></script>
-    <!--<script src="js/main.js"></script>-->
-    
-    <script>
-			const scene = new THREE.Scene();
-			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-			const renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
-
-			const geometry = new THREE.BoxGeometry();
-			const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			const cube = new THREE.Mesh( geometry, material );
-			scene.add( cube );
-
-			camera.position.z = 5;
-
-			const animate = function () {
-				requestAnimationFrame( animate );
-
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
-
-				renderer.render( scene, camera );
-			};
-
-			animate();
-		</script>
-		<div id="info">Hi I'm a cube!</div>
-			
+    <script src="js/main.js"></script>
   </body>
 </html>
