@@ -3,6 +3,7 @@ let controls;
 let objLoader;
 let keyLight, fillLight, backLight;
 let cameraLight, ambientLight;
+let mtLoader, material; 
 
 function init() {
     scene = new THREE.Scene();
@@ -36,12 +37,22 @@ function init() {
     keyLight = new THREE.DirectionalLight(new THREE.Color("hsl(30, 100%, 75%)"), 1.0);
     keyLight.position.set(0, 0, 100);
 
+    material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    mtlLoader = new THREE.MTLLoader();
+    //mtlLoader.setTexturePath("/models/"); 
+    //mtlLoader.setPath("./models/");
+    mtlLoader.load("./models/skeleton.mtl", function(materials){
+    materials.preload(); 
 
     //loading the 3D model object will need node command here on in.
     objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials(materials); 
     objLoader.load("./models/skeleton.obj", function (object) {
         scene.add(object);
-    });
+        });
+    }) 
+
+    
 }
 
 function animate() {
