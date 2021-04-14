@@ -39,9 +39,9 @@ function init() {
 
     material = new THREE.MeshBasicMaterial({color: 0x00ff00});
     mtlLoader = new THREE.MTLLoader();
-    //mtlLoader.setTexturePath("/models/"); 
-    //mtlLoader.setPath("./models/");
-    mtlLoader.load("./models/skeleton.mtl", function(materials){
+    //mtlLoader.setTexturePath("./models/"); 
+    mtlLoader.setPath("./models/");
+    mtlLoader.load("/skeleton.mtl", function(materials){
     materials.preload(); 
 
     //loading the 3D model object will need node command here on in.
@@ -50,9 +50,7 @@ function init() {
     objLoader.load("./models/skeleton.obj", function (object) {
         scene.add(object);
         });
-    }) 
-
-    
+    });     
 }
 
 function animate() {
