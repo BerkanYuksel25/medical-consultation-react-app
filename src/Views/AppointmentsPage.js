@@ -47,7 +47,7 @@ class AppointmentsPage extends Component {
       ],
       open: false,
       apptDateTime: new Date(),
-      apptTitle: "",
+      apptTitle: "Example appointment",
     };
   }
   handleClickOpen = () => {
@@ -55,11 +55,16 @@ class AppointmentsPage extends Component {
   };
 
   handleSubmit = async (event) => {
+    console.log(this.state.apptDateTime.valueOf());
+    console.log(this.state.apptTitle);
     await database()
-      .ref("appointments/" + this.state.user.uid)
+      .ref("appointments/" + this.state.user.uid + "/" + this.state.apptDateTime.valueOf())
       .set({
-        appointment_time: this.state.txt_booking_time,
-        appointment_name: this.state.txt_booking_title,
+        appointment_time: this.state.apptDateTime.toISOString(),
+        appointment_name: this.state.apptTitle
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
     // var endTime = new Date(this.state.apptDateTime);
@@ -80,12 +85,12 @@ class AppointmentsPage extends Component {
     this.setState({
       open: false,
       apptDateTime: new Date(),
-      apptTitle: "",
+      apptTitle: "Example appointment",
     });
   };
 
   handleChangeDateTime = (e) => {
-    this.state.apptDateTime = new Date(e.target.value);
+    this.setState({ apptDateTime: e.target.value });
   };
 
   handleChangeTitle = (e) => {
@@ -108,8 +113,8 @@ class AppointmentsPage extends Component {
               startAccessor="start"
               endAccessor="end"
               style={{ height: 900 }}
-              //selectable
-              //onSelectSlot={this.handleSelectSlot}
+            //selectable
+            //onSelectSlot={this.handleSelectSlot}
             />
           </Grid>
           <Grid item xs={4}>
@@ -151,8 +156,8 @@ class AppointmentsPage extends Component {
                   id="title"
                   label="Name"
                   // value={this.state.apptTitle}
-                  defaultValue={this.state.user.uid + "'s booking"}
-                  value={this.txt_bookingname}
+                  // defaultValue={this.state.user.displayName + "'s booking"}
+                  value={this.state.apptTitle}
                   // InputLabelProps={{
                   //   shrink: true,
                   // }}
