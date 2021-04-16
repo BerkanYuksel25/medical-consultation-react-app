@@ -28,7 +28,7 @@ class News extends Component {
 			"sortBy=publishedAt&" +
 			"source=au&" +
 			"language=en&" +
-			"apiKey=93fa47f73b0544e2a927b0a0d8d6db98";
+			"apiKey=af48d860030849b0aba41516c8eba7fb";
 		const req = new Request(url);
 		fetch(req)
 			.then((response) => {
