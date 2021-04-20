@@ -114,6 +114,22 @@ const ChatbotStepsModel = [
     id: "post",
     component: <Post />,
     asMessage: true,
+    waitAction: true,
+  },
+  {
+    id: "high-risk",
+    message: "You are at high risk of COVID based on our assessment. I think you should see a doctor just to be safe. :)",
+    trigger: "re-check",
+  },
+  {
+    id: "low-risk",
+    message: "You are at low risk of COVID based on our assessment. Rest easy! I don't think it's worth the effort for you to go see a doctor. :)",
+    trigger: "re-check",
+  },
+  {
+    id: "re-check",
+    message:
+      "Feel free to check back again later if you like!",
     end: true,
   },
   {
