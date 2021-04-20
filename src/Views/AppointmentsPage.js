@@ -32,29 +32,61 @@ class AppointmentsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: auth().currentUser,
+      user: JSON.parse(localStorage.getItem("user")),
       currentDateTime: new Date(),
       curDateTime: moment(props.date).format(new Date().toLocaleString()),
       txt_booking_title: "",
       txt_booking_time: "",
       events: [
         {
-          start: new Date(),
-          end: new Date(),
-          //  .add(0, "days"),
-          title: "Some title",
+          //start: new Date(),
+          //end: new Date(),
+          ////  .add(0, "days"),
+          //title: "Some title",
         },
       ],
       open: false,
       apptDateTime: new Date(),
       apptTitle: "Example appointment",
     };
+
+    //get appointments from firebase db
+    var db = database().ref("appointments/" + this.state.user.uid + "/");
+    db.on('value', data =>{
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! this function is getting called on everytime 
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! db changes causing duplicate events in calendar
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! current fix = refresh page
+      console.log("db value changed");
+
+      try {
+				var appointmentsDB = data.val();
+				var keys = Object.keys(appointmentsDB);
+
+				for (var i = 0; i < keys.length; i++) {
+					var k = keys[i];
+					var dbApptName = appointmentsDB[k].appointment_name;
+					var dbApptTime = appointmentsDB[k].appointment_time;
+					//console.log(dbApptName);
+					//console.log(dbApptTime);
+					this.state.events.push({
+						start: new Date(dbApptTime),
+						end: new Date(dbApptTime),
+						title: dbApptName,
+					});
+				}
+			} catch (err) {
+				console.log("ERROR: no appointments in database");
+				console.log(err);
+			}
+    });
   }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
 
   handleSubmit = async (event) => {
+    console.log("before: " + this.state.events.length);
     console.log(this.state.apptDateTime.valueOf());
     console.log(this.state.apptTitle);
     await database()
@@ -67,12 +99,10 @@ class AppointmentsPage extends Component {
         console.log(error);
       });
     
-    //add event to calender to display
-    var endTime = new Date(this.state.apptDateTime);
-    endTime.setMinutes(endTime.getMinutes() + 30);
+    //add event to calender to display | might be useless code
     this.state.events.push({
       start: this.state.apptDateTime,
-      end: endTime,
+      end: this.state.apptDateTime,
       title: this.state.apptTitle,
     });
 
@@ -82,6 +112,7 @@ class AppointmentsPage extends Component {
       apptDateTime: new Date(),
       apptTitle: "",
     });
+    console.log("after: " + this.state.events.length);
   };
 
   handleCancel = () => {
