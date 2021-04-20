@@ -8,6 +8,17 @@ const mapStyles = {
   position: "relative",
 };
 
+const heatmapData = {
+  positions: [
+    {lat: 33.8832, lng: 151.2005}, //UTS
+    {lat: 33.8568, lng: 151.2153} //Opera House
+  ],
+  options: {
+    radius: 20,
+    opacity: 0.6
+  }
+};
+
 class LocationPage extends Component {
   constructor(props) {
     super(props);
