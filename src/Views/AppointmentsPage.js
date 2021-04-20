@@ -66,19 +66,22 @@ class AppointmentsPage extends Component {
       .catch((error) => {
         console.log(error);
       });
+    
+    //add event to calender to display
+    var endTime = new Date(this.state.apptDateTime);
+    endTime.setMinutes(endTime.getMinutes() + 30);
+    this.state.events.push({
+      start: this.state.apptDateTime,
+      end: endTime,
+      title: this.state.apptTitle,
+    });
 
-    // var endTime = new Date(this.state.apptDateTime);
-    // endTime.setMinutes(endTime.getMinutes() + 30);
-    // this.state.events.push({
-    //   start: this.state.apptDateTime,
-    //   end: endTime,
-    //   title: this.state.apptTitle,
-    // });
-    // this.setState({
-    //   open: false,
-    //   apptDateTime: new Date(),
-    //   apptTitle: "",
-    // });
+    //closes dialog box and reset values
+    this.setState({
+      open: false,
+      apptDateTime: new Date(),
+      apptTitle: "",
+    });
   };
 
   handleCancel = () => {
@@ -90,7 +93,7 @@ class AppointmentsPage extends Component {
   };
 
   handleChangeDateTime = (e) => {
-    this.setState({ apptDateTime: e.target.value });
+    this.setState({ apptDateTime: new Date(e.target.value) });
   };
 
   handleChangeTitle = (e) => {
