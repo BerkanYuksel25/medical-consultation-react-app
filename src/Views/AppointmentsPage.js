@@ -55,7 +55,7 @@ class AppointmentsPage extends Component {
     return (
       <div className="App">
         <Grid container spacing={3}>
-          <Grid item xs={8}>
+          <Grid item xs={8} style={{ marginTop: 20 }}>
             <Calendar
               localizer={localizer}
               events={[]}
