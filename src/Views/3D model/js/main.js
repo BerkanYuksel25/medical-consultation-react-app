@@ -47,6 +47,7 @@ function init() {
     loader.load("./models/lungs/scene.gltf", function(gltf){
       lungs = gltf.scene.children[0]; 
       lungs.scale.set(0.5, 0.5, 0.5);
+      lungs.position.set(0,0,0);
       scene.add(gltf.scene); 
       renderer.render(scene.camera);   
     })
