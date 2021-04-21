@@ -12,7 +12,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
+import DialogContentText from "@material-ui/core/DialogContentText";
 import SubmitButton from "../Components/SubmitButton";
 import { auth, database } from "../Services/firebase";
 
@@ -48,36 +48,37 @@ class AppointmentsPage extends Component {
       open: false,
       apptDateTime: new Date(),
       apptTitle: "Example appointment",
+      apptDocName: "Dr Nick",
     };
 
     //get appointments from firebase db
     var db = database().ref("appointments/" + this.state.user.uid + "/");
-    db.on('value', data =>{
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! this function is getting called on everytime 
+    db.on("value", (data) => {
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! this function is getting called on everytime
       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! db changes causing duplicate events in calendar
       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! current fix = refresh page
       console.log("db value changed");
 
       try {
-				var appointmentsDB = data.val();
-				var keys = Object.keys(appointmentsDB);
+        var appointmentsDB = data.val();
+        var keys = Object.keys(appointmentsDB);
 
-				for (var i = 0; i < keys.length; i++) {
-					var k = keys[i];
-					var dbApptName = appointmentsDB[k].appointment_name;
-					var dbApptTime = appointmentsDB[k].appointment_time;
-					//console.log(dbApptName);
-					//console.log(dbApptTime);
-					this.state.events.push({
-						start: new Date(dbApptTime),
-						end: new Date(dbApptTime),
-						title: dbApptName,
-					});
-				}
-			} catch (err) {
-				console.log("ERROR: no appointments in database");
-				console.log(err);
-			}
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          var dbApptName = appointmentsDB[k].appointment_name;
+          var dbApptTime = appointmentsDB[k].appointment_time;
+          //console.log(dbApptName);
+          //console.log(dbApptTime);
+          this.state.events.push({
+            start: new Date(dbApptTime),
+            end: new Date(dbApptTime),
+            title: dbApptName,
+          });
+        }
+      } catch (err) {
+        console.log("ERROR: no appointments in database");
+        console.log(err);
+      }
     });
   }
 
@@ -90,15 +91,20 @@ class AppointmentsPage extends Component {
     console.log(this.state.apptDateTime.valueOf());
     console.log(this.state.apptTitle);
     await database()
-      .ref("appointments/" + this.state.user.uid + "/" + this.state.apptDateTime.valueOf())
+      .ref(
+        "appointments/" +
+          this.state.user.uid +
+          "/" +
+          this.state.apptDateTime.valueOf()
+      )
       .set({
         appointment_time: this.state.apptDateTime.toISOString(),
-        appointment_name: this.state.apptTitle
+        appointment_name: this.state.apptTitle,
       })
       .catch((error) => {
         console.log(error);
       });
-    
+
     //add event to calender to display | might be useless code
     this.state.events.push({
       start: this.state.apptDateTime,
@@ -120,6 +126,8 @@ class AppointmentsPage extends Component {
       open: false,
       apptDateTime: new Date(),
       apptTitle: "Example appointment",
+      apptDocName: "Dr Nick",
+      apptDescription: "Dr Nick will check you out ;)",
     });
   };
 
@@ -129,6 +137,13 @@ class AppointmentsPage extends Component {
 
   handleChangeTitle = (e) => {
     this.setState({ apptTitle: e.target.value });
+  };
+
+  handleChangeFormDocName = (e) => {
+    this.setState({ apptDocName: e.target.value });
+  };
+  handleChangeFormDescription = (e) => {
+    this.setState({ apptDescription: e.target.value });
   };
 
   handleSelectSlot = ({ start, end }) => {
@@ -147,8 +162,8 @@ class AppointmentsPage extends Component {
               startAccessor="start"
               endAccessor="end"
               style={{ height: 900 }}
-            //selectable
-            //onSelectSlot={this.handleSelectSlot}
+              //selectable
+              //onSelectSlot={this.handleSelectSlot}
             />
           </Grid>
           <Grid item xs={4}>
@@ -163,10 +178,21 @@ class AppointmentsPage extends Component {
             >
               <DialogTitle id="form-dialog-title">Add Appointment</DialogTitle>
               <DialogContent>
-                {/* <DialogContentText>Date of Appointment</DialogContentText> */}
+                <DialogContentText>
+                  To create an appointment, please enter the mandatory fields.
+                </DialogContentText>
                 <TextField
-                  // margin="dense"
+                  id="title"
+                  label="Name"
+                  fullWidth
+                  value={this.state.apptTitle}
+                  onChange={this.handleChangeTitle}
+                />
+                <TextField
+                  autoFocus
+                  margin="dense"
                   id="date"
+                  fullWidth
                   label="Date"
                   type="datetime-local"
                   defaultValue={
@@ -180,22 +206,24 @@ class AppointmentsPage extends Component {
                     ":" +
                     ("0" + new Date().getMinutes()).slice(-2)
                   }
-                  // value={this.state.txt_booking_time}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   onChange={this.handleChangeDateTime}
                 />
                 <TextField
-                  id="title"
-                  label="Name"
-                  // value={this.state.apptTitle}
-                  // defaultValue={this.state.user.displayName + "'s booking"}
-                  value={this.state.apptTitle}
-                  // InputLabelProps={{
-                  //   shrink: true,
-                  // }}
-                  onChange={this.handleChangeTitle}
+                  id="form-doc-name"
+                  label="Physican"
+                  fullWidth
+                  value={this.state.apptDocName}
+                  onChange={this.handleChangeFormDocName}
+                />
+                <TextField
+                  id="form-description"
+                  label="Appointment description"
+                  fullWidth
+                  value={this.state.apptDescription}
+                  onChange={this.handleChangeFormDescription}
                 />
               </DialogContent>
               <DialogActions>
