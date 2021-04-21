@@ -77,6 +77,7 @@ class LocationPage extends Component {
 
   componentDidMount() {
     this.delayedShowMarker();
+    this.getCases(); 
   }
 
   delayedShowMarker = () => {
@@ -86,6 +87,32 @@ class LocationPage extends Component {
 
     setTimeout(() => {}, 2000);
   };
+
+  getCases() {
+    const req = new Request(
+      "https://services1.arcgis.com/vHnIGBHHqDR6y0CR/arcgis/rest/services/Current_Cases_by_State/FeatureServer/0/query?where=1%3D1&outFields=Cases,Deaths&outSR=4326&f=json"
+    );
+    fetch(req)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        let pos = [];
+
+        {
+          data.map((item, index) =>
+            position.push({
+              // lat: parseFloat(item.Lat),
+              // lng: parseFloat(item.Lon),
+            })
+          );
+        }
+
+        this.setState({positions: positions})
+
+        console.log(position);
+      });
+  }
 
   getGeoLocation = () => {
     if (navigator.geolocation) {
