@@ -10,6 +10,7 @@ import HomePage from "./Views/HomePage";
 import Navbar from "./Views/Navbar";
 import AppointmentsPage from "./Views/AppointmentsPage";
 import LocationPage from "./Views/LocationPage";
+import SingleAppointmentView from "./Views/SingleAppointmentView";
 
 class RouteConfig extends Component {
   constructor() {
@@ -53,20 +54,10 @@ class RouteConfig extends Component {
           path={"/register"}
           component={RegisterPage}
         />
-        <Route
-          currentUser={this.state.currentUser}
-          path="/location"
-          component={LocationPage}
-        />
         <PrivateRoute
           currentUser={this.state.currentUser}
           path="/"
           component={Navbar}
-        />
-        <PrivateRoute
-          currentUser={this.state.currentUser}
-          path={"/appointments"}
-          component={AppointmentsPage}
         />
       </Switch>
     );

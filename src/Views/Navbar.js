@@ -42,7 +42,7 @@ class Navbar extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.props.history.push("/DashboardPage");
+      this.props.history.push("/dashboard");
     }, 1000);
   }
 
@@ -66,7 +66,7 @@ class Navbar extends Component {
             <Toolbar>
               <div style={{ width: "50%" }}>
                 <Typography
-                  name="DashboardPage"
+                  name="dashboard"
                   component="p"
                   variant="h4"
                   color="inherit"
@@ -80,7 +80,7 @@ class Navbar extends Component {
                   Dashboard
                 </Typography>
                 <Typography
-                  name="LocationPage"
+                  name="location"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -94,7 +94,7 @@ class Navbar extends Component {
                   Location
                 </Typography>
                 <Typography
-                  name="AppointmentsPage"
+                  name="appointments"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -108,7 +108,7 @@ class Navbar extends Component {
                   Appointments
                 </Typography>
                 <Typography
-                  name="About"
+                  name="about"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -147,12 +147,12 @@ class Navbar extends Component {
         </div>
 
         <Switch>
-          <Route exact path="/DashboardPage" component={DashboardPage} />
-          <Route exact path="/About" component={About} />
-          <Route exact path="/LocationPage" component={LocationPage} />
-          <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
+          <Route path="/dashboard" component={DashboardPage} />
+          <Route path="/about" component={About} />
+          <Route path="/location" component={LocationPage} />
+          <Route path="/appointments" component={AppointmentsPage} />
         </Switch>
-        {window.location.pathname !== "/LocationPage" && <Footer />}
+        {window.location.pathname !== "/location" && <Footer />}
       </div>
     );
   }
