@@ -1,10 +1,11 @@
 // settup all the variables 
 let scene, camera, renderer;
 let controls;
-let objLoader;
+let loader; 
+// let objLoader;
 let keyLight, fillLight, backLight;
 let cameraLight, ambientLight;
-let mtLoader, material; 
+// let mtLoader, material; 
 
 function init() {
     // settup scene 
@@ -42,6 +43,13 @@ function init() {
     keyLight = new THREE.DirectionalLight(new THREE.Color("hsl(30, 100%, 75%)"), 1.0);
     keyLight.position.set(0, 0, 100);
 
+    loader = new THREE.GLTFLoader(); 
+    loader.load("./models/lungs/scene.gltf", function(gltf){
+      lungs = gltf.scene.children[0]; 
+      lungs.scale.set(0.5, 0.5, 0.5);
+      scene.add(gltf.scene); 
+      renderer.render(scene.camera);   
+    })
     // // load the material 
     // material = new THREE.MeshBasicMaterial({color: 0x00ff00});
     // mtlLoader = new THREE.MTLLoader();
