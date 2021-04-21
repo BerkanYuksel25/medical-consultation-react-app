@@ -1,4 +1,4 @@
-import React, {useState}  from "react";
+import React, { useState } from "react";
 import {
   Link,
   Grid,
@@ -21,7 +21,6 @@ import SubmitButton from "../Components/SubmitButton";
 import { validateEmail, validateNewPassword } from "../Common/Utils";
 import { auth, database } from "../Services/firebase";
 
-
 const useStyles = makeStyles((theme) => ({
   heading: {
     marginBottom: theme.spacing(8),
@@ -32,16 +31,20 @@ export default function ProfilePage() {
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const [userdata, setUserdata] = React.useState({});
 
-  const getUserData = async () => {
-    await database()
-    .ref("users/" + user.uid)
-      .once("value", (snap) => {
-        console.log(snap.val());
-        return snap.val();
-      });
-  }
-  const userdata = getUserData();
+  React.useEffect(() => {
+    const fetch = async () => {
+      await database()
+        .ref("users/" + user.uid)
+        .once("value", (snap) => {
+          console.log(snap.val());
+          setUserdata(snap.val());
+        });
+    };
+
+    fetch();
+  }, [user.uid, setUserdata]);
 
   const [errors, setErrors] = React.useState({});
   const [gender, setGender] = React.useState("other");
@@ -55,10 +58,9 @@ export default function ProfilePage() {
   const passwordRef = React.useRef("");
   const confirmPasswordRef = React.useRef("");
 
-
-  const [state, setState] = useState({
-    firstNameRef: userdata["firstName"] || '',
-  });
+  // const [state, setState] = useState({
+  //   firstNameRef: userdata["firstName"] || "",
+  // });
 
   const validateFields = () => {
     const firstName = firstNameRef.current.value;
@@ -133,31 +135,29 @@ export default function ProfilePage() {
     } = getValues();
     return Boolean(
       !errors.firstName &&
-      !errors.lastName &&
-      !errors.email &&
-      !errors.password &&
-      !errors.confirmPassword &&
-      !errors.birthday &&
-      firstName &&
-      lastName &&
-      email &&
-      password &&
-      confirmPassword &&
-      birthday
+        !errors.lastName &&
+        !errors.email &&
+        !errors.password &&
+        !errors.confirmPassword &&
+        !errors.birthday &&
+        firstName &&
+        lastName &&
+        email &&
+        password &&
+        confirmPassword &&
+        birthday
     );
   };
 
   const handleSubmit = async (event) => {
     // event.preventDefault();
     // const { email, password, firstName, lastName, birthday } = getValues();
-
     // try {
     //   await auth().createUserWithEmailAndPassword(email, password);
     //   // add users displayname
     //   await auth().currentUser.updateProfile({
     //     displayName: firstName,
     //   });
-
     //   // store other user data in database
     //   const userId = auth().currentUser.uid;
     //   console.log(userId);
@@ -170,7 +170,6 @@ export default function ProfilePage() {
     //       birthday: birthday,
     //       gender: gender,
     //     });
-
     //   history.push("/");
     // } catch (error) {
     //   setRegisterError(error.message);
@@ -186,7 +185,7 @@ export default function ProfilePage() {
           color="textPrimary"
         >
           Edit {user.displayName}'s profile
-        <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate>
             <Collapse in={Boolean(registerError)}>
               <Alert
                 action={
@@ -280,13 +279,21 @@ export default function ProfilePage() {
                 row
                 required
               >
-                <FormControlLabel value="male" control={<Radio />} label="Male" />
+                <FormControlLabel
+                  value="male"
+                  control={<Radio />}
+                  label="Male"
+                />
                 <FormControlLabel
                   value="female"
                   control={<Radio />}
                   label="Female"
                 />
-                <FormControlLabel value="other" control={<Radio />} label="Other" />
+                <FormControlLabel
+                  value="other"
+                  control={<Radio />}
+                  label="Other"
+                />
               </RadioGroup>
             </FormControl>
             <TextField
