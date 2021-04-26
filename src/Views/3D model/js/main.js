@@ -49,7 +49,7 @@ function init() {
       lungs.scale.set(0.5, 0.5, 0.5);
       lungs.position.set(0,0,0);
       scene.add(gltf.scene); 
-      renderer.render(scene.camera); 
+      renderer.render(scene,camera); 
       //animate();   
     });
     // // load the material 
