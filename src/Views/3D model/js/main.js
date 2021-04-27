@@ -52,6 +52,7 @@ function init() {
       renderer.render(scene,camera); 
       //animate();   
     });
+}
     // // load the material 
     // material = new THREE.MeshBasicMaterial({color: 0x00ff00});
     // mtlLoader = new THREE.MTLLoader();
@@ -67,7 +68,7 @@ function init() {
     //     scene.add(object);
     //     });
     // });     
-}
+
 
 function animate() {
     controls.update();
