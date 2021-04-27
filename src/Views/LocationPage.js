@@ -31,6 +31,9 @@ const gradient = [
   'rgba(255, 0, 0, 1)'
 ];
 
+const headerStyles = {
+  marginLeft: "10px"
+};
 
 class LocationPage extends Component {
   constructor(props) {
@@ -148,6 +151,9 @@ class LocationPage extends Component {
   render() {
     return (
       <div>
+        <h2 style={headerStyles}>
+         Here are the nearby COVID testing clinics near your location:
+        </h2>
         {this.state.readyMap ? (
           <Map
             google={this.props.google}
