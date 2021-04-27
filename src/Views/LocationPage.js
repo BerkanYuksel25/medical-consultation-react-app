@@ -8,15 +8,8 @@ const mapStyles = {
   position: "relative",
 };
 
-const heatmapData = {
-  positions: [
-    {lat: 33.8832, lng: 151.2005}, //UTS
-    {lat: 33.8568, lng: 151.2153} //Opera House
-  ],
-  options: {
-    radius: 20,
-    opacity: 0.6
-  }
+const headerStyles = {
+  marginLeft: "10px"
 };
 
 class LocationPage extends Component {
@@ -93,6 +86,9 @@ class LocationPage extends Component {
   render() {
     return (
       <div>
+        <h2 style={headerStyles}>
+         Here are the nearby COVID testing clinics near your location:
+        </h2>
         {this.state.readyMap ? (
           <Map
             google={this.props.google}
