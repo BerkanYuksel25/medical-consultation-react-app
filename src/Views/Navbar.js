@@ -8,6 +8,7 @@ import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
 import Footer from "./Footer";
+import SingleAppointmentView from "./SingleAppointmentView";
 
 import {
   Button,
@@ -151,6 +152,7 @@ class Navbar extends Component {
           <Route path="/about" component={About} />
           <Route path="/location" component={LocationPage} />
           <Route path="/appointments" component={AppointmentsPage} />
+          <Route path="/singleappointment" component={SingleAppointmentView} />
         </Switch>
         {window.location.pathname !== "/location" && <Footer />}
       </div>
