@@ -58,11 +58,20 @@ export default function ProfilePage() {
   const [registerError, setRegisterError] = React.useState(null);
   const [registerSuccess, setRegisterSuccess] = React.useState(null);
 
-  const validateFields = () => {
+  const onChangeTextbox = (e, ref) => {
+    ref.current = e.target.value;
+  }
+
+  const validateFields = (e, ref) => {
+    if (ref) {
+      ref.current = e.target.value;
+    }
+
     const firstName = firstNameRef.current;
     const lastName = lastNameRef.current;
     const birthday = birthdayRef.current;
     const email = emailRef.current;
+
     const newErrors = {};
 
     if (!firstName || !firstName.length) {
@@ -130,8 +139,11 @@ export default function ProfilePage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, firstName, lastName, birthday } = getValues();
+    console.log(email);
     try {
-      // add users displayname
+      // edit users email
+      await auth().currentUser.updateEmail(email);
+      // edit users displayname
       await auth().currentUser.updateProfile({
         displayName: firstName,
       });
@@ -211,12 +223,12 @@ export default function ProfilePage() {
               name="email"
               autoComplete="email"
               onBlur={validateFields}
-              onChange={validateFields}
-              value={emailRef.current || ''}
+              onChange={e => validateFields(e, emailRef)}
+              value={emailRef.current}
               autoFocus
             />
             <TextField
-              inputRef={firstNameRef}
+              ref={firstNameRef}
               error={Boolean(errors.firstName)}
               helperText={errors.firstName}
               variant="outlined"
@@ -228,8 +240,8 @@ export default function ProfilePage() {
               name="firstName"
               autoComplete="firstName"
               onBlur={validateFields}
-              onChange={validateFields}
-              value={firstNameRef.current || ''}
+              onChange={e => validateFields(e, firstNameRef)}
+              value={firstNameRef.current}
             />
             <TextField
               inputRef={lastNameRef}
@@ -244,7 +256,7 @@ export default function ProfilePage() {
               name="lastName"
               autoComplete="lastName"
               onBlur={validateFields}
-              onChange={validateFields}
+              onChange={e => validateFields(e, lastNameRef)}
               value={lastNameRef.current || ''}
             />
             <TextField
@@ -259,7 +271,7 @@ export default function ProfilePage() {
               type="date"
               name="birthday"
               onBlur={validateFields}
-              onChange={validateFields}
+              onChange={e => validateFields(e, birthdayRef)}
               value={birthdayRef.current || ''}
               format="dd/MM/yyyy"
               className={classes.textField}
