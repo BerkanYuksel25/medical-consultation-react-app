@@ -10,6 +10,7 @@ let cameraLight, ambientLight;
 function init() {
     // settup scene 
     scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xdddddd); 
     // setting up the camera 
     camera = new THREE.PerspectiveCamera(
         75,
@@ -31,7 +32,11 @@ function init() {
     // remember lighting 
     cameraLight = new THREE.PointLight(new THREE.Color(1, 1, 1), 0.5);
     camera.add(cameraLight);
-    camera.position.set(0, 0, 100);
+    camera.position.set(200, 200, 1000);
+    // camera.rotation.y = 45/180*Math.PI;
+    // camera.position.x = 800;
+    // camera.position.y = 100;
+    // camera.position.z = 1000;
     controls.update();
 
     // make sure to add the camera to the scene 
@@ -40,34 +45,24 @@ function init() {
     ambientLight = new THREE.AmbientLight(new THREE.Color(1, 1, 1), 0.2);
     scene.add(ambientLight);
 
-    keyLight = new THREE.DirectionalLight(new THREE.Color("hsl(30, 100%, 75%)"), 1.0);
-    keyLight.position.set(0, 0, 100);
+    // directionalLight = new THREE.DirectionalLight(0xffffff,50);
+    // directionalLight.position.set(0,1,0);
+    // directionalLight.castShadow = true;
+    // scene.add(directionalLight);
+
+    // keyLight = new THREE.DirectionalLight(new THREE.Color("hsl(50, 100%, 75%)"), 1.0);
+    // keyLight.position.set(0, 0, 100);
 
     loader = new THREE.GLTFLoader(); 
     loader.load("./models/lungs/scene.gltf", function(gltf){
       lungs = gltf.scene.children[0]; 
       lungs.scale.set(0.5, 0.5, 0.5);
-      lungs.position.set(0,0,0);
+      lungs.position.set(0.,0,0);
       scene.add(gltf.scene); 
       renderer.render(scene,camera); 
       //animate();   
     });
 }
-    // // load the material 
-    // material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-    // mtlLoader = new THREE.MTLLoader();
-    // //mtlLoader.setTexturePath("./models/"); 
-    // mtlLoader.setPath("./models/");
-    // mtlLoader.load("/skeleton.mtl", function(materials){
-    // materials.preload(); 
-
-    // //loading the 3D model object will need node command here on in.
-    // objLoader = new THREE.OBJLoader();
-    // objLoader.setMaterials(materials); 
-    // objLoader.load("./models/skeleton.obj", function (object) {
-    //     scene.add(object);
-    //     });
-    // });     
 
 
 function animate() {
