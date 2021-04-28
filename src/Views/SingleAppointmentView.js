@@ -1,12 +1,23 @@
 import React from "react";
-import HealthAssistant from "../Components/Chatbot/HealthAssistant";
 import GlobalLayout from "../Components/GlobalLayout";
-import DynamicAccordion from "../Components/DynamicAccordion";
-import { Typography, makeStyles } from "@material-ui/core";
+import {
+  Typography,
+  makeStyles,
+  Grid,
+  ListItem,
+  List,
+  ListItemText,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
     marginBottom: theme.spacing(8),
+  },
+  details: {
+    marginTop: theme.spacing(8),
+  },
+  flexHeadings: {
+    fontWeight: theme.typography.h2.fontWeight,
   },
 }));
 
@@ -15,18 +26,52 @@ export default function SingleAppointmentView() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   return (
-<GlobalLayout title={`Welcome, ${user.displayName}!`}>
-      <div>
-        <Typography
-          className={classes.heading}
-          variant="h3"
-          color="textPrimary"
-        >
-         Appointment Info for {user.displayName}
-        </Typography>
-        
-        <HealthAssistant />
-      </div>
+    <GlobalLayout title={`Your Appointment Info`}>
+      <Typography className={classes.heading} variant="h1" color="textPrimary">
+        Here's your appointment info, {user.displayName}.
+      </Typography>
+      <Grid container>
+        <Grid item xs={12} md={4}>
+          <Typography className={classes.flexHeadings} variant="h3">
+            <strong>Time: </strong> 6:00 PM - 8:00 PM
+          </Typography>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography className={classes.flexHeadings} variant="h3">
+            <strong>Date: </strong>10 January 2021
+          </Typography>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography className={classes.flexHeadings} variant="h3">
+            <strong>Your Doctor: </strong>Dr William Smith
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h3" className={classes.details}>
+            Your Symptoms
+          </Typography>
+          <List>
+            <ListItem>
+              <ListItemText primary="Fatigue" />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Nausea" />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Headache" />
+            </ListItem>
+          </List>
+          <Typography variant="h3" className={classes.details}>
+            Additional Details
+          </Typography>
+          <Typography variant="body1" component="p">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas
+            porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies,
+            purus lectus malesuada libero, sit amet commodo magna eros quis
+            urna.
+          </Typography>
+        </Grid>
+      </Grid>
     </GlobalLayout>
   );
 }
