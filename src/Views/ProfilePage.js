@@ -28,41 +28,43 @@ export default function ProfilePage() {
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const [userdata, setUserdata] = React.useState({});
-
   const firstNameRef = React.useRef("");
   const lastNameRef = React.useRef("");
   const birthdayRef = React.useRef("");
   const emailRef = React.useRef("");
 
   const [errors, setErrors] = React.useState({});
-  const [gender, setGender] = React.useState("other");
+  const [gender, setGender] = React.useState(null);
 
   React.useEffect(() => {
     const fetch = async () => {
       await database()
         .ref("users/" + user.uid)
         .once("value", (snap) => {
-          console.log(snap.val());
-          setUserdata(snap.val());
           firstNameRef.current = snap.val()["firstName"];
           lastNameRef.current = snap.val()["lastName"];
           birthdayRef.current = snap.val()["birthday"];
           emailRef.current = snap.val()["email"];
           setGender(snap.val()["gender"]);
+          validateFields();
         });
     };
     fetch();
-  }, [user.uid, setUserdata]);
+  }, [user.uid]);
 
   const [registerError, setRegisterError] = React.useState(null);
   const [registerSuccess, setRegisterSuccess] = React.useState(null);
 
-  const validateFields = () => {
+  const validateFields = (e, ref) => {
+    if (ref) {
+      ref.current = e.target.value;
+    }
+
     const firstName = firstNameRef.current;
     const lastName = lastNameRef.current;
     const birthday = birthdayRef.current;
     const email = emailRef.current;
+
     const newErrors = {};
 
     if (!firstName || !firstName.length) {
@@ -103,35 +105,19 @@ export default function ProfilePage() {
   };
 
   const isValid = () => {
-    const {
-      firstName,
-      lastName,
-      email,
-      birthday,
-    } = getValues();
     return Boolean(
-      !errors.firstName &&
-        !errors.lastName &&
-        !errors.email &&
-        !errors.birthday &&
-        userdata["firstName"] != firstName ||
-        userdata["lastName"] != lastName ||
-        userdata["email"] != email ||
-        userdata["birthday"] != birthday ||
-        userdata["gender"] != gender &&
-        firstName &&
-        lastName &&
-        email &&
-        birthday &&
-        gender
+      !errors.firstName && !errors.lastName && !errors.email && !errors.birthday
     );
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, firstName, lastName, birthday } = getValues();
+    console.log(email);
     try {
-      // add users displayname
+      // edit users email
+      await auth().currentUser.updateEmail(email);
+      // edit users displayname
       await auth().currentUser.updateProfile({
         displayName: firstName,
       });
@@ -211,12 +197,11 @@ export default function ProfilePage() {
               name="email"
               autoComplete="email"
               onBlur={validateFields}
-              onChange={validateFields}
-              value={emailRef.current || ''}
-              autoFocus
+              onChange={(e) => validateFields(e, emailRef)}
+              value={emailRef.current}
             />
             <TextField
-              inputRef={firstNameRef}
+              ref={firstNameRef}
               error={Boolean(errors.firstName)}
               helperText={errors.firstName}
               variant="outlined"
@@ -228,8 +213,8 @@ export default function ProfilePage() {
               name="firstName"
               autoComplete="firstName"
               onBlur={validateFields}
-              onChange={validateFields}
-              value={firstNameRef.current || ''}
+              onChange={(e) => validateFields(e, firstNameRef)}
+              value={firstNameRef.current}
             />
             <TextField
               inputRef={lastNameRef}
@@ -244,8 +229,8 @@ export default function ProfilePage() {
               name="lastName"
               autoComplete="lastName"
               onBlur={validateFields}
-              onChange={validateFields}
-              value={lastNameRef.current || ''}
+              onChange={(e) => validateFields(e, lastNameRef)}
+              value={lastNameRef.current || ""}
             />
             <TextField
               inputRef={birthdayRef}
@@ -259,8 +244,8 @@ export default function ProfilePage() {
               type="date"
               name="birthday"
               onBlur={validateFields}
-              onChange={validateFields}
-              value={birthdayRef.current || ''}
+              onChange={(e) => validateFields(e, birthdayRef)}
+              value={birthdayRef.current || ""}
               format="dd/MM/yyyy"
               className={classes.textField}
               defaultValue="1970-01-01"
@@ -272,9 +257,8 @@ export default function ProfilePage() {
               <RadioGroup
                 aria-label="gender"
                 name="gender"
-                defaultValue="other"
                 onChange={(event) => setGender(event.target.value)}
-                value={gender || ''}
+                value={gender || ""}
                 row
                 required
               >
