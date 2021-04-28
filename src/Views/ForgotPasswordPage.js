@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
     const [errors, setErrors] = React.useState({});
 
     const [loginError, setLoginError] = React.useState(null);
-    const [success, setSuccess] = React.useState(null);
+    const [successAlert, setSuccessAlert] = React.useState(null);
 
     const emailRef = React.useRef("");
 
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
         const { email } = getValues();
         try {
             await auth().sendPasswordResetEmail(email).then;
-            setSuccess("Sent a password reset email");
+            setSuccessAlert("Sent a password reset email");
         } catch (error) {
             setLoginError(error.message);
         }
@@ -107,23 +107,23 @@ export default function ForgotPasswordPage() {
                     >
                         {loginError}
                     </Alert>
-                    <Collapse in={Boolean(success)}>
-                        <Alert
-                            action={
-                                <IconButton
-                                    aria-label="close"
-                                    color="inherit"
-                                    size="small"
-                                    onClick={() => setSuccess(null)}
-                                >
-                                    <CloseIcon fontSize="inherit" />
-                                </IconButton>
-                            }
-                            severity="success"
-                        >
-                            {success}
-                        </Alert>
-                    </Collapse>
+                </Collapse>
+                <Collapse in={Boolean(successAlert)}>
+                    <Alert
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => setSuccessAlert(null)}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        severity="success"
+                    >
+                        {successAlert}
+                    </Alert>
                 </Collapse>
                 <TextField
                     inputRef={emailRef}
