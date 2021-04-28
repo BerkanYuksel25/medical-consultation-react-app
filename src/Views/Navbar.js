@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import threedModelPage from "./threedmodel";
+import ThreedModelPage from "./Threedmodel";
 
 const styles = {
   root: {
@@ -109,7 +109,7 @@ class Navbar extends Component {
                   Appointments
                 </Typography>
                 <Typography
-                  name="threedmodel"
+                  name="Threedmodel"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -166,7 +166,7 @@ class Navbar extends Component {
           <Route exact path="/About" component={About} />
           <Route exact path="/LocationPage" component={LocationPage} />
           <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
-          <Route exact path="/threedmodel" component={threedModelPage}/>
+          <Route exact path="/Threedmodel" component={ThreedModelPage}/>
         </Switch>
         {window.location.pathname !== "/LocationPage" && <Footer />}
       </div>

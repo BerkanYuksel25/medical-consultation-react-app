@@ -10,7 +10,7 @@ import HomePage from "./Views/HomePage";
 import Navbar from "./Views/Navbar";
 import AppointmentsPage from "./Views/AppointmentsPage";
 import LocationPage from "./Views/LocationPage";
-import threedmodel from "./Views/threedmodel"
+import Threedmodel from "./Views/Threedmodel"
 
 class RouteConfig extends Component {
   constructor() {
@@ -67,7 +67,7 @@ class RouteConfig extends Component {
         <PrivateRoute
           currentUser={this.state.currentUser}
           path={"/threedmodel"}
-          component={threedmodel}
+          component={Threedmodel}
         />
         <PrivateRoute
           currentUser={this.state.currentUser}
