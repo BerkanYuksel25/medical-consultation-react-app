@@ -46,8 +46,12 @@ export default function LoginPage() {
 
   const handleSignUpClick = (event) => {
     event.preventDefault();
-
     history.push("/register");
+  };
+
+  const handleForgotPasswordClick = (event) => {
+    event.preventDefault();
+    history.push("/forgot");
   };
 
   const validateFields = () => {
@@ -165,6 +169,16 @@ export default function LoginPage() {
                 onClick={handleSignUpClick}
               >
                 Sign Up
+              </Link>
+            </Typography>
+            <Typography variant="body1">
+              Forgot your password?{" "}
+              <Link
+                className={classes.link}
+                href="#"
+                onClick={handleForgotPasswordClick}
+              >
+                Forgot password
               </Link>
             </Typography>
           </Grid>
