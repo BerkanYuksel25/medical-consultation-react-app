@@ -56,6 +56,9 @@ class LocationPage extends Component {
       positions: [],
       finishPos: false,
       reportedCovidCases: [],
+      showingInfoWindow: false,
+      activeMarker: {},
+      selectedPlace: {},
     };
 
     this.mapClicked = this.mapClicked.bind(this);
@@ -148,6 +151,22 @@ class LocationPage extends Component {
     });
   }
 
+  onMarkerClick = (props, marker, e) =>
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true
+    });
+ 
+  onMapClicked = (props) => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      })
+    }
+  };
+
   render() {
     return (
       <div>
@@ -165,23 +184,30 @@ class LocationPage extends Component {
             }}
             onClick={this.mapClicked}
           >
-            <Marker
+            <Marker onClick={this.onMarkerClick}
               label={"Current Location"}
               name={"Current Location"}
               position={this.state.currentLatLng}
             />
-            <Marker
+            <Marker onClick={this.onMarkerClick}
               title={'University of Technology Sydney'}
-              name={'UTS'}
+              name={'University of Technology Sydney'}
               position={{lat: -33.8832, lng: 151.2005}} />
-            <Marker
+            <Marker onClick={this.onMarkerClick}
               title={'John Hunter Hospital'}
-              name={'JHH'}
+              name={'John Hunter Hospital'}
               position={{lat: -32.9217, lng: 151.6925}} />
-            <Marker
+            <Marker onClick={this.onMarkerClick}
               title={'Royal Prince Alfred Hospital'}
-              name={'RPAH'}
+              name={'Royal Prince Alfred Hospital'}
               position={{lat: -33.8893, lng: 151.1831}} />
+            <InfoWindow
+              marker={this.state.activeMarker}
+              visible={this.state.showingInfoWindow}>
+                <div>
+                  <h1>{this.state.selectedPlace.name}</h1>
+                </div>
+            </InfoWindow>
             <HeatMap
               gradient={gradient}
               opacity={1}
