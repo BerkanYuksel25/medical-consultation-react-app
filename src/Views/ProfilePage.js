@@ -28,39 +28,32 @@ export default function ProfilePage() {
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const [userdata, setUserdata] = React.useState({});
-
   const firstNameRef = React.useRef("");
   const lastNameRef = React.useRef("");
   const birthdayRef = React.useRef("");
   const emailRef = React.useRef("");
 
   const [errors, setErrors] = React.useState({});
-  const [gender, setGender] = React.useState("other");
+  const [gender, setGender] = React.useState(null);
 
   React.useEffect(() => {
     const fetch = async () => {
       await database()
         .ref("users/" + user.uid)
         .once("value", (snap) => {
-          console.log(snap.val());
-          setUserdata(snap.val());
           firstNameRef.current = snap.val()["firstName"];
           lastNameRef.current = snap.val()["lastName"];
           birthdayRef.current = snap.val()["birthday"];
           emailRef.current = snap.val()["email"];
           setGender(snap.val()["gender"]);
+          validateFields();
         });
     };
     fetch();
-  }, [user.uid, setUserdata]);
+  }, [user.uid]);
 
   const [registerError, setRegisterError] = React.useState(null);
   const [registerSuccess, setRegisterSuccess] = React.useState(null);
-
-  const onChangeTextbox = (e, ref) => {
-    ref.current = e.target.value;
-  }
 
   const validateFields = (e, ref) => {
     if (ref) {
@@ -112,27 +105,8 @@ export default function ProfilePage() {
   };
 
   const isValid = () => {
-    const {
-      firstName,
-      lastName,
-      email,
-      birthday,
-    } = getValues();
     return Boolean(
-      !errors.firstName &&
-        !errors.lastName &&
-        !errors.email &&
-        !errors.birthday &&
-        userdata["firstName"] != firstName ||
-        userdata["lastName"] != lastName ||
-        userdata["email"] != email ||
-        userdata["birthday"] != birthday ||
-        userdata["gender"] != gender &&
-        firstName &&
-        lastName &&
-        email &&
-        birthday &&
-        gender
+      !errors.firstName && !errors.lastName && !errors.email && !errors.birthday
     );
   };
 
@@ -223,9 +197,8 @@ export default function ProfilePage() {
               name="email"
               autoComplete="email"
               onBlur={validateFields}
-              onChange={e => validateFields(e, emailRef)}
+              onChange={(e) => validateFields(e, emailRef)}
               value={emailRef.current}
-              autoFocus
             />
             <TextField
               ref={firstNameRef}
@@ -240,7 +213,7 @@ export default function ProfilePage() {
               name="firstName"
               autoComplete="firstName"
               onBlur={validateFields}
-              onChange={e => validateFields(e, firstNameRef)}
+              onChange={(e) => validateFields(e, firstNameRef)}
               value={firstNameRef.current}
             />
             <TextField
@@ -256,8 +229,8 @@ export default function ProfilePage() {
               name="lastName"
               autoComplete="lastName"
               onBlur={validateFields}
-              onChange={e => validateFields(e, lastNameRef)}
-              value={lastNameRef.current || ''}
+              onChange={(e) => validateFields(e, lastNameRef)}
+              value={lastNameRef.current || ""}
             />
             <TextField
               inputRef={birthdayRef}
@@ -271,8 +244,8 @@ export default function ProfilePage() {
               type="date"
               name="birthday"
               onBlur={validateFields}
-              onChange={e => validateFields(e, birthdayRef)}
-              value={birthdayRef.current || ''}
+              onChange={(e) => validateFields(e, birthdayRef)}
+              value={birthdayRef.current || ""}
               format="dd/MM/yyyy"
               className={classes.textField}
               defaultValue="1970-01-01"
@@ -284,9 +257,8 @@ export default function ProfilePage() {
               <RadioGroup
                 aria-label="gender"
                 name="gender"
-                defaultValue="other"
                 onChange={(event) => setGender(event.target.value)}
-                value={gender || ''}
+                value={gender || ""}
                 row
                 required
               >
