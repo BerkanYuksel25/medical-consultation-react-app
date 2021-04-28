@@ -11,7 +11,10 @@ class Post extends Component {
 
     this.state = {
       covidLikelihood: "",
+      trigger: false,
     };
+
+    this.triggerNext = this.triggerNext.bind(this);
   }
 
   async componentDidMount() {
@@ -41,6 +44,18 @@ class Post extends Component {
     this.setState({
       covidLikelihood,
     });
+
+    if (covidLikelihood >= 30) {
+      this.triggerNext("high-risk");
+    }
+    else {
+      this.triggerNext("low-risk");
+    }
+  }
+
+  triggerNext(nextStep) {
+    this.setState({ trigger: true });
+    this.props.triggerNextStep({ trigger: nextStep });
   }
 
   render() {
@@ -55,11 +70,11 @@ class Post extends Component {
 }
 
 Post.propTypes = {
-  values: PropTypes.object,
+  triggerNextStep: PropTypes.func,
 };
 
 Post.defaultProps = {
-  values: undefined,
+  triggerNextStep: undefined,
 };
 
 export default Post;
