@@ -21,7 +21,7 @@ class News extends Component {
 
 		const url =
 			"http://cors-anywhere.herokuapp.com/http://newsapi.org/v2/everything?" +
-			'qInTitle="covid" AND ("australia" OR "Sydney" OR "nsw" OR "victoria")&' +
+			'qInTitle="covid 19" AND ("australia" OR "Sydney" OR "nsw" OR "victoria")&' +
 			"from=" +
 			date +
 			"&" +
