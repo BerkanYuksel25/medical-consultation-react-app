@@ -170,7 +170,18 @@ class LocationPage extends Component {
               name={"Current Location"}
               position={this.state.currentLatLng}
             />
-
+            <Marker
+              title={'University of Technology Sydney'}
+              name={'UTS'}
+              position={{lat: -33.8832, lng: 151.2005}} />
+            <Marker
+              title={'John Hunter Hospital'}
+              name={'JHH'}
+              position={{lat: -32.9217, lng: 151.6925}} />
+            <Marker
+              title={'Royal Prince Alfred Hospital'}
+              name={'RPAH'}
+              position={{lat: -33.8893, lng: 151.1831}} />
             <HeatMap
               gradient={gradient}
               opacity={1}
