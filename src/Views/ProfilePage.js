@@ -10,12 +10,18 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
+  Button,
 } from "@material-ui/core";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from "@material-ui/icons/Close";
 import { Alert } from "@material-ui/lab";
 import GlobalLayout from "../Components/GlobalLayout";
 import SubmitButton from "../Components/SubmitButton";
-import { validateEmail } from "../Common/Utils";
+import { validateEmail, validateNewPassword } from "../Common/Utils";
 import { auth, database } from "../Services/firebase";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,9 +38,17 @@ export default function ProfilePage() {
   const lastNameRef = React.useRef("");
   const birthdayRef = React.useRef("");
   const emailRef = React.useRef("");
+  const password = React.useRef("");
+  const confirmPassword = React.useRef("");
 
   const [errors, setErrors] = React.useState({});
   const [gender, setGender] = React.useState(null);
+
+  const [registerError, setRegisterError] = React.useState(null);
+  const [registerSuccess, setRegisterSuccess] = React.useState(null);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [passwordSuccess, setPasswordSuccess] = React.useState(null);
+  const [passwordError, setPasswordError] = React.useState(null);
 
   React.useEffect(() => {
     const fetch = async () => {
@@ -52,8 +66,29 @@ export default function ProfilePage() {
     fetch();
   }, [user.uid]);
 
-  const [registerError, setRegisterError] = React.useState(null);
-  const [registerSuccess, setRegisterSuccess] = React.useState(null);
+  const handleClickOpen = () => {
+    setPasswordSuccess(false);
+    setPasswordError(false);
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
+  const getValues = () => {
+    const firstName = firstNameRef.current;
+    const lastName = lastNameRef.current;
+    const birthday = birthdayRef.current;
+    const email = emailRef.current;
+
+    return {
+      firstName,
+      lastName,
+      email,
+      birthday,
+    };
+  };
 
   const validateFields = (e, ref) => {
     if (ref) {
@@ -90,19 +125,23 @@ export default function ProfilePage() {
     setErrors(newErrors);
   };
 
-  const getValues = () => {
-    const firstName = firstNameRef.current;
-    const lastName = lastNameRef.current;
-    const birthday = birthdayRef.current;
-    const email = emailRef.current;
-
-    return {
-      firstName,
-      lastName,
-      email,
-      birthday,
-    };
-  };
+  const validatePassword = () => {
+    const newErrors = {};
+    const pass = password.current.value;
+    const confirmPass = confirmPassword.current.value;
+    if (!validateNewPassword(pass)) {
+      newErrors.password =
+        "New passwords must be at least 7 characters in length.";
+    }
+    if (
+      confirmPass !== pass ||
+      !confirmPass ||
+      !confirmPass.length
+    ) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+    setErrors(newErrors);
+  }
 
   const isValid = () => {
     return Boolean(
@@ -110,10 +149,15 @@ export default function ProfilePage() {
     );
   };
 
+  const isValidPassword = () => {
+    return Boolean(
+      !errors.password && !errors.confirmPassword
+    );
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, firstName, lastName, birthday } = getValues();
-    console.log(email);
     try {
       // edit users email
       await auth().currentUser.updateEmail(email);
@@ -139,6 +183,21 @@ export default function ProfilePage() {
       setRegisterError(error.message);
     }
   };
+
+  const handleNewPasswordSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await auth().currentUser.updatePassword(password.current.value);
+      setPasswordSuccess("Password has been changed")
+      password.current.value = "";
+      confirmPassword.current.value = "";
+      validatePassword();
+    } catch (error) {
+      setPasswordError(error.message);
+    }
+  }
+
+
 
   return (
     <GlobalLayout title={`Edit profile`}>
@@ -251,7 +310,6 @@ export default function ProfilePage() {
               defaultValue="1970-01-01"
               fullWidth
             />
-            {/* I need help here to get the radio button working*/}
             <FormControl className={classes.genderBox} component="fieldset">
               <FormLabel component="legend">Gender</FormLabel>
               <RadioGroup
@@ -285,6 +343,89 @@ export default function ProfilePage() {
               text="Edit"
             />
           </form>
+          <SubmitButton text="Change password" onClick={handleClickOpen} />
+          <Dialog open={dialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
+            <DialogContent>
+              <Collapse in={Boolean(passwordError)}>
+                <Alert
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => setPasswordError(null)}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  severity="error"
+                >
+                  {passwordError}
+                </Alert>
+              </Collapse>
+              <Collapse in={Boolean(passwordSuccess)}>
+                <Alert
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => setPasswordSuccess(null)}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  severity="success"
+                >
+                  {passwordSuccess}
+                </Alert>
+              </Collapse>
+              <DialogContentText>
+                Please fill in your new password
+              </DialogContentText>
+              <TextField
+                autoFocus
+                inputRef={password}
+                error={Boolean(errors.password)}
+                helperText={errors.password}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                onBlur={validatePassword}
+                onChange={validatePassword}
+              />
+              <TextField
+                inputRef={confirmPassword}
+                error={Boolean(errors.confirmPassword)}
+                helperText={errors.confirmPassword}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="confirm-password"
+                label="Confirm Password"
+                name="confirm-password"
+                type="password"
+                onBlur={validatePassword}
+                onChange={validatePassword}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleClose} variant="contained" color="primary" disabled={!isValidPassword()} onClick={handleNewPasswordSubmit}>
+                Change password
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Typography>
       </div>
     </GlobalLayout>
