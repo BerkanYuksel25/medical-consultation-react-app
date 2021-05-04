@@ -66,7 +66,7 @@ class RouteConfig extends Component {
         />
         <PrivateRoute
           currentUser={this.state.currentUser}
-          path={"/threedmodel"}
+          path={"/Threedmodel"}
           component={Threedmodel}
         />
         <PrivateRoute
