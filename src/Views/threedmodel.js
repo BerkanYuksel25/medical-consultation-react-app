@@ -6,23 +6,23 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 class ThreedModelPage extends Component {
   componentDidMount() {
-    let controls, renderer, scene, camera; 
-
     let init = function () {
-      //set up the scene
-    scene = new THREE.Scene();
+
+    };
+    //set up the scene
+    let scene = new THREE.Scene();
     scene.background = new THREE.Color(0xdddddd);
     //declare camera and renderer
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    let camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    let renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize( window.innerWidth, window.innerHeight );
     // document.body.appendChild( renderer.domElement );
     // use ref as a mount point of the Three.js scene instead of the document.body
-    document.body.appendChild( renderer.domElement );
+    this.mount.appendChild( renderer.domElement );
     
     
     //set up controls
-    controls = new OrbitControls(camera, renderer.domElement);
+    let controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.campingFactor = 0.25;
     controls.enableZoom = true;
@@ -67,16 +67,13 @@ class ThreedModelPage extends Component {
     // scene.add( cube );
     // camera.position.z = 5;
     // //animate model
-    };
-    
     let animate = function () {
       controls.update();
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
     };
 
-    init();
-    animate(); 
+    animate();
     
   }
   render() {
