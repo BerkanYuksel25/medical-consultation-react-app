@@ -20,20 +20,20 @@ class ThreedModelPage extends Component {
     
     
     //set up controls
-    // var controls = OrbitControls(camera, renderer.domElement);
-    // controls.enableDamping = true;
-    // controls.campingFactor = 0.25;
-    // controls.enableZoom = true;
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.campingFactor = 0.25;
+    controls.enableZoom = true;
     
     //set up lighting
     var cameraLight = new THREE.PointLight(new THREE.Color(1, 1, 1), 0.5);
     camera.add(cameraLight);
-    //camera.position.set(200, 200, 1000);
+    camera.position.set(200, 200, 1000);
     // camera.rotation.y = 45/180*Math.PI;
     // camera.position.x = 800;
     // camera.position.y = 100;
     // camera.position.z = 1000;
-    // controls.update();
+    controls.update();
 
     // make sure to add the camera to the scene 
     scene.add(camera);
@@ -44,9 +44,9 @@ class ThreedModelPage extends Component {
     //loading model DUN DUN DUN
     const gltfLoader = new GLTFLoader();
     
-
+    let lungs;
     //local model not loading
-    gltfLoader.load('./public/lungs.gltf', function(gltf){
+    gltfLoader.load('scene.gltf', function(gltf){
       lungs = gltf.scene.children[0]; 
       lungs.scale.set(0.5, 0.5, 0.5);
       lungs.position.set(0.,0,0);
@@ -65,13 +65,12 @@ class ThreedModelPage extends Component {
     // scene.add( cube );
     // camera.position.z = 5;
     // //animate model
-    // var animate = function () {
-    //   requestAnimationFrame( animate );
-    //   cube.rotation.x += 0.01;
-    //   cube.rotation.y += 0.01;
-    //   renderer.render( scene, camera );
-    // };
-    // animate();
+    var animate = function () {
+      controls.update();
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    };
+    
   }
   render() {
     return (
