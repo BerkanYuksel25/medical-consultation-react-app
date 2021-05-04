@@ -125,6 +125,12 @@ const ChatbotStepsModel = [
     trigger: "find-clinic-question",
   },
   {
+    id: "medium-risk",
+    message:
+      "You are at medium risk of COVID based on our assessment. While it is not absolutely necessary to see a doctor, we recommend you do so to be safe :)",
+    trigger: "find-clinic-question",
+  },
+  {
     id: "low-risk",
     message:
       "You are at low risk of COVID based on our assessment. Rest easy! I don't think it's worth the effort for you to go see a doctor. :)",

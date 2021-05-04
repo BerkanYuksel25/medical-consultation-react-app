@@ -3,7 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { database } from "../../Services/firebase";
 import { getAge, convertToONEZERO } from "../../Common/Utils";
-import { getCovidLikelihood } from "Services/api";
+import {
+  getCovidLikelihood,
+  getCovidCasesPerOneMillionByCountry,
+} from "Services/api";
 
 class Post extends Component {
   constructor(props) {
@@ -45,10 +48,27 @@ class Post extends Component {
       covidLikelihood,
     });
 
-    if (covidLikelihood >= 30) {
+    await this.makeDecisionBasedOnCovidLikelihood(covidLikelihood);
+  }
+
+  async makeDecisionBasedOnCovidLikelihood(covidLikelihood) {
+    const covidCasesPerOneMillion = await getCovidCasesPerOneMillionByCountry(
+      "australia"
+    );
+
+    const covidThresholdMultiplier = covidCasesPerOneMillion / 1000;
+
+    const covidLikelihoodUpperThreshold = 20 * covidThresholdMultiplier;
+    const covidLikelihoodLowerThreshold = 10 * covidThresholdMultiplier;
+
+    if (covidLikelihood >= covidLikelihoodUpperThreshold) {
       this.triggerNext("high-risk");
-    }
-    else {
+    } else if (
+      covidLikelihood <= covidLikelihoodUpperThreshold &&
+      covidLikelihood >= covidLikelihoodLowerThreshold
+    ) {
+      this.triggerNext("medium-risk");
+    } else {
       this.triggerNext("low-risk");
     }
   }
