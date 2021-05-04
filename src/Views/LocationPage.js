@@ -59,6 +59,7 @@ class LocationPage extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
+      covidClinicLocations: [],
     };
 
     this.mapClicked = this.mapClicked.bind(this);
@@ -114,6 +115,19 @@ class LocationPage extends Component {
 
         this.setState({ positions: posArrFormatted });
         console.log(posArrFormatted);
+      });
+  }
+
+  getCovidClinicsCases() {
+    const req = new Request(
+      "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=85da884f-a9f5-4cb3-95e8-d6b81b0d2e3a&q=New_South_Wales"
+    );
+    fetch(req)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
       });
   }
 
@@ -218,6 +232,14 @@ class LocationPage extends Component {
                 </Typography>
               </div>
             </InfoWindow>
+
+            {this.state.covidClinicLocations.map((object, i) => {
+              <Marker
+                title={object.name}
+                position={{ lat: object.lat, lng: object.lat }}
+              />;
+            })}
+
             <HeatMap
               gradient={gradient}
               opacity={1}
