@@ -140,6 +140,7 @@ class Navbar extends Component {
                     cursor: "pointer",
                     marginRight: "2em",
                     display: "inline",
+                    marginTop: "12px",
                   }}
                   onClick={this.onChangeTab}
                 >
