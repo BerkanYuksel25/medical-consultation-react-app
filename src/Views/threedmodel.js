@@ -6,7 +6,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 class ThreedModelPage extends Component {
   componentDidMount() {
-
     //set up the scene
     var scene = new THREE.Scene();
     scene.background = new THREE.Color(0xdddddd);
@@ -70,6 +69,7 @@ class ThreedModelPage extends Component {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
     };
+    animate();
     
   }
   render() {
