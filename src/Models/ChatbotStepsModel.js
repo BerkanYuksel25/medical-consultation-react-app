@@ -1,4 +1,4 @@
-import Review from "../Components/Chatbot/Review";
+import ThreedModelPage from "../Views/Threedmodel";
 import Post from "../Components/Chatbot/Post";
 import MapRedirect from "../Components/Chatbot/MapRedirect";
 import Recheck from "../Components/Chatbot/Recheck";
@@ -108,7 +108,7 @@ const ChatbotStepsModel = [
   },
   {
     id: "review",
-    component: <Review />,
+    component: <ThreedModelPage />,
     asMessage: true,
     trigger: "post",
   },
