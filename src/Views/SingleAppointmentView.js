@@ -19,6 +19,19 @@ const useStyles = makeStyles((theme) => ({
   flexHeadings: {
     fontWeight: theme.typography.h2.fontWeight,
   },
+  buttons: {
+    height: "40px",
+    width: "82px",
+    background: "#ea3a3a",
+    color: "#FFFFFF",
+    border: "#ea3a3a",
+    cursor: "pointer",
+    display: "block",
+    margin: "10px",
+  },
+  buttonRow: {
+    display: "flex",
+  },
 }));
 
 export default function SingleAppointmentView() {
@@ -70,6 +83,16 @@ export default function SingleAppointmentView() {
             purus lectus malesuada libero, sit amet commodo magna eros quis
             urna.
           </Typography>
+          <Typography variant="h3" className={classes.details}>
+            Can't Make It?
+          </Typography>
+          <Typography variant="body1" component="p">
+           Request a change to your appointment or make a cancellation below
+          </Typography>
+          <div className={classes.buttonRow}>
+          <button className={classes.buttons}>Cancel</button>
+          <button className={classes.buttons}>Request Change</button>
+          </div>
         </Grid>
       </Grid>
     </GlobalLayout>
