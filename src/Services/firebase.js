@@ -19,3 +19,4 @@ export const database = firebase.database;
 export const auth = firebase.auth;
 export const storage = firebase.storage();
 export const messaging = firebase.messaging();
+export const firestore = firebase.firestore();
