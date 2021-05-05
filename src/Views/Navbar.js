@@ -197,12 +197,9 @@ class Navbar extends Component {
           <Route exact path="/About" component={About} />
           <Route exact path="/LocationPage" component={LocationPage} />
           <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
-<<<<<<< HEAD
           <Route exact path="/News" component={News} />
-=======
           <Route exact path="/Threedmodel" component={ThreedModelPage} />
           <Route exact path="/Profile" component={ProfilePage} />
->>>>>>> origin/master
         </Switch>
         {window.location.pathname !== "/LocationPage" && <Footer />}
       </div>
