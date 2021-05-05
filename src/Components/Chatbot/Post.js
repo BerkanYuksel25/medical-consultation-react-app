@@ -3,7 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { database } from "../../Services/firebase";
 import { getAge, convertToONEZERO } from "../../Common/Utils";
-import { getCovidLikelihood } from "Services/api";
+import {
+  getCovidLikelihood,
+  getCovidCasesPerOneMillionByCountry,
+} from "Services/api";
 
 class Post extends Component {
   constructor(props) {
@@ -11,7 +14,10 @@ class Post extends Component {
 
     this.state = {
       covidLikelihood: "",
+      trigger: false,
     };
+
+    this.triggerNext = this.triggerNext.bind(this);
   }
 
   async componentDidMount() {
@@ -41,6 +47,35 @@ class Post extends Component {
     this.setState({
       covidLikelihood,
     });
+
+    await this.makeDecisionBasedOnCovidLikelihood(covidLikelihood);
+  }
+
+  async makeDecisionBasedOnCovidLikelihood(covidLikelihood) {
+    const covidCasesPerOneMillion = await getCovidCasesPerOneMillionByCountry(
+      "australia"
+    );
+
+    const covidThresholdMultiplier = covidCasesPerOneMillion / 1000;
+
+    const covidLikelihoodUpperThreshold = 20 * covidThresholdMultiplier;
+    const covidLikelihoodLowerThreshold = 10 * covidThresholdMultiplier;
+
+    if (covidLikelihood >= covidLikelihoodUpperThreshold) {
+      this.triggerNext("high-risk");
+    } else if (
+      covidLikelihood <= covidLikelihoodUpperThreshold &&
+      covidLikelihood >= covidLikelihoodLowerThreshold
+    ) {
+      this.triggerNext("medium-risk");
+    } else {
+      this.triggerNext("low-risk");
+    }
+  }
+
+  triggerNext(nextStep) {
+    this.setState({ trigger: true });
+    this.props.triggerNextStep({ trigger: nextStep });
   }
 
   render() {
@@ -55,11 +90,11 @@ class Post extends Component {
 }
 
 Post.propTypes = {
-  values: PropTypes.object,
+  triggerNextStep: PropTypes.func,
 };
 
 Post.defaultProps = {
-  values: undefined,
+  triggerNextStep: undefined,
 };
 
 export default Post;

@@ -1,5 +1,7 @@
-import Review from "../Components/Chatbot/Review";
+import ThreedModelPage from "../Views/Threedmodel";
 import Post from "../Components/Chatbot/Post";
+import MapRedirect from "../Components/Chatbot/MapRedirect";
+import Recheck from "../Components/Chatbot/Recheck";
 
 const ChatbotStepsModel = [
   {
@@ -16,7 +18,7 @@ const ChatbotStepsModel = [
     id: "symptom-qualifier-answer",
     options: [
       { value: 1, label: "Yes", trigger: "symptoms-question-1" },
-      { value: 2, label: "No", trigger: "end-chat-response" },
+      { value: 2, label: "No", trigger: "pre-re-check" },
     ],
   },
   {
@@ -106,7 +108,7 @@ const ChatbotStepsModel = [
   },
   {
     id: "review",
-    component: <Review />,
+    component: <ThreedModelPage />,
     asMessage: true,
     trigger: "post",
   },
@@ -114,7 +116,60 @@ const ChatbotStepsModel = [
     id: "post",
     component: <Post />,
     asMessage: true,
-    end: true,
+    waitAction: true,
+  },
+  {
+    id: "high-risk",
+    message:
+      "You are at high risk of COVID based on our assessment. I think you should see a doctor just to be safe. :)",
+    trigger: "find-clinic-question",
+  },
+  {
+    id: "medium-risk",
+    message:
+      "You are at medium risk of COVID based on our assessment. While it is not absolutely necessary to see a doctor, we recommend you do so to be safe :)",
+    trigger: "find-clinic-question",
+  },
+  {
+    id: "low-risk",
+    message:
+      "You are at low risk of COVID based on our assessment. Rest easy! I don't think it's worth the effort for you to go see a doctor. :)",
+    trigger: "pre-re-check",
+  },
+  {
+    id: "find-clinic-question",
+    message: "Would you like to be to find a nearby testing clinic?",
+    trigger: "clinic-redirect-options",
+  },
+  {
+    id: "clinic-redirect-options",
+    options: [
+      {
+        value: "Yes",
+        label: "Yes",
+        trigger: "clinic-redirection",
+      },
+      {
+        value: "No",
+        label: "No",
+        trigger: "pre-re-check",
+      },
+    ],
+  },
+  {
+    id: "clinic-redirection",
+    component: <MapRedirect />,
+    asMessage: true,
+  },
+  {
+    id: "pre-re-check",
+    message: "Feel free to check back again later if you like!",
+    trigger: "re-check",
+  },
+  {
+    id: "re-check",
+    component: <Recheck />,
+    waitAction: true,
   },
   {
     id: "end-chat-response",
