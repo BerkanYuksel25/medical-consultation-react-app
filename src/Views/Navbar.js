@@ -9,6 +9,7 @@ import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
 import Footer from "./Footer";
 import SingleAppointmentView from "./SingleAppointmentView";
+import ProfilePage from "./ProfilePage";
 
 import {
   Button,
@@ -131,6 +132,21 @@ class Navbar extends Component {
                   justifyContent: "flex-end",
                 }}
               >
+                <Typography
+                  name="Profile"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                    marginTop: "12px",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  Profile
+                </Typography>
                 <Button
                   size="large"
                   color="inherit"
@@ -153,6 +169,7 @@ class Navbar extends Component {
           <Route path="/location" component={LocationPage} />
           <Route path="/appointments" component={AppointmentsPage} />
           <Route path="/singleappointment" component={SingleAppointmentView} />
+          <Route exact path="/Profile" component={ProfilePage} />
         </Switch>
         {window.location.pathname !== "/location" && <Footer />}
       </div>

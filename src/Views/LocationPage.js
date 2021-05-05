@@ -6,7 +6,7 @@ import {
   InfoWindow,
   HeatMap,
 } from "google-maps-react";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Typography, CircularProgress } from "@material-ui/core";
 
 const mapStyles = {
   width: "100%",
@@ -15,24 +15,24 @@ const mapStyles = {
 };
 
 const gradient = [
-  'rgba(0, 255, 255, 0)',
-  'rgba(0, 255, 255, 1)',
-  'rgba(0, 191, 255, 1)',
-  'rgba(0, 127, 255, 1)',
-  'rgba(0, 63, 255, 1)',
-  'rgba(0, 0, 255, 1)',
-  'rgba(0, 0, 223, 1)',
-  'rgba(0, 0, 191, 1)',
-  'rgba(0, 0, 159, 1)',
-  'rgba(0, 0, 127, 1)',
-  'rgba(63, 0, 91, 1)',
-  'rgba(127, 0, 63, 1)',
-  'rgba(191, 0, 31, 1)',
-  'rgba(255, 0, 0, 1)'
+  "rgba(0, 255, 255, 0)",
+  "rgba(0, 255, 255, 1)",
+  "rgba(0, 191, 255, 1)",
+  "rgba(0, 127, 255, 1)",
+  "rgba(0, 63, 255, 1)",
+  "rgba(0, 0, 255, 1)",
+  "rgba(0, 0, 223, 1)",
+  "rgba(0, 0, 191, 1)",
+  "rgba(0, 0, 159, 1)",
+  "rgba(0, 0, 127, 1)",
+  "rgba(63, 0, 91, 1)",
+  "rgba(127, 0, 63, 1)",
+  "rgba(191, 0, 31, 1)",
+  "rgba(255, 0, 0, 1)",
 ];
 
 const headerStyles = {
-  marginLeft: "10px"
+  marginLeft: "10px",
 };
 
 class LocationPage extends Component {
@@ -50,12 +50,15 @@ class LocationPage extends Component {
         lng: 0,
         zoom: 15,
       },
-      zoom:10,
+      zoom: 10,
       open: false,
       readyMap: false,
       positions: [],
       finishPos: false,
       reportedCovidCases: [],
+      showingInfoWindow: false,
+      activeMarker: {},
+      selectedPlace: {},
     };
 
     this.mapClicked = this.mapClicked.bind(this);
@@ -148,11 +151,27 @@ class LocationPage extends Component {
     });
   }
 
+  onMarkerClick = (props, marker, e) =>
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true,
+    });
+
+  onMapClicked = (props) => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null,
+      });
+    }
+  };
+
   render() {
     return (
       <div>
         <h2 style={headerStyles}>
-         Here are the nearby COVID testing clinics near your location:
+          Here are the nearby COVID testing clinics near your location:
         </h2>
         {this.state.readyMap ? (
           <Map
@@ -166,22 +185,39 @@ class LocationPage extends Component {
             onClick={this.mapClicked}
           >
             <Marker
+              onClick={this.onMarkerClick}
               label={"Current Location"}
               name={"Current Location"}
               position={this.state.currentLatLng}
             />
             <Marker
-              title={'University of Technology Sydney'}
-              name={'UTS'}
-              position={{lat: -33.8832, lng: 151.2005}} />
+              onClick={this.onMarkerClick}
+              title={"University of Technology Sydney"}
+              name={"University of Technology Sydney"}
+              position={{ lat: -33.8832, lng: 151.2005 }}
+            />
             <Marker
-              title={'John Hunter Hospital'}
-              name={'JHH'}
-              position={{lat: -32.9217, lng: 151.6925}} />
+              onClick={this.onMarkerClick}
+              title={"John Hunter Hospital"}
+              name={"John Hunter Hospital"}
+              position={{ lat: -32.9217, lng: 151.6925 }}
+            />
             <Marker
-              title={'Royal Prince Alfred Hospital'}
-              name={'RPAH'}
-              position={{lat: -33.8893, lng: 151.1831}} />
+              onClick={this.onMarkerClick}
+              title={"Royal Prince Alfred Hospital"}
+              name={"Royal Prince Alfred Hospital"}
+              position={{ lat: -33.8893, lng: 151.1831 }}
+            />
+            <InfoWindow
+              marker={this.state.activeMarker}
+              visible={this.state.showingInfoWindow}
+            >
+              <div>
+                <Typography variant="body1" component="p">
+                  {this.state.selectedPlace.name}
+                </Typography>
+              </div>
+            </InfoWindow>
             <HeatMap
               gradient={gradient}
               opacity={1}
