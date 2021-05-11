@@ -9,6 +9,7 @@ import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
 import Footer from "./Footer";
 import SingleAppointmentView from "./SingleAppointmentView";
+import News from "./News";
 import ProfilePage from "./ProfilePage";
 
 import {
@@ -20,6 +21,7 @@ import {
 } from "@material-ui/core";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ThreedModelPage from "./Threedmodel";
 
 const styles = {
   root: {
@@ -110,7 +112,39 @@ class Navbar extends Component {
                   Appointments
                 </Typography>
                 <Typography
+<<<<<<< HEAD
                   name="about"
+=======
+                  name="News"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  News
+                </Typography>
+                <Typography
+                  name="Threedmodel"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  3D Model
+                </Typography>
+                <Typography
+                  name="About"
+>>>>>>> 9d6cf92bfe9a08aebf038f947ee2c5cd11ed7ab8
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -164,11 +198,20 @@ class Navbar extends Component {
         </div>
 
         <Switch>
+<<<<<<< HEAD
           <Route path="/dashboard" component={DashboardPage} />
           <Route path="/about" component={About} />
           <Route path="/location" component={LocationPage} />
           <Route path="/appointments" component={AppointmentsPage} />
           <Route path="/singleappointment" component={SingleAppointmentView} />
+=======
+          <Route exact path="/DashboardPage" component={DashboardPage} />
+          <Route exact path="/About" component={About} />
+          <Route exact path="/LocationPage" component={LocationPage} />
+          <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
+          <Route exact path="/News" component={News} />
+          <Route exact path="/Threedmodel" component={ThreedModelPage} />
+>>>>>>> 9d6cf92bfe9a08aebf038f947ee2c5cd11ed7ab8
           <Route exact path="/Profile" component={ProfilePage} />
         </Switch>
         {window.location.pathname !== "/location" && <Footer />}

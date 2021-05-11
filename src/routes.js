@@ -11,6 +11,7 @@ import Navbar from "./Views/Navbar";
 import AppointmentsPage from "./Views/AppointmentsPage";
 import LocationPage from "./Views/LocationPage";
 import SingleAppointmentView from "./Views/SingleAppointmentView";
+import ThreedModelPage from "./Views/Threedmodel";
 import ForgotPasswordPage from "./Views/ForgotPasswordPage";
 
 class RouteConfig extends Component {
@@ -70,6 +71,19 @@ class RouteConfig extends Component {
           path="/"
           component={Navbar}
         />
+<<<<<<< HEAD
+=======
+        <PrivateRoute
+          currentUser={this.state.currentUser}
+          path={"/Threedmodel"}
+          component={ThreedModelPage}
+        />
+        <PrivateRoute
+          currentUser={this.state.currentUser}
+          path={"/appointments"}
+          component={AppointmentsPage}
+        />
+>>>>>>> 9d6cf92bfe9a08aebf038f947ee2c5cd11ed7ab8
       </Switch>
     );
   }
