@@ -20,11 +20,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-// import { ThreeSixty } from "@material-ui/icons";
 
 const styles = (theme) => ({
   root: {
@@ -62,61 +58,8 @@ class AppointmentsPage extends Component {
       apptList: [],
       editing: false,
       eventKey: new Date(),
-
-      // currentDateTime: new Date(),
-      // curDateTime: moment(props.date).format(new Date().toLocaleString()),
-
-      // txt_booking_title: "",
-      // txt_booking_time: "",
     };
   }
-
-  // componentDidMount() {
-  //   // gets appointments from firebase db
-  //   // updates when db is changed or on start
-  //   var db = database().ref("appointments/" + this.state.user.uid + "/");
-  //   db.on("value", (data) => {
-  //     try {
-  //       var appointmentsDB = data.val();
-  //       console.log(appointmentsDB);
-  //       this.setState({ apptList: appointmentsDB });
-  //       console.log(this.apptList);
-  //       var keys = Object.keys(appointmentsDB);
-  //       var tempEvents = [{}];
-
-  //       for (let i = 0; i < keys.length; i++) {
-  //         var k = keys[i];
-  //         var dbApptName = appointmentsDB[k].appointment_name;
-  //         var dbApptTime = appointmentsDB[k].appointment_time;
-  //         var dbApptDesc = appointmentsDB[k].appointment_description;
-  //         //   console.log(dbApptName, dbApptTime);
-  //         tempEvents.push({
-  //           start: new Date(dbApptTime),
-  //           end: new Date(dbApptTime),
-  //           title: dbApptName,
-  //           description: dbApptDesc,
-  //         });
-  //       }
-
-  //       this.setState({ events: tempEvents });
-  //       // this.setState((state) => {
-  //       //   const apptList = state.apptList.concat(tempEvents);
-  //       //   return {
-  //       //     apptList,
-  //       //   };
-  //       // });
-  //       // console.log(this.state.apptList);
-
-  //       for (let i = 0; i < this.tempEvents.length; i++) {
-  //         console.log(tempEvents[i]);
-  //       }
-  //     } catch (err) {
-  //       // console.log("ERROR: no appointments in database");
-  //       console.log("ERROR, details below");
-  //       console.log(err);
-  //     }
-  //   });
-  // }
 
   componentDidMount = async () => {
     // Gets appointments from firebase db on start
@@ -147,15 +90,15 @@ class AppointmentsPage extends Component {
         }
         this.setState({ apptList: newApptListState }, function() {
           // callback so that state can updated ayscn
+          console.log("Setting apptList state, apptList:");
           console.log(this.state.apptList);
         });
-        console.log("Setting apptList state, apptList:");
 
-        // this.setState({ apptList: [appointments] }, function() {
-        //   // callback so that state can updated ayscn
-        //   console.log(this.state.apptList);
-        // });
-
+        // delete and rework to use above loop ^^^
+        //
+        //
+        //
+        //
         var keys = Object.keys(appointments);
         var tempEvents = [{}];
 
@@ -174,10 +117,10 @@ class AppointmentsPage extends Component {
         }
 
         this.setState({ events: tempEvents });
-
-        // for (let i = 0; i < this.tempEvents.length; i++) {
-        //   console.log(tempEvents[i]);
-        // }
+        //
+        //
+        //
+        //
       } catch (err) {
         // console.log("ERROR: no appointments in database");
         console.log("ERROR, details below");
@@ -294,17 +237,17 @@ class AppointmentsPage extends Component {
       .remove();
   };
 
-  createAppointmentCards() {
-    var appts = this.state.apptList;
-    console.log("create appoitment cards");
-    console.log(appts);
-    return appts.map((appt) => {
-      <div>Test</div>;
-    });
-    // console.log("create appoitment cards");
-    // console.log(appts);
-    // return appts.map((el) => <div>Test lol</div>);
-  }
+  // createAppointmentCards() {
+  //   var appts = this.state.apptList;
+  //   console.log("create appoitment cards");
+  //   console.log(appts);
+  //   return appts.map((appt) => {
+  //     <div>Test</div>;
+  //   });
+  //   // console.log("create appoitment cards");
+  //   // console.log(appts);
+  //   // return appts.map((el) => <div>Test lol</div>);
+  // }
 
   render() {
     const { classes } = this.props;
@@ -369,30 +312,6 @@ class AppointmentsPage extends Component {
                 </Card>
               );
             })}
-
-            {/* <Card className={classes.root}>
-              <CardContent>
-                <Typography
-                  className={classes.title}
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  Sample Appointment
-                </Typography>
-                <Typography variant="h5" component="h2">
-                  Dental Check-up
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  date goes here
-                </Typography>
-                <Typography variant="body2" component="p">
-                  Desc goes here
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">More info</Button>
-              </CardActions>
-            </Card> */}
 
             <Dialog
               open={this.state.open}
