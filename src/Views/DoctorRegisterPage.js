@@ -18,8 +18,9 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Alert } from "@material-ui/lab";
 import SideLayout from "../Components/SideLayout";
 import SubmitButton from "../Components/SubmitButton";
-import { validateEmail, validateNewPassword } from "../Common/Utils";
+import { validateEmail, validateNewPassword, validateCode } from "../Common/Utils";
 import { auth, database } from "../Services/firebase";
+import LocationAutoComplete from "../Components/LocationAutoComplete";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RegisterPage() {
+export default function DoctorRegisterPage() {
   const classes = useStyles();
   const history = useHistory();
   const backgroundImageUrl = "/static/login.jpg";
@@ -58,6 +59,9 @@ export default function RegisterPage() {
   const emailRef = React.useRef("");
   const passwordRef = React.useRef("");
   const confirmPasswordRef = React.useRef("");
+  const doctorCodeRef = React.useRef("");
+  const locationRef = React.useRef("");
+  const fieldRef = React.useRef("");
 
   const handleLoginClick = (event) => {
     event.preventDefault();
@@ -71,6 +75,7 @@ export default function RegisterPage() {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
+    const DoctorCode = doctorCodeRef.current.value;
     const newErrors = {};
 
     if (!firstName || !firstName.length) {
@@ -98,6 +103,10 @@ export default function RegisterPage() {
         "New passwords must be at least 7 characters in length.";
     }
 
+    if (!validateCode(DoctorCode)) {
+      newErrors.doctorCode = "Invalid code";
+    }
+
     if (
       confirmPassword !== password ||
       !confirmPassword ||
@@ -115,6 +124,7 @@ export default function RegisterPage() {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
+    const doctorCode = doctorCodeRef.current.value;
 
     return {
       firstName,
@@ -123,6 +133,7 @@ export default function RegisterPage() {
       password,
       confirmPassword,
       birthday,
+      doctorCode
     };
   };
 
@@ -134,20 +145,23 @@ export default function RegisterPage() {
       password,
       confirmPassword,
       birthday,
+      doctorCode
     } = getValues();
     return Boolean(
       !errors.firstName &&
-        !errors.lastName &&
-        !errors.email &&
-        !errors.password &&
-        !errors.confirmPassword &&
-        !errors.birthday &&
-        firstName &&
-        lastName &&
-        email &&
-        password &&
-        confirmPassword &&
-        birthday
+      !errors.lastName &&
+      !errors.email &&
+      !errors.password &&
+      !errors.confirmPassword &&
+      !errors.birthday &&
+      !errors.doctorCode &&
+      firstName &&
+      lastName &&
+      email &&
+      password &&
+      confirmPassword &&
+      birthday &&
+      doctorCode
     );
   };
 
@@ -173,7 +187,7 @@ export default function RegisterPage() {
           email: email,
           birthday: birthday,
           gender: gender,
-          doctor: false
+          doctor: true
         });
 
       history.push("/");
@@ -185,7 +199,7 @@ export default function RegisterPage() {
   return (
     <SideLayout title="Sign Up" imageUrl={backgroundImageUrl}>
       <Typography className={classes.heading} color="textPrimary" variant="h1">
-        Sign Up
+        Doctor Register
       </Typography>
       <form className={classes.form} noValidate>
         <Collapse in={Boolean(registerError)}>
@@ -248,6 +262,21 @@ export default function RegisterPage() {
           label="Last name"
           name="lastName"
           autoComplete="lastName"
+          onBlur={validateFields}
+          onChange={validateFields}
+        />
+        <LocationAutoComplete/>
+        <TextField
+          inputRef={fieldRef}
+          error={Boolean(errors.field)}
+          helperText={errors.field}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="field"
+          label="Field"
+          name="field"
           onBlur={validateFields}
           onChange={validateFields}
         />
@@ -317,6 +346,21 @@ export default function RegisterPage() {
           label="Confirm Password"
           name="confirm-password"
           type="password"
+          onBlur={validateFields}
+          onChange={validateFields}
+        />
+        <TextField
+          inputRef={doctorCodeRef}
+          error={Boolean(errors.doctorCode)}
+          helperText={errors.doctorCode}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="doctor-code"
+          label="Doctor code"
+          name="doctor-code"
+          type="text"
           onBlur={validateFields}
           onChange={validateFields}
         />
