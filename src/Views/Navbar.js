@@ -112,9 +112,6 @@ class Navbar extends Component {
                   Appointments
                 </Typography>
                 <Typography
-<<<<<<< HEAD
-                  name="about"
-=======
                   name="News"
                   variant="h4"
                   component="p"
@@ -144,7 +141,6 @@ class Navbar extends Component {
                 </Typography>
                 <Typography
                   name="About"
->>>>>>> 9d6cf92bfe9a08aebf038f947ee2c5cd11ed7ab8
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -198,20 +194,13 @@ class Navbar extends Component {
         </div>
 
         <Switch>
-<<<<<<< HEAD
-          <Route path="/dashboard" component={DashboardPage} />
-          <Route path="/about" component={About} />
-          <Route path="/location" component={LocationPage} />
-          <Route path="/appointments" component={AppointmentsPage} />
-          <Route path="/singleappointment" component={SingleAppointmentView} />
-=======
-          <Route exact path="/DashboardPage" component={DashboardPage} />
-          <Route exact path="/About" component={About} />
-          <Route exact path="/LocationPage" component={LocationPage} />
-          <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
+          <Route exact path="/dashboard" component={DashboardPage} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/location" component={LocationPage} />
+          <Route exact path="/appointments" component={AppointmentsPage} />
           <Route exact path="/News" component={News} />
+          <Route exact path="/singleappointment" component={SingleAppointmentView} />
           <Route exact path="/Threedmodel" component={ThreedModelPage} />
->>>>>>> 9d6cf92bfe9a08aebf038f947ee2c5cd11ed7ab8
           <Route exact path="/Profile" component={ProfilePage} />
         </Switch>
         {window.location.pathname !== "/location" && <Footer />}

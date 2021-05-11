@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     display: "block",
     margin: "10px",
+    '&:hover': {
+      background: "#000000",
+   },
   },
   buttonRow: {
     display: "flex",

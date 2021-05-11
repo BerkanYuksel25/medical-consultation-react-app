@@ -71,8 +71,11 @@ class RouteConfig extends Component {
           path="/"
           component={Navbar}
         />
-<<<<<<< HEAD
-=======
+        <PrivateRoute
+          currentUser={this.state.currentUser}
+          path={"/Singleappointment"}
+          component={SingleAppointmentView}
+        />
         <PrivateRoute
           currentUser={this.state.currentUser}
           path={"/Threedmodel"}
@@ -83,7 +86,6 @@ class RouteConfig extends Component {
           path={"/appointments"}
           component={AppointmentsPage}
         />
->>>>>>> 9d6cf92bfe9a08aebf038f947ee2c5cd11ed7ab8
       </Switch>
     );
   }
