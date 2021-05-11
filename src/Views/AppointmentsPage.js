@@ -60,6 +60,8 @@ class AppointmentsPage extends Component {
       apptDocName: "Dr Nick",
       apptDescription: "",
       apptList: [],
+	  editing: false,
+	  eventKey: new Date(),
     };
   }
 
@@ -73,7 +75,7 @@ class AppointmentsPage extends Component {
         var keys = Object.keys(appointmentsDB);
         var tempEvents = [{}];
 
-        for (var i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i++) {
           var k = keys[i];
           var dbApptName = appointmentsDB[k].appointment_name;
           var dbApptTime = appointmentsDB[k].appointment_time;
@@ -85,17 +87,18 @@ class AppointmentsPage extends Component {
             title: dbApptName,
             description: dbApptDesc,
           });
-          this.setState({ events: tempEvents });
-          this.setState((state) => {
+        }
+
+		this.setState({ events: tempEvents });
+		this.setState((state) => {
             const apptList = state.apptList.concat(tempEvents);
             return {
               apptList,
             };
-          });
-          console.log(this.state.apptList);
-        }
+        });
+        console.log(this.state.apptList);
 
-        for (var i = 0; i < this.tempEvents.length; i++) {
+        for (let i = 0; i < this.tempEvents.length; i++) {
           console.log(tempEvents[i]);
         }
       } catch (err) {
@@ -110,6 +113,11 @@ class AppointmentsPage extends Component {
   };
 
   handleSubmit = async (event) => {
+	//if editing, delete and then recreate the event
+	if(this.state.editing)
+		this.deleteEvent(this.state.eventKey);
+
+	//add to database
     console.log(this.state.apptDateTime.valueOf());
     console.log(this.state.apptTitle);
     await database()
@@ -134,22 +142,11 @@ class AppointmentsPage extends Component {
     //   title: this.state.apptTitle,
     // });
 
-    //closes dialog box and reset values
-    this.setState({
-      open: false,
-      apptDateTime: new Date(),
-      apptTitle: "",
-    });
+    this.resetDialogBox();
   };
 
   handleCancel = () => {
-    this.setState({
-      open: false,
-      //apptDateTime: new Date(),
-      apptTitle: "Example appointment",
-      apptDocName: "Dr Nick",
-      apptDescription: "Dr Nick will check you out ;)",
-    });
+    this.resetDialogBox();
   };
 
   handleChangeDateTime = (e) => {
@@ -172,33 +169,59 @@ class AppointmentsPage extends Component {
   };
 
   handleSelectEvent = async (e) => {
-    //doesnt work for some reason. doesnt set dialog box to correct date.
-    // this.setState({
-    // 	apptDateTime: e.start, //this one doesnt work
-    // 	apptTitle: e.title, //this one works
-    // 	open: true,
-    // });
-    // this.state.apptDateTime = new Date(e.start); //this one doesnt
-
-    console.log(e.start);
-    console.log(this.state.apptDateTime);
-    console.log(e.title);
-
-    //delete event from db
-    // await database()
-    // 	.ref(
-    // 		"appointments/" +
-    // 			this.state.user.uid +
-    // 			"/" +
-    // 			e.start.valueOf()
-    // 	)
-    // 	.remove();
+    //open dialog box with clicked events.
+	this.setState({
+    	apptDateTime: e.start,
+    	apptTitle: e.title,
+    	open: true,
+		editing: true,
+		eventKey: e.start.valueOf(),
+    });
   };
+
+  handleDelete = () => {
+	this.deleteEvent(this.state.apptDateTime);
+	this.resetDialogBox();
+  }
+
+  resetDialogBox = () => {
+	//closes dialog box and reset values
+	this.setState({
+		open: false,
+		apptDateTime: new Date(),
+		apptTitle: "Example appointment",
+		apptDocName: "Dr Nick",
+		apptDescription: "Dr Nick will check you out ;)",
+		editing: false,
+		eventKey: new Date(),
+	  });
+  }
+
+  deleteEvent = async (e) => {
+	//delete event from db
+    await database()
+    	.ref(
+    		"appointments/" +
+    			this.state.user.uid +
+    			"/" +
+    			e.valueOf()
+    	)
+    	.remove();
+  }
 
   createAppointmentCards() {}
 
   render() {
     const { classes } = this.props;
+	let deleteDialogButton;
+	if (this.state.editing) {
+		deleteDialogButton = (
+			<Button onClick={this.handleDelete} color="primary">
+				Delete
+			</Button>
+		);
+	}
+	
     return (
       <div className="App">
         <Grid container spacing={3}>
@@ -249,10 +272,10 @@ class AppointmentsPage extends Component {
               onClose={this.handleClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title">Add Appointment</DialogTitle>
+              <DialogTitle id="form-dialog-title">{this.state.editing?"Edit Appointment" : "Add Appointment"}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  To create an appointment, please enter the mandatory fields.
+                  To {this.state.editing? "edit" : "create"} an appointment, please enter the mandatory fields.			  
                 </DialogContentText>
                 <TextField
                   id="title"
@@ -269,15 +292,15 @@ class AppointmentsPage extends Component {
                   label="Date"
                   type="datetime-local"
                   defaultValue={
-                    new Date().getFullYear() +
+                    this.state.apptDateTime.getFullYear() +
                     "-" +
-                    ("0" + (new Date().getMonth() + 1)).slice(-2) +
+                    ("0" + (this.state.apptDateTime.getMonth() + 1)).slice(-2) +
                     "-" +
-                    ("0" + new Date().getDate()).slice(-2) +
+                    ("0" + this.state.apptDateTime.getDate()).slice(-2) +
                     "T" +
-                    ("0" + new Date().getHours()).slice(-2) +
+                    ("0" + this.state.apptDateTime.getHours()).slice(-2) +
                     ":" +
-                    ("0" + new Date().getMinutes()).slice(-2)
+                    ("0" + this.state.apptDateTime.getMinutes()).slice(-2)
                   }
                   InputLabelProps={{
                     shrink: true,
@@ -300,11 +323,12 @@ class AppointmentsPage extends Component {
                 />
               </DialogContent>
               <DialogActions>
+			  	{deleteDialogButton}
                 <Button onClick={this.handleCancel} color="primary">
                   Cancel
                 </Button>
                 <Button onClick={this.handleSubmit} color="primary">
-                  Add Appointment
+                  {this.state.editing? "Edit Appointment" : "Add Appointment"}
                 </Button>
               </DialogActions>
             </Dialog>
