@@ -14,10 +14,10 @@ export async function getCovidLikelihood(data) {
   }
 }
 
-export async function getCovidCasesPerOneMillionByCountry(countryName) {
+export async function getCovidTodayCasesByCountry(countryName) {
   try {
     return await (await axios.get(`${COVID_19_API_URL}/${countryName}`)).data
-      .casesPerOneMillion;
+      .todayCases;
   } catch (error) {
     return error;
   }
