@@ -1,5 +1,6 @@
-import Review from "../Components/Chatbot/Review";
+import ThreedModelPage from "../Views/Threedmodel";
 import Post from "../Components/Chatbot/Post";
+import Review from "../Components/Chatbot/Review";
 import MapRedirect from "../Components/Chatbot/MapRedirect";
 import Recheck from "../Components/Chatbot/Recheck";
 
@@ -122,7 +123,32 @@ const ChatbotStepsModel = [
     id: "high-risk",
     message:
       "You are at high risk of COVID based on our assessment. I think you should see a doctor just to be safe. :)",
-    trigger: "find-clinic-question",
+    trigger: "show-threed-model",
+  },
+  {
+    id: "show-threed-model",
+    message: "Would you like to see a 3D visualisation of your condition?",
+    trigger: "threed-model-options",
+  },
+  {
+    id: "threed-model-options",
+    options: [
+      {
+        value: "Yes",
+        label: "Yes",
+        trigger: "display-3D",
+      },
+      {
+        value: "No",
+        label: "No",
+        trigger: "find-clinic-question",
+      },
+    ],
+  },
+  {
+    id: "display-3D",
+    component: <ThreedModelPage />,
+    trigger: "find-clinic-question"
   },
   {
     id: "medium-risk",
@@ -138,7 +164,7 @@ const ChatbotStepsModel = [
   },
   {
     id: "find-clinic-question",
-    message: "Would you like to be to find a nearby testing clinic?",
+    message: "Would you like to be redirected to find a nearby testing clinic?",
     trigger: "clinic-redirect-options",
   },
   {
