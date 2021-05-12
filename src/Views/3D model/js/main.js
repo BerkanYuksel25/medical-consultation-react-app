@@ -100,18 +100,18 @@ function init() {
       
       
         const spriteMaterial = new THREE.SpriteMaterial({
-          map: numberTexture,
-          alphaTest: 0.5,
-          transparent: true,
-          depthTest: false,
-          depthWrite: false });
+            map: numberTexture,
+            alphaTest: 0.5,
+            transparent: true,
+            depthTest: false,
+            depthWrite: false });
       
       
-        sprite = new THREE.Sprite(spriteMaterial);
-        sprite.position.set(250, 250, 250);
-        sprite.scale.set(60, 60, 1);
+            sprite = new THREE.Sprite(spriteMaterial);
+            sprite.position.set(250, 250, 250);
+            sprite.scale.set(60, 60, 1);
       
-        scene.add(sprite);
+            scene.add(sprite);
 
     }
 
