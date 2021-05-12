@@ -68,6 +68,7 @@ class LocationPage extends Component {
   componentDidMount() {
     this.delayedShowMarker();
     this.getCases();
+    this.getCovidClinicsCases();
   }
 
   delayedShowMarker = () => {
@@ -127,7 +128,8 @@ class LocationPage extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log("clinics", data.result.records);
+        this.setState({covidClinicLocations: data.result.records});
       });
   }
 
@@ -234,9 +236,11 @@ class LocationPage extends Component {
             </InfoWindow>
 
             {this.state.covidClinicLocations.map((object, i) => {
+              console.log("MAP LCOATION", object);
               <Marker
-                title={object.name}
-                position={{ lat: object.lat, lng: object.lat }}
+                key={i}
+                title={object.title}
+                position={{ lat: parseInt(object.Latitude), lng: parseInt(object.Longitude) }}
               />;
             })}
 
