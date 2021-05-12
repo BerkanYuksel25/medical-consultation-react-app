@@ -12,11 +12,11 @@ import {
   FormLabel,
   Button,
 } from "@material-ui/core";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
 import { Alert } from "@material-ui/lab";
 import GlobalLayout from "../Components/GlobalLayout";
@@ -133,15 +133,11 @@ export default function ProfilePage() {
       newErrors.password =
         "New passwords must be at least 7 characters in length.";
     }
-    if (
-      confirmPass !== pass ||
-      !confirmPass ||
-      !confirmPass.length
-    ) {
+    if (confirmPass !== pass || !confirmPass || !confirmPass.length) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
     setErrors(newErrors);
-  }
+  };
 
   const isValid = () => {
     return Boolean(
@@ -150,10 +146,8 @@ export default function ProfilePage() {
   };
 
   const isValidPassword = () => {
-    return Boolean(
-      !errors.password && !errors.confirmPassword
-    );
-  }
+    return Boolean(!errors.password && !errors.confirmPassword);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -188,16 +182,14 @@ export default function ProfilePage() {
     event.preventDefault();
     try {
       await auth().currentUser.updatePassword(password.current.value);
-      setPasswordSuccess("Password has been changed")
+      setPasswordSuccess("Password has been changed");
       password.current.value = "";
       confirmPassword.current.value = "";
       validatePassword();
     } catch (error) {
       setPasswordError(error.message);
     }
-  }
-
-
+  };
 
   return (
     <GlobalLayout title={`Edit profile`}>
@@ -344,7 +336,11 @@ export default function ProfilePage() {
             />
           </form>
           <SubmitButton text="Change password" onClick={handleClickOpen} />
-          <Dialog open={dialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <Dialog
+            open={dialogOpen}
+            onClose={handleClose}
+            aria-labelledby="form-dialog-title"
+          >
             <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
             <DialogContent>
               <Collapse in={Boolean(passwordError)}>
@@ -421,7 +417,12 @@ export default function ProfilePage() {
               <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
-              <Button onClick={handleClose} variant="contained" color="primary" disabled={!isValidPassword()} onClick={handleNewPasswordSubmit}>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={!isValidPassword()}
+                onClick={handleNewPasswordSubmit}
+              >
                 Change password
               </Button>
             </DialogActions>
