@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 class MapRedirect extends Component {
   componentDidMount() {
-    this.props.history.push("/LocationPage");
+    this.props.history.push("/location");
   }
 
   render() {

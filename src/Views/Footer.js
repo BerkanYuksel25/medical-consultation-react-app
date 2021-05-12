@@ -33,22 +33,22 @@ export default function Footer() {
           <Grid item xs={12} sm={6}>
             <Grid className={classes.links} container>
               <Grid item xs={12} sm={3}>
-                <Link className={classes.linkText} to={"/DashboardPage"}>
+                <Link className={classes.linkText} to={"/dashboard"}>
                   Home
                 </Link>
               </Grid>
               <Grid item xs={12} sm={3}>
-                <Link className={classes.linkText} to={"/AboutPage"}>
+                <Link className={classes.linkText} to={"/about"}>
                   About
                 </Link>
               </Grid>
               <Grid item xs={12} sm={3}>
-                <Link className={classes.linkText} to={"/LocationPage"}>
+                <Link className={classes.linkText} to={"/location"}>
                   Location
                 </Link>
               </Grid>
               <Grid item xs={12} sm={3}>
-                <Link className={classes.linkText} to={"/AppointmentsPage"}>
+                <Link className={classes.linkText} to={"/appointments"}>
                   Appointments
                 </Link>
               </Grid>
