@@ -95,8 +95,8 @@ function init() {
 
     // Sprite
 
-    const numberTexture = new THREE.CanvasTexture(
-        document.querySelector("#number"));
+        const numberTexture = new THREE.CanvasTexture(
+            document.querySelector("#number"));
       
       
         const spriteMaterial = new THREE.SpriteMaterial({
@@ -113,44 +113,45 @@ function init() {
       
         scene.add(sprite);
 
-}
+    }
 
+    function animate() {
+        controls.update();
+        requestAnimationFrame(animate);
+        // renderer.render(scene, camera);
+        render();
+    }
 
-function animate() {
-    controls.update();
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
+    function render() {
+        renderer.render(scene, camera);
+        updateAnnotationOpacity(); 
+        updateScreenPosition();
+    }
 
-function render() {
-    updateAnnotationOpacity(); 
-    updateScreenPosition();
-}
-
-function updateAnnotationOpacity() {
-    const meshDistance = camera.position.distanceTo(mesh.position);
-    const spriteDistance = camera.position.distanceTo(sprite.position);
-    spriteBehindObject = spriteDistance > meshDistance;
-    sprite.material.opacity = spriteBehindObject ? 0.25 : 1;
+    function updateAnnotationOpacity() {
+        const meshDistance = camera.position.distanceTo(mesh.position);
+        const spriteDistance = camera.position.distanceTo(sprite.position);
+        spriteBehindObject = spriteDistance > meshDistance;
+        sprite.material.opacity = spriteBehindObject ? 0.25 : 1;
   
-    // Do you want a number that changes size according to its position?
-    // Comment out the following line and the `::before` pseudo-element.
-    sprite.material.opacity = 0;
-  }
+        // Do you want a number that changes size according to its position?
+        // Comment out the following line and the `::before` pseudo-element.
+        sprite.material.opacity = 0;
+    }
   
-  function updateScreenPosition() {
-    const vector = new THREE.Vector3(250, 250, 250);
-    const canvas = renderer.domElement;
+    function updateScreenPosition() {
+        const vector = new THREE.Vector3(250, 250, 250);
+        const canvas = renderer.domElement;
   
-    vector.project(camera);
+        vector.project(camera);
   
-    vector.x = Math.round((0.5 + vector.x / 2) * (canvas.width / window.devicePixelRatio));
-    vector.y = Math.round((0.5 - vector.y / 2) * (canvas.height / window.devicePixelRatio));
+        vector.x = Math.round((0.5 + vector.x / 2) * (canvas.width / window.devicePixelRatio));
+        vector.y = Math.round((0.5 - vector.y / 2) * (canvas.height / window.devicePixelRatio));
   
-    annotation.style.top = `${vector.y}px`;
-    annotation.style.left = `${vector.x}px`;
-    annotation.style.opacity = spriteBehindObject ? 0.25 : 1;
-  }
+        annotation.style.top = `${vector.y}px`;
+        annotation.style.left = `${vector.x}px`;
+        annotation.style.opacity = spriteBehindObject ? 0.25 : 1;
+    }
 
 init();
 animate();
