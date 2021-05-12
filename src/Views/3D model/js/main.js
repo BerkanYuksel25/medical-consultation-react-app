@@ -1,28 +1,28 @@
 //Number 
-const canvas = document.getElementById("number");
-const ctx = canvas.getContext("2d");
-const x = 32;
-const y = 32;
-const radius = 30;
-const startAngle = 0;
-const endAngle = Math.PI * 2;
+// const canvas = document.getElementById("number");
+// const ctx = canvas.getContext("2d");
+// const x = 32;
+// const y = 32;
+// const radius = 30;
+// const startAngle = 0;
+// const endAngle = Math.PI * 2;
 
-ctx.fillStyle = "rgb(0, 0, 0)";
-ctx.beginPath();
-ctx.arc(x, y, radius, startAngle, endAngle);
-ctx.fill();
+// ctx.fillStyle = "rgb(0, 0, 0)";
+// ctx.beginPath();
+// ctx.arc(x, y, radius, startAngle, endAngle);
+// ctx.fill();
 
-ctx.strokeStyle = "rgb(255, 255, 255)";
-ctx.lineWidth = 3;
-ctx.beginPath();
-ctx.arc(x, y, radius, startAngle, endAngle);
-ctx.stroke();
+// ctx.strokeStyle = "rgb(255, 255, 255)";
+// ctx.lineWidth = 3;
+// ctx.beginPath();
+// ctx.arc(x, y, radius, startAngle, endAngle);
+// ctx.stroke();
 
-ctx.fillStyle = "rgb(255, 255, 255)";
-ctx.font = "32px sans-serif";
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.fillText("1", x, y);
+// ctx.fillStyle = "rgb(255, 255, 255)";
+// ctx.font = "32px sans-serif";
+// ctx.textAlign = "center";
+// ctx.textBaseline = "middle";
+// ctx.fillText("1", x, y);
 
 
 
@@ -34,8 +34,8 @@ let loader;
 let keyLight, fillLight, backLight;
 let cameraLight, ambientLight;
 // let mtLoader, material; 
-let sprite, spriteBehindObject; 
-const annotation = document.querySelector(".annotation"); 
+// let sprite, spriteBehindObject; 
+// const annotation = document.querySelector(".annotation"); 
 
 function init() {
     // settup scene 
@@ -95,49 +95,49 @@ function init() {
 
     // Sprite
 
-        const numberTexture = new THREE.CanvasTexture(
-            document.querySelector("#number"));
+        // const numberTexture = new THREE.CanvasTexture(
+        //     document.querySelector("#number"));
       
       
-        const spriteMaterial = new THREE.SpriteMaterial({
-            map: numberTexture,
-            alphaTest: 0.5,
-            transparent: true,
-            depthTest: false,
-            depthWrite: false });
+        // const spriteMaterial = new THREE.SpriteMaterial({
+        //     map: numberTexture,
+        //     alphaTest: 0.5,
+        //     transparent: true,
+        //     depthTest: false,
+        //     depthWrite: false });
       
       
-            sprite = new THREE.Sprite(spriteMaterial);
-            sprite.position.set(250, 250, 250);
-            sprite.scale.set(60, 60, 1);
+        //     sprite = new THREE.Sprite(spriteMaterial);
+        //     sprite.position.set(250, 250, 250);
+        //     sprite.scale.set(60, 60, 1);
       
-            scene.add(sprite);
+        //     scene.add(sprite);
 
     }
 
     function animate() {
         controls.update();
         requestAnimationFrame(animate);
-        // renderer.render(scene, camera);
-        render();
-    }
-
-    function render() {
         renderer.render(scene, camera);
-        updateAnnotationOpacity(); 
-        updateScreenPosition();
+        //render();
     }
 
-    function updateAnnotationOpacity() {
-        const meshDistance = camera.position.distanceTo(mesh.position);
-        const spriteDistance = camera.position.distanceTo(sprite.position);
-        spriteBehindObject = spriteDistance > meshDistance;
-        sprite.material.opacity = spriteBehindObject ? 0.25 : 1;
+    // function render() {
+    //     renderer.render(scene, camera);
+    //     updateAnnotationOpacity(); 
+    //     updateScreenPosition();
+    // }
+
+    // function updateAnnotationOpacity() {
+    //     const meshDistance = camera.position.distanceTo(lungs.position);
+    //     const spriteDistance = camera.position.distanceTo(sprite.position);
+    //     spriteBehindObject = spriteDistance > meshDistance;
+    //     sprite.material.opacity = spriteBehindObject ? 0.25 : 1;
   
-        // Do you want a number that changes size according to its position?
-        // Comment out the following line and the `::before` pseudo-element.
-        sprite.material.opacity = 0;
-    }
+    //     // Do you want a number that changes size according to its position?
+    //     // Comment out the following line and the `::before` pseudo-element.
+    //     sprite.material.opacity = 0;
+    // }
   
     function updateScreenPosition() {
         const vector = new THREE.Vector3(250, 250, 250);
