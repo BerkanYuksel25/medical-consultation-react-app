@@ -8,6 +8,8 @@ import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
 import Footer from "./Footer";
+import News from "./News";
+import ProfilePage from "./ProfilePage";
 
 import {
   Button,
@@ -18,6 +20,7 @@ import {
 } from "@material-ui/core";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ThreedModelPage from "./Threedmodel";
 
 const styles = {
   root: {
@@ -108,6 +111,34 @@ class Navbar extends Component {
                   Appointments
                 </Typography>
                 <Typography
+                  name="news"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  News
+                </Typography>
+                <Typography
+                  name="threedmodel"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  3D Model
+                </Typography>
+                <Typography
                   name="about"
                   variant="h4"
                   component="p"
@@ -130,6 +161,21 @@ class Navbar extends Component {
                   justifyContent: "flex-end",
                 }}
               >
+                <Typography
+                  name="profile"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                    marginTop: "12px",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  Profile
+                </Typography>
                 <Button
                   size="large"
                   color="inherit"
@@ -151,6 +197,9 @@ class Navbar extends Component {
           <Route path="/about" component={About} />
           <Route path="/location" component={LocationPage} />
           <Route path="/appointments" component={AppointmentsPage} />
+          <Route path="/news" component={News} />
+          <Route path="/threedmodel" component={ThreedModelPage} />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
         {window.location.pathname !== "/location" && <Footer />}
       </div>

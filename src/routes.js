@@ -8,9 +8,7 @@ import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
 import HomePage from "./Views/HomePage";
 import Navbar from "./Views/Navbar";
-import AppointmentsPage from "./Views/AppointmentsPage";
-import LocationPage from "./Views/LocationPage";
-import SingleAppointmentView from "./Views/SingleAppointmentView";
+import ForgotPasswordPage from "./Views/ForgotPasswordPage";
 
 class RouteConfig extends Component {
   constructor() {
@@ -53,6 +51,11 @@ class RouteConfig extends Component {
           currentUser={this.state.currentUser}
           path={"/register"}
           component={RegisterPage}
+        />
+        <PublicRoute
+          currentUser={this.state.currentUser}
+          path={"/forgot"}
+          component={ForgotPasswordPage}
         />
         <PrivateRoute
           currentUser={this.state.currentUser}
