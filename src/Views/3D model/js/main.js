@@ -1,13 +1,13 @@
 //Number 
-const canvas = getElementById("number"); 
-const ctx = canvas.getContext("2d"); 
-const x = 32; 
-const y = 32; 
-const radius = 30; 
-const startAngle = 0; 
-const endAngle = Math.PI * 2; 
+const canvas = document.getElementById("number");
+const ctx = canvas.getContext("2d");
+const x = 32;
+const y = 32;
+const radius = 30;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
 
-ctx.fillStyle = "rgb(0,0,0)"; 
+ctx.fillStyle = "rgb(0, 0, 0)";
 ctx.beginPath();
 ctx.arc(x, y, radius, startAngle, endAngle);
 ctx.fill();
@@ -93,64 +93,25 @@ function init() {
       //animate();   
     });
 
-//     sprite = makeTextSprite("lung", {fontsize: 24,});
-//     scene.add(sprite);
+    // Sprite
 
-//     function makeTextSprite( message, parameters )
-// {
-// 	if ( parameters === undefined ) parameters = {};
-	
-// 	var fontface = parameters.hasOwnProperty("fontface") ? 
-// 		parameters["fontface"] : "Arial";
-	
-// 	var fontsize = parameters.hasOwnProperty("fontsize") ? 
-// 		parameters["fontsize"] : 18;
-	
-// 	var borderThickness = parameters.hasOwnProperty("borderThickness") ? 
-// 		parameters["borderThickness"] : 4;
-	
-// 	var borderColor = parameters.hasOwnProperty("borderColor") ?
-// 		parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
-	
-// 	var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
-// 		parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
-
-// 	var spriteAlignment = THREE.SpriteAlignment;
-		
-// 	var canvas = document.createElement('canvas');
-// 	var context = canvas.getContext('2d');
-// 	context.font = "Bold " + fontsize + "px " + fontface;
-    
-// 	// get size data (height depends only on font size)
-// 	var metrics = context.measureText( message );
-// 	var textWidth = metrics.width;
-	
-// 	// // background color
-// 	// context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
-// 	// 							  + backgroundColor.b + "," + backgroundColor.a + ")";
-// 	// // border color
-// 	// context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
-// 	// 							  + borderColor.b + "," + borderColor.a + ")";
-
-// 	// context.lineWidth = borderThickness;
-// 	// //roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
-// 	// // 1.4 is extra height factor for text below baseline: g,j,p,q.
-	
-// 	// text color
-// 	context.fillStyle = "rgba(0, 0, 0, 1.0)";
-
-// 	context.fillText( message, borderThickness, fontsize + borderThickness);
-	
-// 	// canvas contents will be used for a texture
-// 	var texture = new THREE.Texture(canvas) 
-// 	texture.needsUpdate = true;
-
-// 	var spriteMaterial = new THREE.SpriteMaterial( 
-// 		{ map: texture, useScreenCoordinates: false, alignment: spriteAlignment } );
-// 	var sprite = new THREE.Sprite( spriteMaterial );
-// 	sprite.scale.set(100,50,1.0);
-// 	return sprite;	
-// }
+    const numberTexture = new THREE.CanvasTexture(
+        document.querySelector("#number"));
+      
+      
+        const spriteMaterial = new THREE.SpriteMaterial({
+          map: numberTexture,
+          alphaTest: 0.5,
+          transparent: true,
+          depthTest: false,
+          depthWrite: false });
+      
+      
+        sprite = new THREE.Sprite(spriteMaterial);
+        sprite.position.set(250, 250, 250);
+        sprite.scale.set(60, 60, 1);
+      
+        scene.add(sprite);
 
 }
 
@@ -160,6 +121,36 @@ function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
 }
+
+function render() {
+    updateAnnotationOpacity(); 
+    updateScreenPosition();
+}
+
+function updateAnnotationOpacity() {
+    const meshDistance = camera.position.distanceTo(mesh.position);
+    const spriteDistance = camera.position.distanceTo(sprite.position);
+    spriteBehindObject = spriteDistance > meshDistance;
+    sprite.material.opacity = spriteBehindObject ? 0.25 : 1;
+  
+    // Do you want a number that changes size according to its position?
+    // Comment out the following line and the `::before` pseudo-element.
+    sprite.material.opacity = 0;
+  }
+  
+  function updateScreenPosition() {
+    const vector = new THREE.Vector3(250, 250, 250);
+    const canvas = renderer.domElement;
+  
+    vector.project(camera);
+  
+    vector.x = Math.round((0.5 + vector.x / 2) * (canvas.width / window.devicePixelRatio));
+    vector.y = Math.round((0.5 - vector.y / 2) * (canvas.height / window.devicePixelRatio));
+  
+    annotation.style.top = `${vector.y}px`;
+    annotation.style.left = `${vector.x}px`;
+    annotation.style.opacity = spriteBehindObject ? 0.25 : 1;
+  }
 
 init();
 animate();
