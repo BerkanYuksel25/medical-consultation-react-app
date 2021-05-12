@@ -8,9 +8,9 @@ import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
 import Footer from "./Footer";
-import SingleAppointmentView from "./SingleAppointmentView";
 import News from "./News";
 import ProfilePage from "./ProfilePage";
+import SingleAppointmentView from "./SingleAppointmentView";
 
 import {
   Button,
@@ -112,7 +112,7 @@ class Navbar extends Component {
                   Appointments
                 </Typography>
                 <Typography
-                  name="News"
+                  name="news"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -126,7 +126,7 @@ class Navbar extends Component {
                   News
                 </Typography>
                 <Typography
-                  name="Threedmodel"
+                  name="threedmodel"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -140,7 +140,7 @@ class Navbar extends Component {
                   3D Model
                 </Typography>
                 <Typography
-                  name="About"
+                  name="about"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -163,7 +163,7 @@ class Navbar extends Component {
                 }}
               >
                 <Typography
-                  name="Profile"
+                  name="profile"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -194,14 +194,14 @@ class Navbar extends Component {
         </div>
 
         <Switch>
-          <Route exact path="/dashboard" component={DashboardPage} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/location" component={LocationPage} />
+          <Route path="/dashboard" component={DashboardPage} />
+          <Route path="/about" component={About} />
+          <Route path="/location" component={LocationPage} />
           <Route exact path="/appointments" component={AppointmentsPage} />
-          <Route exact path="/News" component={News} />
-          <Route exact path="/singleappointment" component={SingleAppointmentView} />
-          <Route exact path="/Threedmodel" component={ThreedModelPage} />
-          <Route exact path="/Profile" component={ProfilePage} />
+          <Route path="/appointments/:id" component={SingleAppointmentView} />
+          <Route path="/news" component={News} />
+          <Route path="/threedmodel" component={ThreedModelPage} />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
         {window.location.pathname !== "/location" && <Footer />}
       </div>

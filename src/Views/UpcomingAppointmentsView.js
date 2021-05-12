@@ -41,7 +41,7 @@ export default function UpcomingAppointmentsView() {
   const history = useHistory();
 
   const handleDetailsClick = (event) => {
-    history.push("/singleappointment");
+    history.push("/appointments/1");
   };
 
   return (
