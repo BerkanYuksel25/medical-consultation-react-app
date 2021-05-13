@@ -49,13 +49,24 @@ class AppointmentsPage extends Component {
         },
       ],
       open: false,
-      apptDateTime: new Date(),
-      apptType: "GP",
-      apptTitle: "Example appointment",
-      apptDocName: "Dr Nick",
-      apptDescription: "Dr Nick will check you out",
-      apptLocation: "Dr Nick's house",
-      apptList: [],
+      //vvvvvvvvvv Dialog Box Variables vvvvvvvvvv
+      dialogApptType: "GP",
+      dialogApptTitle: "Example appointment",
+      dialogApptDateTime: new Date(),
+      dialogApptDocName: "Dr Nick",
+      dialogApptDescription: "Dr Nick will check you out",
+      dialogApptLocation: "Dr Nick's house",
+      //^^^^^^^^^^ Dialog Box Variables ^^^^^^^^^^
+      apptList: [{
+        //id: ,
+        //apptTitle: ,
+        //apptTime: ,
+        //apptType: ,
+        //apptDocName: ,
+        //apptDescription: ,
+        //apptLocation: ,
+      }],
+      //Variables used for editing
       editing: false,
       eventKey: new Date(),
     };
@@ -93,36 +104,7 @@ class AppointmentsPage extends Component {
           console.log("Setting apptList state, apptList:");
           console.log(this.state.apptList);
         });
-
-        // delete and rework to use above loop ^^^
-        //
-        //
-        //
-        //
-        var keys = Object.keys(appointments);
-        var tempEvents = [{}];
-
-        for (let i = 0; i < keys.length; i++) {
-          var k = keys[i];
-          var dbApptName = appointments[k].appointment_name;
-          var dbApptTime = appointments[k].appointment_time;
-          var dbApptDesc = appointments[k].appointment_description;
-          //   console.log(dbApptName, dbApptTime);
-          tempEvents.push({
-            start: new Date(dbApptTime),
-            end: new Date(dbApptTime),
-            title: dbApptName,
-            description: dbApptDesc,
-          });
-        }
-
-        this.setState({ events: tempEvents });
-        //
-        //
-        //
-        //
       } catch (err) {
-        // console.log("ERROR: no appointments in database");
         console.log("ERROR, details below");
         console.log(err);
       }
@@ -138,33 +120,26 @@ class AppointmentsPage extends Component {
     if (this.state.editing) this.deleteEvent(this.state.eventKey);
 
     //add to database
-    console.log(this.state.apptDateTime.valueOf());
-    console.log(this.state.apptTitle);
+    console.log(this.state.dialogApptDateTime.valueOf());
+    console.log(this.state.dialogApptTitle);
     await database()
       .ref(
         "appointments/" +
           this.state.user.uid +
           "/" +
-          this.state.apptDateTime.valueOf()
+          this.state.dialogApptDateTime.valueOf()
       )
       .set({
-        appointment_time: this.state.apptDateTime.toISOString(),
-        appointment_name: this.state.apptTitle,
-        appointment_type: this.state.apptType,
-        appointment_doc: this.state.apptDocName,
-        appointment_description: this.state.apptDescription,
-        appointment_location: this.state.apptLocation,
+        appointment_time: this.state.dialogApptDateTime.toISOString(),
+        appointment_name: this.state.dialogApptTitle,
+        appointment_type: this.state.dialogApptType,
+        appointment_doc: this.state.dialogApptDocName,
+        appointment_description: this.state.dialogApptDescription,
+        appointment_location: this.state.dialogApptLocation,
       })
       .catch((error) => {
         console.log(error);
       });
-
-    //add event to calender to display | might be useless code
-    // this.state.events.push({
-    //   start: this.state.apptDateTime,
-    //   end: this.state.apptDateTime,
-    //   title: this.state.apptTitle,
-    // });
 
     this.resetDialogBox();
   };
@@ -174,27 +149,27 @@ class AppointmentsPage extends Component {
   };
 
   handleChangeFormApptType = (event) => {
-    this.setState({ apptType: event.target.value });
+    this.setState({ dialogApptType: event.target.value });
   };
 
   handleChangeDateTime = (e) => {
-    this.setState({ apptDateTime: new Date(e.target.value) });
+    this.setState({ dialogApptDateTime: new Date(e.target.value) });
   };
 
   handleChangeFormTitle = (e) => {
-    this.setState({ apptTitle: e.target.value });
+    this.setState({ dialogApptTitle: e.target.value });
   };
 
   handleChangeFormDocName = (e) => {
-    this.setState({ apptDocName: e.target.value });
+    this.setState({ dialogApptDocName: e.target.value });
   };
 
   handleChangeFormDescription = (e) => {
-    this.setState({ apptDescription: e.target.value });
+    this.setState({ dialogApptDescription: e.target.value });
   };
 
   handleChangeFormLocation = (e) => {
-    this.setState({ apptLocation: e.target.value });
+    this.setState({ dialogApptLocation: e.target.value });
   };
 
   handleSelectSlot = ({ start, end }) => {
@@ -204,16 +179,24 @@ class AppointmentsPage extends Component {
   handleSelectEvent = async (e) => {
     //open dialog box with clicked events.
     this.setState({
-      apptDateTime: e.start,
-      apptTitle: e.title,
+      dialogApptType: e.apptType,
+      dialogApptTitle: e.apptTitle,
+      dialogApptDateTime: new Date(e.apptTime),
+      dialogApptDocName: e.apptDocName,
+      dialogApptDescription: e.apptDescription,
+      dialogApptLocation: e.apptLocation,
       open: true,
       editing: true,
-      eventKey: e.start.valueOf(),
+      eventKey: new Date(e.apptTime),
     });
   };
 
+  handleCardClick = (e) => {
+    this.handleSelectEvent(e);
+  }
+
   handleDelete = () => {
-    this.deleteEvent(this.state.apptDateTime);
+    this.deleteEvent(this.state.dialogApptDateTime);
     this.resetDialogBox();
   };
 
@@ -221,19 +204,19 @@ class AppointmentsPage extends Component {
     //closes dialog box and reset values
     this.setState({
       open: false,
-      apptDateTime: new Date(),
-      apptTitle: "Example appointment",
-      apptDocName: "Dr Nick",
-      apptDescription: "Dr Nick will check you out ;)",
+      dialogApptDateTime: new Date(),
+      dialogApptTitle: "Example appointment",
+      dialogApptDocName: "Dr Nick",
+      dialogApptDescription: "Dr Nick will check you out ;)",
       editing: false,
       eventKey: new Date(),
     });
   };
 
-  deleteEvent = async (e) => {
+  deleteEvent = async (dbKey) => {
     //delete event from db
     await database()
-      .ref("appointments/" + this.state.user.uid + "/" + e.valueOf())
+      .ref("appointments/" + this.state.user.uid + "/" + dbKey.valueOf())
       .remove();
   };
 
@@ -266,9 +249,10 @@ class AppointmentsPage extends Component {
           <Grid item xs={8}>
             <Calendar
               localizer={localizer}
-              events={this.state.events}
-              startAccessor="start"
-              endAccessor="end"
+              events={this.state.apptList}
+              startAccessor="apptTime"
+              endAccessor="apptTime"
+              titleAccessor="apptTitle"
               style={{ height: 900 }}
               popup
               //selectable
@@ -300,13 +284,13 @@ class AppointmentsPage extends Component {
                       {appt.apptDocName}
                     </Typography>
                     <Typography className={classes.pos} color="textSecondary">
-                      {appt.apptTime}
+                      {new Date(appt.apptTime).toLocaleString()}
                     </Typography>
                     <Typography variant="body2" component="p">
                       {appt.apptDescription}
                     </Typography>
                     <CardActions>
-                      <Button size="small">More info</Button>
+                      <Button size="small" onClick={() => this.handleCardClick(appt)}>More info</Button>
                     </CardActions>
                   </CardContent>
                 </Card>
@@ -324,14 +308,14 @@ class AppointmentsPage extends Component {
               <DialogContent>
                 <DialogContentText>
                   To {this.state.editing ? "edit" : "create"} an
-                  appointment,please enter the mandatory fields.
+                  appointment, please enter the mandatory fields.
                 </DialogContentText>
                 <TextField
                   id="txt_appt_type"
                   select
-                  label="Select Appointment Type"
+                  label="Appointment Type"
                   fullWidth
-                  value={this.apptType}
+                  value={this.state.dialogApptType}
                   onChange={this.handleChangeFormApptType}
                   // helperText="Please select your appointment type"
                 >
@@ -343,7 +327,7 @@ class AppointmentsPage extends Component {
                   id="txt_title"
                   label="Appointment Title"
                   fullWidth
-                  value={this.state.apptTitle}
+                  value={this.state.dialogApptTitle}
                   onChange={this.handleChangeFormTitle}
                 />
                 <TextField
@@ -354,15 +338,15 @@ class AppointmentsPage extends Component {
                   label="Date"
                   type="datetime-local"
                   defaultValue={
-                    this.state.apptDateTime.getFullYear() +
+                    this.state.dialogApptDateTime.getFullYear() +
                     "-" +
-                    ("0" + (this.state.apptDateTime.getMonth() + 1)).slice(-2) +
+                    ("0" + (this.state.dialogApptDateTime.getMonth() + 1)).slice(-2) +
                     "-" +
-                    ("0" + this.state.apptDateTime.getDate()).slice(-2) +
+                    ("0" + this.state.dialogApptDateTime.getDate()).slice(-2) +
                     "T" +
-                    ("0" + this.state.apptDateTime.getHours()).slice(-2) +
+                    ("0" + this.state.dialogApptDateTime.getHours()).slice(-2) +
                     ":" +
-                    ("0" + this.state.apptDateTime.getMinutes()).slice(-2)
+                    ("0" + this.state.dialogApptDateTime.getMinutes()).slice(-2)
                   }
                   InputLabelProps={{
                     shrink: true,
@@ -373,21 +357,21 @@ class AppointmentsPage extends Component {
                   id="txt_doc_name"
                   label="Physican"
                   fullWidth
-                  value={this.state.apptDocName}
+                  value={this.state.dialogApptDocName}
                   onChange={this.handleChangeFormDocName}
                 />
                 <TextField
                   id="txt_description"
                   label="Appointment Description"
                   fullWidth
-                  value={this.state.apptDescription}
+                  value={this.state.dialogApptDescription}
                   onChange={this.handleChangeFormDescription}
                 />
                 <TextField
                   id="txt_location"
                   label="Appointment Location"
                   fullWidth
-                  value={this.state.apptLocation}
+                  value={this.state.dialogApptLocation}
                   onChange={this.handleChangeFormLocation}
                 />
               </DialogContent>
