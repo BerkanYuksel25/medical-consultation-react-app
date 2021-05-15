@@ -173,7 +173,8 @@ export default function RegisterPage() {
           email: email,
           birthday: birthday,
           gender: gender,
-          doctor: false
+          doctor: false,
+          field: null
         });
 
       history.push("/");

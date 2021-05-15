@@ -20,7 +20,6 @@ import SideLayout from "../Components/SideLayout";
 import SubmitButton from "../Components/SubmitButton";
 import { validateEmail, validateNewPassword, validateCode } from "../Common/Utils";
 import { auth, database } from "../Services/firebase";
-import LocationAutoComplete from "../Components/LocationAutoComplete";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -60,7 +59,6 @@ export default function DoctorRegisterPage() {
   const passwordRef = React.useRef("");
   const confirmPasswordRef = React.useRef("");
   const doctorCodeRef = React.useRef("");
-  const locationRef = React.useRef("");
   const fieldRef = React.useRef("");
 
   const handleLoginClick = (event) => {
@@ -76,6 +74,7 @@ export default function DoctorRegisterPage() {
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
     const DoctorCode = doctorCodeRef.current.value;
+    const field = fieldRef.current.value;
     const newErrors = {};
 
     if (!firstName || !firstName.length) {
@@ -88,6 +87,9 @@ export default function DoctorRegisterPage() {
 
     if (!birthday || !birthday.length) {
       newErrors.birthday = "Empty birthday.";
+    }
+    if (!field || !field.length) {
+      newErrors.field = "Empty field.";
     }
 
     if (!validateEmail(email)) {
@@ -125,6 +127,7 @@ export default function DoctorRegisterPage() {
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
     const doctorCode = doctorCodeRef.current.value;
+    const field = fieldRef.current.value;
 
     return {
       firstName,
@@ -133,7 +136,8 @@ export default function DoctorRegisterPage() {
       password,
       confirmPassword,
       birthday,
-      doctorCode
+      doctorCode,
+      field
     };
   };
 
@@ -145,7 +149,8 @@ export default function DoctorRegisterPage() {
       password,
       confirmPassword,
       birthday,
-      doctorCode
+      doctorCode,
+      field
     } = getValues();
     return Boolean(
       !errors.firstName &&
@@ -155,19 +160,21 @@ export default function DoctorRegisterPage() {
       !errors.confirmPassword &&
       !errors.birthday &&
       !errors.doctorCode &&
+      !errors.field &&
       firstName &&
       lastName &&
       email &&
       password &&
       confirmPassword &&
       birthday &&
-      doctorCode
+      doctorCode &&
+      field
     );
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { email, password, firstName, lastName, birthday } = getValues();
+    const { email, password, firstName, lastName, birthday, field } = getValues();
 
     try {
       await auth().createUserWithEmailAndPassword(email, password);
@@ -187,9 +194,9 @@ export default function DoctorRegisterPage() {
           email: email,
           birthday: birthday,
           gender: gender,
-          doctor: true
+          doctor: true,
+          field: field
         });
-
       history.push("/");
     } catch (error) {
       setRegisterError(error.message);
@@ -265,7 +272,6 @@ export default function DoctorRegisterPage() {
           onBlur={validateFields}
           onChange={validateFields}
         />
-        <LocationAutoComplete/>
         <TextField
           inputRef={fieldRef}
           error={Boolean(errors.field)}
