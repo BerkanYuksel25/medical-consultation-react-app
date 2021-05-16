@@ -54,6 +54,11 @@ export default function LoginPage() {
     history.push("/forgot");
   };
 
+  const handleDoctorClick = (event) => {
+    event.preventDefault();
+    history.push("/register/doctor");
+  };
+
   const validateFields = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -179,6 +184,16 @@ export default function LoginPage() {
                 onClick={handleForgotPasswordClick}
               >
                 Forgot password
+              </Link>
+            </Typography>
+            <Typography variant="body1">
+              Are you a Doctor wanting to sign up?{" "}
+              <Link
+                className={classes.link}
+                href="#"
+                onClick={handleDoctorClick}
+              >
+                Click here
               </Link>
             </Typography>
           </Grid>

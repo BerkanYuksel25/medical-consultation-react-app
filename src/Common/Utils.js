@@ -8,6 +8,10 @@ export function validatePassword(password) {
   return password && password.length > 0;
 }
 
+export function validateCode(code) {
+  return code === "drnick";
+}
+
 export function validateNewPassword(password) {
   return password && password.length > 7;
 }
