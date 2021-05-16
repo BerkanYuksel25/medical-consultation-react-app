@@ -60,22 +60,24 @@ class LocationPage extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
+      covidClinicLocations: [],
     };
 
     this.mapClicked = this.mapClicked.bind(this);
+    this.getCases = this.getCases.bind(this);
+    this.getCovidClinicsCases = this.getCovidClinicsCases.bind(this);
   }
 
   componentDidMount() {
-    this.delayedShowMarker();
     this.getCases();
+    this.getCovidClinicsCases();
+    this.delayedShowMarker();
   }
 
   delayedShowMarker = () => {
     setTimeout(() => {
       this.getGeoLocation();
     }, 2000);
-
-    setTimeout(() => {}, 2000);
   };
 
   getCases() {
@@ -118,6 +120,20 @@ class LocationPage extends Component {
       });
   }
 
+  getCovidClinicsCases() {
+    const req = new Request(
+      "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=85da884f-a9f5-4cb3-95e8-d6b81b0d2e3a&q=New_South_Wales"
+    );
+    fetch(req)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log("clinics", data.result.records);
+        this.setState({ covidClinicLocations: data.result.records });
+      });
+  }
+
   getGeoLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -152,13 +168,6 @@ class LocationPage extends Component {
     });
   }
 
-  onMarkerClick = (props, marker, e) =>
-    this.setState({
-      selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true,
-    });
-
   onMapClicked = (props) => {
     if (this.state.showingInfoWindow) {
       this.setState({
@@ -166,6 +175,30 @@ class LocationPage extends Component {
         activeMarker: null,
       });
     }
+  };
+
+  onMapClicked = () => {
+    if (this.state.showingInfoWindow)
+      this.setState({
+        activeMarker: null,
+        showingInfoWindow: false,
+      });
+  };
+
+  onMarkerClick = (props, marker) => {
+    console.log("Marker Click", props )
+    this.setState({
+      activeMarker: marker,
+      selectedPlace: props,
+      showingInfoWindow: true,
+    });
+  };
+
+  onInfoWindowClose = () => {
+    this.setState({
+      activeMarker: null,
+      showingInfoWindow: false,
+    });
   };
 
   render() {
@@ -183,7 +216,6 @@ class LocationPage extends Component {
               lat: this.state.currentLatLng.lat,
               lng: this.state.currentLatLng.lng,
             }}
-            onClick={this.mapClicked}
           >
             <Marker
               onClick={this.onMarkerClick}
@@ -221,7 +253,7 @@ class LocationPage extends Component {
               name={"Royal Prince Alfred Hospital"}
               position={{ lat: -33.8893, lng: 151.1831 }}
             />
-            <InfoWindow
+            {/* <InfoWindow
               marker={this.state.activeMarker}
               visible={this.state.showingInfoWindow}
             >
@@ -230,13 +262,35 @@ class LocationPage extends Component {
                   {this.state.selectedPlace.name}
                 </Typography>
               </div>
-            </InfoWindow>
+            </InfoWindow> */}
+
             <HeatMap
               gradient={gradient}
               opacity={1}
               positions={this.state.positions}
               radius={20}
             />
+
+            {this.state.covidClinicLocations.map((marker, i) => {
+              return (
+                <Marker
+                  id={i}
+                  name={marker.title}
+                  position={{ lat: marker.Latitude, lng: marker.Longitude }}
+                  onClick={this.onMarkerClick}
+                ></Marker>
+              );
+            })}
+
+            <InfoWindow
+              marker={this.state.activeMarker}
+              onClose={this.onInfoWindowClose}
+              visible={this.state.showingInfoWindow}
+            >
+              <div>
+                <h5>{this.state.selectedPlace.name}</h5>
+              </div>
+            </InfoWindow>
           </Map>
         ) : (
           <div
