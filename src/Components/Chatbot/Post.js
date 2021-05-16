@@ -5,7 +5,7 @@ import { database } from "../../Services/firebase";
 import { getAge, convertToONEZERO } from "../../Common/Utils";
 import {
   getCovidLikelihood,
-  getCovidCasesPerOneMillionByCountry,
+  getCovidTodayCasesByCountry,
 } from "Services/api";
 
 class Post extends Component {
@@ -52,11 +52,11 @@ class Post extends Component {
   }
 
   async makeDecisionBasedOnCovidLikelihood(covidLikelihood) {
-    const covidCasesPerOneMillion = await getCovidCasesPerOneMillionByCountry(
+    const covidTodayCases = await getCovidTodayCasesByCountry(
       "australia"
     );
 
-    const covidThresholdMultiplier = covidCasesPerOneMillion / 1000;
+    const covidThresholdMultiplier = covidTodayCases >= 5 ? 1.1 : 0.9;
 
     const covidLikelihoodUpperThreshold = 20 * covidThresholdMultiplier;
     const covidLikelihoodLowerThreshold = 10 * covidThresholdMultiplier;

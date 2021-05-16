@@ -8,7 +8,9 @@ import DashboardPage from "./DashboardPage";
 import About from "./AboutPage";
 import AppointmentsPage from "./AppointmentsPage";
 import Footer from "./Footer";
+import News from "./News";
 import ProfilePage from "./ProfilePage";
+import SingleAppointmentView from "./SingleAppointmentView";
 
 import {
   Button,
@@ -19,6 +21,7 @@ import {
 } from "@material-ui/core";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ThreedModelPage from "./Threedmodel";
 
 const styles = {
   root: {
@@ -43,7 +46,7 @@ class Navbar extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.props.history.push("/DashboardPage");
+      this.props.history.push("/dashboard");
     }, 1000);
   }
 
@@ -67,7 +70,7 @@ class Navbar extends Component {
             <Toolbar>
               <div style={{ width: "50%" }}>
                 <Typography
-                  name="DashboardPage"
+                  name="dashboard"
                   component="p"
                   variant="h4"
                   color="inherit"
@@ -81,7 +84,7 @@ class Navbar extends Component {
                   Dashboard
                 </Typography>
                 <Typography
-                  name="LocationPage"
+                  name="location"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -95,7 +98,7 @@ class Navbar extends Component {
                   Location
                 </Typography>
                 <Typography
-                  name="AppointmentsPage"
+                  name="appointments"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -109,7 +112,35 @@ class Navbar extends Component {
                   Appointments
                 </Typography>
                 <Typography
-                  name="About"
+                  name="news"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  News
+                </Typography>
+                <Typography
+                  name="threedmodel"
+                  variant="h4"
+                  component="p"
+                  color="inherit"
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "2em",
+                    display: "inline",
+                  }}
+                  onClick={this.onChangeTab}
+                >
+                  3D Model
+                </Typography>
+                <Typography
+                  name="about"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -132,7 +163,7 @@ class Navbar extends Component {
                 }}
               >
                 <Typography
-                  name="Profile"
+                  name="profile"
                   variant="h4"
                   component="p"
                   color="inherit"
@@ -163,13 +194,16 @@ class Navbar extends Component {
         </div>
 
         <Switch>
-          <Route exact path="/DashboardPage" component={DashboardPage} />
-          <Route exact path="/About" component={About} />
-          <Route exact path="/LocationPage" component={LocationPage} />
-          <Route exact path="/AppointmentsPage" component={AppointmentsPage} />
-          <Route exact path="/Profile" component={ProfilePage} />
+          <Route path="/dashboard" component={DashboardPage} />
+          <Route path="/about" component={About} />
+          <Route path="/location" component={LocationPage} />
+          <Route exact path="/appointments" component={AppointmentsPage} />
+          <Route path="/appointments/:id" component={SingleAppointmentView} />
+          <Route path="/news" component={News} />
+          <Route path="/threedmodel" component={ThreedModelPage} />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
-        {window.location.pathname !== "/LocationPage" && <Footer />}
+        {window.location.pathname !== "/location" && <Footer />}
       </div>
     );
   }

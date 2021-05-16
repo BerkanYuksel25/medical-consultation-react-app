@@ -72,3 +72,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### News feature
+
+As feature does not yet have a cors proxy,  the console will read 'the server responded with a status of 403 (forbidden)'  
+To view the feature in work, click the link within the console 'http://cors-anywhere.herokuapp.com/corsdemo' and request temporary access.

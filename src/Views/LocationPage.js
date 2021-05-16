@@ -5,6 +5,7 @@ import {
   Marker,
   InfoWindow,
   HeatMap,
+  Circle
 } from "google-maps-react";
 import { Typography, CircularProgress } from "@material-ui/core";
 
@@ -221,6 +222,18 @@ class LocationPage extends Component {
               label={"Current Location"}
               name={"Current Location"}
               position={this.state.currentLatLng}
+            />
+            <Circle
+              radius={2200}
+              center={this.state.currentLatLng}
+              onMouseover={() => console.log('mouseover')}
+              onClick={() => console.log('click')}
+              onMouseout={() => console.log('mouseout')}
+              strokeColor='transparent'
+              strokeOpacity={0}
+              strokeWeight={5}
+              fillColor='#FF0000'
+              fillOpacity={0.2}
             />
             <Marker
               onClick={this.onMarkerClick}
