@@ -98,7 +98,7 @@ export default function LoginPage() {
     try {
       await auth().signInWithEmailAndPassword(email, password);
 
-      history.push("/");
+      history.push("/dashboard");
     } catch (error) {
       setLoginError(error.message);
     }

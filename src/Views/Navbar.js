@@ -54,7 +54,7 @@ class Navbar extends Component {
     auth()
       .signOut()
       .then((data) => {
-        window.location.replace("/home");
+        window.location.replace("/");
       });
   };
 

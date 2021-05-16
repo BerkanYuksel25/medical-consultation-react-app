@@ -197,7 +197,7 @@ export default function DoctorRegisterPage() {
           doctor: true,
           field: field
         });
-      history.push("/");
+      history.push("/dashboard");
     } catch (error) {
       setRegisterError(error.message);
     }

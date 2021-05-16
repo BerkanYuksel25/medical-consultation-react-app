@@ -64,6 +64,11 @@ export default function RegisterPage() {
     history.push("/login");
   };
 
+  const handleDoctorClick = (event) => {
+    event.preventDefault();
+    history.push("/register/doctor");
+  };
+
   const validateFields = () => {
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
@@ -137,17 +142,17 @@ export default function RegisterPage() {
     } = getValues();
     return Boolean(
       !errors.firstName &&
-        !errors.lastName &&
-        !errors.email &&
-        !errors.password &&
-        !errors.confirmPassword &&
-        !errors.birthday &&
-        firstName &&
-        lastName &&
-        email &&
-        password &&
-        confirmPassword &&
-        birthday
+      !errors.lastName &&
+      !errors.email &&
+      !errors.password &&
+      !errors.confirmPassword &&
+      !errors.birthday &&
+      firstName &&
+      lastName &&
+      email &&
+      password &&
+      confirmPassword &&
+      birthday
     );
   };
 
@@ -177,7 +182,8 @@ export default function RegisterPage() {
           field: null
         });
 
-      history.push("/");
+      localStorage.setItem("user", JSON.stringify(auth().currentUser));
+      history.push("/dashboard");
     } catch (error) {
       setRegisterError(error.message);
     }
@@ -336,6 +342,16 @@ export default function RegisterPage() {
                 onClick={handleLoginClick}
               >
                 Sign In
+              </Link>
+            </Typography>
+            <Typography variant="body1">
+              Are you a Doctor wanting to sign up?{" "}
+              <Link
+                className={classes.link}
+                href="#"
+                onClick={handleDoctorClick}
+              >
+                Click here
               </Link>
             </Typography>
           </Grid>
