@@ -6,10 +6,9 @@ import { PrivateRoute, PublicRoute } from "./Common/AuthGuard";
 // Pages
 import LoginPage from "./Views/LoginPage";
 import RegisterPage from "./Views/RegisterPage";
+import DoctorRegisterPage from "./Views/DoctorRegisterPage";
 import HomePage from "./Views/HomePage";
 import Navbar from "./Views/Navbar";
-import AppointmentsPage from "./Views/AppointmentsPage";
-import LocationPage from "./Views/LocationPage";
 import ForgotPasswordPage from "./Views/ForgotPasswordPage";
 
 class RouteConfig extends Component {
@@ -51,6 +50,11 @@ class RouteConfig extends Component {
         />
         <PublicRoute
           currentUser={this.state.currentUser}
+          path={"/register/doctor"}
+          component={DoctorRegisterPage}
+        />
+        <PublicRoute
+          currentUser={this.state.currentUser}
           path={"/register"}
           component={RegisterPage}
         />
@@ -59,20 +63,10 @@ class RouteConfig extends Component {
           path={"/forgot"}
           component={ForgotPasswordPage}
         />
-        <Route
-          currentUser={this.state.currentUser}
-          path="/location"
-          component={LocationPage}
-        />
         <PrivateRoute
           currentUser={this.state.currentUser}
           path="/"
           component={Navbar}
-        />
-        <PrivateRoute
-          currentUser={this.state.currentUser}
-          path={"/appointments"}
-          component={AppointmentsPage}
         />
       </Switch>
     );
