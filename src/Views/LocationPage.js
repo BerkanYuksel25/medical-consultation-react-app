@@ -261,6 +261,12 @@ class LocationPage extends Component {
                 <Typography variant="body1" component="p">
                   {this.state.selectedPlace.name}
                 </Typography>
+                <Typography variant="body3" component="p">
+                  Address:
+                </Typography>
+                <Typography variant="body3" component="p">
+                  PH:
+                </Typography>
               </div>
             </InfoWindow> */}
 
