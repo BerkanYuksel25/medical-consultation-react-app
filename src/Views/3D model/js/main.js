@@ -144,7 +144,7 @@ function animate() {
 function createMarker(model, position) {
   const loader = new THREE.TextureLoader();
   loader.crossOrigin = "";
-  const map = loader.load("https://i.imgur.com/EZynrrA.png");
+  const map = loader.load("./img/1.png");
   // map.encoding = sRGBEncoding;
 
   const spriteMaterialFront = new THREE.SpriteMaterial({ map });
