@@ -108,9 +108,9 @@ function init() {
     renderer.render(scene, camera);
     //animate();
 
-    createMarker(lungs, new Vector3(0, 17, 8));
-    createMarker(lungs, new Vector3(4, 51, 1.7));
-    createMarker(lungs, new Vector3(-6, 0, 4));
+    createMarker(lungs, new THREE.Vector3(0, 17, 8));
+    createMarker(lungs, new THREE.Vector3(4, 51, 1.7));
+    createMarker(lungs, new THREE.Vector3(-6, 0, 4));
   });
 
   // Sprite
@@ -140,24 +140,24 @@ function animate() {
 }
 
 function createMarker(model, position) {
-  const loader = new TextureLoader();
+  const loader = new THREE.TextureLoader();
   loader.crossOrigin = "";
   const map = loader.load("https://i.imgur.com/EZynrrA.png");
-  map.encoding = sRGBEncoding;
+  // map.encoding = sRGBEncoding;
 
-  const spriteMaterialFront = new SpriteMaterial({ map });
+  const spriteMaterialFront = new THREE.SpriteMaterial({ map });
 
-  const spriteFront = new Sprite(spriteMaterialFront);
+  const spriteFront = new THREE.Sprite(spriteMaterialFront);
   spriteFront.position.copy(position);
 
-  const spriteMaterialRear = new SpriteMaterial({
+  const spriteMaterialRear = new THREE.SpriteMaterial({
     map,
     opacity: 0.3,
     transparent: true,
     depthTest: false,
   });
 
-  const spriteRear = new Sprite(spriteMaterialRear);
+  const spriteRear = new THREE.Sprite(spriteMaterialRear);
   spriteRear.position.copy(position);
 
   model.add(spriteFront, spriteRear);
