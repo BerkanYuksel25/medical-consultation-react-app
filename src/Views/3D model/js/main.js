@@ -91,6 +91,8 @@ function init() {
   ambientLight = new THREE.AmbientLight(new THREE.Color(1, 1, 1), 0.2);
   scene.add(ambientLight);
 
+  const light = new THREE.HemisphereLight(0xffffee, 0x444444);
+  scene.add(light);
   // directionalLight = new THREE.DirectionalLight(0xffffff,50);
   // directionalLight.position.set(0,1,0);
   // directionalLight.castShadow = true;
@@ -103,14 +105,14 @@ function init() {
   loader.load("./models/lungs/scene.gltf", function(gltf) {
     lungs = gltf.scene.children[0];
     lungs.scale.set(0.5, 0.5, 0.5);
-    lungs.position.set(0, 0, 0);
+    lungs.position.y = -1.5;
     scene.add(gltf.scene);
     renderer.render(scene, camera);
     //animate();
 
-    createMarker(lungs, new THREE.Vector3(0, 17, 8));
-    createMarker(lungs, new THREE.Vector3(4, 51, 1.7));
-    createMarker(lungs, new THREE.Vector3(-6, 0, 4));
+    createMarker(lungs, new THREE.Vector3(-10, 0, 0));
+    createMarker(lungs, new THREE.Vector3(0, 0, 0));
+    createMarker(lungs, new THREE.Vector3(0, 0, 0));
   });
 
   // Sprite
