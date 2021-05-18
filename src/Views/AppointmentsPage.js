@@ -21,6 +21,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const styles = (theme) => ({
   root: {
@@ -53,9 +54,9 @@ class AppointmentsPage extends Component {
       dialogApptType: "GP",
       dialogApptTitle: "Example appointment",
       dialogApptDateTime: new Date(),
-      dialogApptDocName: "Dr Nick",
+      dialogApptDocName: [{}],
       dialogApptDescription: "Dr Nick will check you out",
-      dialogApptLocation: "Dr Nick's house",
+      dialogApptLocation: "Dr Nick's House",
       //^^^^^^^^^^ Dialog Box Variables ^^^^^^^^^^
       apptList: [{
         //id: ,
@@ -66,6 +67,25 @@ class AppointmentsPage extends Component {
         //apptDescription: ,
         //apptLocation: ,
       }],
+      docList: [
+        //{id,
+        //FirstName,
+        //LastName,}
+        //vvv DELETE THIS WHEN GRABBING ACTUAL DATA vvv
+        {id: 1, FirstName: "Nick The", LastName: "Great"},
+        {id: 2, FirstName: "Luke", LastName: "Koko"},
+        {id: 3, FirstName: "Julius", LastName: "Hibert"},
+        {id: 4, FirstName: "Greg", LastName: "House"}
+        //^^^ DELETE THIS WHEN GRABBING ACTUAL DATA ^^^
+      ],
+      locationList: [
+        //vvv DELETE THIS WHEN GRABBING ACTUAL DATA vvv
+        "Dr. Nick's House",
+        "Dr. Luke's House",
+        "Mental Facility",
+        "Uni Bros Medical Centre"
+        //^^^ DELETE THIS WHEN GRABBING ACTUAL DATA ^^^
+      ],
       //Variables used for editing
       editing: false,
       eventKey: new Date(),
@@ -100,7 +120,7 @@ class AppointmentsPage extends Component {
           });
         }
         this.setState({ apptList: newApptListState }, function() {
-          // callback so that state can updated ayscn
+          // callback so that state can updated async
           console.log("Setting apptList state, apptList:");
           console.log(this.state.apptList);
         });
@@ -109,6 +129,16 @@ class AppointmentsPage extends Component {
         console.log(err);
       }
     });
+
+    //Get list of Doctors from firebase
+    //WRITE CODE TO GET LIST OF DOCTORS HERE
+
+    this.setState({dialogApptDocName: this.state.docList[0]});
+
+    //Get list of Locations
+    //WRITE CODE TO GET LIST OF LOCATIONS HERE
+
+    this.setState({dialogApptLocation: this.state.locationList[0]});
   };
 
   handleClickOpen = () => {
@@ -160,16 +190,8 @@ class AppointmentsPage extends Component {
     this.setState({ dialogApptTitle: e.target.value });
   };
 
-  handleChangeFormDocName = (e) => {
-    this.setState({ dialogApptDocName: e.target.value });
-  };
-
   handleChangeFormDescription = (e) => {
     this.setState({ dialogApptDescription: e.target.value });
-  };
-
-  handleChangeFormLocation = (e) => {
-    this.setState({ dialogApptLocation: e.target.value });
   };
 
   handleSelectSlot = ({ start, end }) => {
@@ -206,8 +228,9 @@ class AppointmentsPage extends Component {
       open: false,
       dialogApptDateTime: new Date(),
       dialogApptTitle: "Example appointment",
-      dialogApptDocName: "Dr Nick",
+      dialogApptDocName: this.state.docList[0],
       dialogApptDescription: "Dr Nick will check you out ;)",
+      dialogApptLocation: this.state.locationList[0],
       editing: false,
       eventKey: new Date(),
     });
@@ -267,34 +290,39 @@ class AppointmentsPage extends Component {
             />
             {/* {this.createAppointmentCards()} */}
             {this.state.apptList.reverse().map((appt) => {
-              return (
-                <Card className={classes.root}>
-                  <CardContent>
-                    <Typography
-                      className={classes.title}
-                      color="textSecondary"
-                      gutterBottom
-                    >
-                      {appt.apptType}
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                      {appt.apptTitle}
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                      {appt.apptDocName}
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                      {new Date(appt.apptTime).toLocaleString()}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      {appt.apptDescription}
-                    </Typography>
-                    <CardActions>
-                      <Button size="small" onClick={() => this.handleCardClick(appt)}>More info</Button>
-                    </CardActions>
-                  </CardContent>
-                </Card>
-              );
+              try {
+                return (
+                  <Card className={classes.root}>
+                    <CardContent>
+                      <Typography
+                        className={classes.title}
+                        color="textSecondary"
+                        gutterBottom
+                      >
+                        {appt.apptType}
+                      </Typography>
+                      <Typography variant="h5" component="h2">
+                        {appt.apptTitle}
+                      </Typography>
+                      <Typography variant="h5" component="h2">
+                        {"Dr. " + appt.apptDocName.FirstName + " " + appt.apptDocName.LastName}
+                      </Typography>
+                      <Typography className={classes.pos} color="textSecondary">
+                        {new Date(appt.apptTime).toLocaleString()}
+                      </Typography>
+                      <Typography variant="body2" component="p">
+                        {appt.apptDescription}
+                      </Typography>
+                      <CardActions>
+                        <Button size="small" onClick={() => this.handleCardClick(appt)}>More info</Button>
+                      </CardActions>
+                    </CardContent>
+                  </Card>
+                );
+              } catch (err) {
+                console.log("ERROR, details below");
+                console.log(err);
+              }              
             })}
 
             <Dialog
@@ -322,7 +350,6 @@ class AppointmentsPage extends Component {
                   <MenuItem value={"GP"}>GP</MenuItem>
                   <MenuItem value={"Specialist"}>Specialist</MenuItem>
                 </TextField>
-
                 <TextField
                   id="txt_title"
                   label="Appointment Title"
@@ -353,12 +380,17 @@ class AppointmentsPage extends Component {
                   }}
                   onChange={this.handleChangeDateTime}
                 />
-                <TextField
+                <br/>
+                <Autocomplete
                   id="txt_doc_name"
-                  label="Physican"
+                  disableClearable
                   fullWidth
                   value={this.state.dialogApptDocName}
-                  onChange={this.handleChangeFormDocName}
+                  defaultValue={this.state.docList[0]}
+                  onChange={(event, newValue) => this.setState({dialogApptDocName: newValue})}
+                  options={this.state.docList}
+                  getOptionLabel={(option) => "Dr. " + option.FirstName + " " + option.LastName}
+                  renderInput={(params) => <TextField {...params} label="Physician Name"/>}
                 />
                 <TextField
                   id="txt_description"
@@ -367,12 +399,17 @@ class AppointmentsPage extends Component {
                   value={this.state.dialogApptDescription}
                   onChange={this.handleChangeFormDescription}
                 />
-                <TextField
+                <br/>
+                <Autocomplete
                   id="txt_location"
-                  label="Appointment Location"
+                  disableClearable
                   fullWidth
                   value={this.state.dialogApptLocation}
-                  onChange={this.handleChangeFormLocation}
+                  defaultValue={this.state.locationList[0]}
+                  onChange={(event, newValue) => this.setState({dialogApptLocation: newValue})}
+                  options={this.state.locationList}
+                  //getOptionLabel={(option) => option.LocationName}
+                  renderInput={(params) => <TextField {...params} label="Appointment Location"/>}
                 />
               </DialogContent>
               <DialogActions>
