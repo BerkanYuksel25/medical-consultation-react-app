@@ -103,16 +103,19 @@ function init() {
 
   loader = new THREE.GLTFLoader();
   loader.load("./models/lungs/scene.gltf", function(gltf) {
-    lungs = gltf.scene.children[0];
-    lungs.scale.set(0.5, 0.5, 0.5);
-    lungs.position.y = -1.5;
-    scene.add(gltf.scene);
-    renderer.render(scene, camera);
+    model = gltf.scene.children[0];
+    model.scale.multiplyScalar(0.5);
+    model.position.y = -1.5;
+    //model.position.z = 200;
+    //model.position.x = -100;
+    //scene.add(gltf.scene);
+    //renderer.render(scene, camera);
     //animate();
+    scene.add(model);
 
-    createMarker(lungs, new THREE.Vector3(-10, 0, 0));
-    createMarker(lungs, new THREE.Vector3(0, 0, 0));
-    createMarker(lungs, new THREE.Vector3(0, 0, 0));
+    createMarker(model, new THREE.Vector3(10, 17, 8));
+    createMarker(model, new THREE.Vector3(4, 15, 1.7));
+    createMarker(model, new THREE.Vector3(-6, 0, 4));
   });
 
   // Sprite
