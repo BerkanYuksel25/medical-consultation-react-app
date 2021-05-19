@@ -47,7 +47,7 @@ class News extends Component {
 					b.setAttribute("src", article.urlToImage);
 					b.setAttribute("alt", "");
 					b.setAttribute("width", "400");
-					b.setAttribute("height", "200");
+					b.setAttribute("height", "210");
 
 					a.textContent = article.title;
 					c.textContent = article.description;
@@ -74,7 +74,7 @@ class News extends Component {
 				</div>
 
 		
-				<Grid container spacing={4} style={{ padding: 24 }}>
+				<Grid container spacing={5} style={{ padding: 23 }}>
 					{this.state.cardItems.map((item, index) => (
 						<Grid item xs={12} sm={6} md={4} xl={3}>
 							<Card style={{ minWidth: 285 }}>
@@ -83,7 +83,7 @@ class News extends Component {
 										componenet="img"
 										image={item.img}
 										title={item.title}
-										style={{ height: 0, paddingTop: "50%" }}
+										style={{ height: 0, paddingTop: "48%" }}
 									/>
 									<CardContent>
 										<Typography
