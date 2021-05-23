@@ -1,5 +1,14 @@
 model-viewer {
   width: 50vw;
   height: 100vh;
-  align-content: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans";
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
