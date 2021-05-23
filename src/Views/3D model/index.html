@@ -28,15 +28,18 @@
     <!-- <script src="https://raw.githubusercontent.com/mrdoob/three.js/master/examples/jsm/controls/OrbitControls.js"></script> -->
     <!-- <canvas id="number"></canvas> -->
     <script src="js/main.js"></script>
-
+    <link rel="stylesheet" href="./css/hotspot.css">
     <style>
       
     </style>
-    <model-viewer id="lungs" ar-modes="webxr">
-      <div class="hotspot lung1" text="lung1"></div>
-      <div class="hotspot lung2" text="lung2"></div>
-      <div class="hotspot lung3" text="lung3"></div>
-      <div class="hotspot lung4" text="lung4"></div>
+    <model-viewer id="lungs" ar-modes="webxr" controls src="./models/lungs/scene.gltf.">
+        <div id="annotation">this hotspot</div>
+      
+      
+      <button class="hotspot lung2" text="lung2"></button>
+      <button class="hotspot lung3" text="lung3"></button>
+      <button class="hotspot lung4" text="lung4"></button>
+      
 
     </model-viewer>
     

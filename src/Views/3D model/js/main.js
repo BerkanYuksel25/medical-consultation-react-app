@@ -45,6 +45,7 @@
 let scene, camera, renderer;
 let controls;
 let loader;
+let container;
 // let objLoader;
 let keyLight, fillLight, backLight;
 let cameraLight, ambientLight;
@@ -55,7 +56,13 @@ let cameraLight, ambientLight;
 
 function init() {
   // settup scene
+  container = document.querySelector(".scene");
   scene = new THREE.Scene();
+  //const fov = 35;
+  //const aspect = container.clientWidth / container.clientHeight;
+  //const near = 0.1;
+  //const far = 500;
+
   scene.background = new THREE.Color(0xdddddd);
   // setting up the camera
   camera = new THREE.PerspectiveCamera(
@@ -106,6 +113,7 @@ function init() {
     model = gltf.scene.children[0];
     model.scale.multiplyScalar(0.5);
     model.position.y = -1.5;
+    model.position.set(0, 0, 0);
     //model.position.z = 200;
     //model.position.x = -100;
     //scene.add(gltf.scene);
@@ -172,7 +180,7 @@ init();
 animate();
 
 function onWindowResize() {
-  camera.aspect = container.client / container.clientHeight;
+  camera.aspect = container.clientWidth / container.clientHeight;
   camera.updateProjectMatrix();
   renderer.setSize(container.clientWidth, container.clientHeight);
 }
