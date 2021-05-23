@@ -170,3 +170,11 @@ function createMarker(model, position) {
 
 init();
 animate();
+
+function onWindowResize() {
+  camera.aspect = container.client / container.clientHeight;
+  camera.updateProjectMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+}
+
+window.addEventListener("resize", onWindowResize);
