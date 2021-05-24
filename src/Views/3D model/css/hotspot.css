@@ -35,6 +35,7 @@ button {
   transform: translate(10px, 10px);
   border-radius: 10px;
   padding: 10px;
+  font-size: small;
 }
 /* This keeps child nodes hidden while the element loads */
 :not(:defined) > * {
@@ -50,7 +51,7 @@ button {
   }
 }
 
-.button::before {
+/* .button::before {
   content: attr(text);
   position: absolute;
   width: max-content;
@@ -66,4 +67,17 @@ button {
 .button:hover::before,
 .button:hover::after {
   display: block;
+} */
+
+.hide {
+  display: none;
+}
+
+.annotation:hover + .hide {
+  display: block;
+  background-color: #d8cece;
+  position: absolute;
+  transform: translate(10px, 10px);
+  border-radius: 10px;
+  padding: 10px;
 }

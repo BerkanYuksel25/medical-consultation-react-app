@@ -31,14 +31,34 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/hotspot.css">
 
-    
-    <!-- <model-viewer id="lungs" ar-modes="webxr">
-      <div class="hotspot lung1" text="lung1"></div>
-      <div class="hotspot lung2" text="lung2"></div>
-      <div class="hotspot lung3" text="lung3"></div>
-      <div class="hotspot lung4" text="lung4"></div>
+  
+    <!-- Use it like any other HTML element -->
+<model-viewer
+src="./models/lungs/scene.gltf"
+alt="A 3D model of a pair of lungs"
+auto-rotate
+camera-controls
+>
+<button slot="hotspot-bronchi" data-position="227.2729851586656m -225.83001464572942 200.84148346201647" data-normal="0.13673797417674904m -0.253618002703214m 0.9575910583975141m">
+<div id="annotation" >Bronchi</div>
+<!-- <div class="hide"> this is where corona efects the most</div> -->
+</button>
+<button slot="hotspot-alveoli" data-position="305.18232547362527m -163.17553182879465m 233.75726817524134m" data-normal="0.13673797417674904m -0.253618002703214m 0.9575910583975141m">
+<div id="annotation">Alveoli</div>
+</button>
+<!-- <button slot="hotspot-bronchiols" data-position="324.18516414063197m -176.47241844290153m 165.58386651210736m" data-normal="08426717077620102m 0.35546161750037575m -04.044149248253257"></button> -->
+<button slot="hotspot-trachea" data-position="216.58848650973482m -160.02784289028983m 201.25410557196534m" data-normal="0.03041696218222724m 09.794724250546223m 0.19927011057663038m">
+<div id="annotation">Trachea</div>
+</button>
 
-    </model-viewer> -->
+<div id="annotation">COVID-19 is a respiratory disease, one that especially reaches into your respiratory tract, which includes your lungs.
+
+  COVID-19 can cause a range of breathing problems, from mild to critical. Older adults and people who have other health conditions like heart disease, cancer, and diabetes may have more serious symptoms.
+  
+  Here’s what the new coronavirus does to your lungs.
+  
+  </div>
+</model-viewer>
     
   </body>
 </html>
@@ -50,30 +70,3 @@
 ></script>
 
 
-<!-- Use it like any other HTML element -->
-<model-viewer
-  src="./models/lungs/scene.gltf"
-  alt="A 3D model of a pair of lungs"
-  auto-rotate
-  camera-controls
->
-<button slot="hotspot-bronchi" data-position="227.2729851586656m -225.83001464572942 200.84148346201647" data-normal="0.13673797417674904m -0.253618002703214m 0.9575910583975141m">
-  <div id="annotation">Bronchi</div>
-</button>
-<button slot="hotspot-alveoli" data-position="305.18232547362527m -163.17553182879465m 233.75726817524134m" data-normal="0.13673797417674904m -0.253618002703214m 0.9575910583975141m">
-  <div id="annotation">Alveoli</div>
-
-</button>
-<!-- <button slot="hotspot-bronchiols" data-position="324.18516414063197m -176.47241844290153m 165.58386651210736m" data-normal="08426717077620102m 0.35546161750037575m -04.044149248253257"></button> -->
-<button slot="hotspot-trachea" data-position="216.58848650973482m -160.02784289028983m 201.25410557196534m" data-normal="0.03041696218222724m 09.794724250546223m 0.19927011057663038m">
-  <div id="annotation">Trachea</div>
-
-</button>
-
-
-<!-- <div class="container">
-  <div class="hotspot trachea" text="Trachea"></div>
-  <div class="hotspot bronchi" text ="Bronchi"></div>
-  <div class="hotspot alveoli" tect ="Alveoli"></div>
-</div> -->
-</model-viewer>
