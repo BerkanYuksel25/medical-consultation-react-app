@@ -26,6 +26,7 @@ button {
   background-color: #9d6fa3;
   box-sizing: border-box;
   animation: wave 1s infinite;
+  cursor: pointer;
 }
 
 #annotation {
@@ -47,4 +48,22 @@ button {
   to {
     box-shadow: 0 0 0 5px #9d6fa3;
   }
+}
+
+.button::before {
+  content: attr(text);
+  position: absolute;
+  width: max-content;
+  display: none;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.button:hover::before,
+.button:hover::after {
+  display: block;
 }
