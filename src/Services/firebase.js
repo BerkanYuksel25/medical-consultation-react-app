@@ -1,14 +1,15 @@
 import firebase from "firebase";
 
+// Add your own Firebase project's config data here.
 const config = {
-  apiKey: "AIzaSyAxvuzGumgZ5l2fC-LrC7VkIk1xx377c0E",
-  authDomain: "ses3b-d291d.firebaseapp.com",
-  databaseURL: "https://ses3b-d291d-default-rtdb.firebaseio.com",
-  projectId: "ses3b-d291d",
-  storageBucket: "ses3b-d291d.appspot.com",
-  messagingSenderId: "358726218019",
-  appId: "1:358726218019:web:978a063b360cbfef7cdc96",
-  measurementId: "G-G1DRBQF44N",
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: "",
 };
 
 firebase.initializeApp(config);

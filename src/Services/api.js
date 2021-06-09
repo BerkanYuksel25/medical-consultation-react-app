@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://54.221.119.164:5000";
-const COVID_19_API_URL = "https://coronavirus-19-api.herokuapp.com/countries";
+// Add relevant backend URLs here
+const API_URL = "";
+const COVID_19_API_URL = "";
 
 export async function getCovidLikelihood(data) {
   try {
